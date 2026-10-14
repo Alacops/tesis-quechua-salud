@@ -1,0 +1,25 @@
+# ---- Archivos auxiliares de LaTeX ----
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.loe
+*.lanx
+*.loa
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.nav
+*.snm
+*.vrb
+*.xdv
+
+# ---- Sistema ----
+.DS_Store
+Thumbs.db

@@ -1,0 +1,84 @@
+% ============================================================
+%  Preambulo compartido - APA7 + espanol + graficos
+%  Se incluye con \input{../preambulo.tex} en cada documento.
+%  Compilar con: pdflatex -> biber -> pdflatex -> pdflatex
+% ============================================================
+
+% ---- Codificacion e idioma ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{csquotes}
+
+% ---- Geometria (margenes tipo tesis; ajustar a SINVIC) ----
+\usepackage[a4paper,left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+% ---- Interlineado 1.5 ----
+\usepackage{setspace}
+\onehalfspacing
+
+% ---- Tipografia de titulos ----
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+
+% ---- Tablas y figuras ----
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf]{caption}
+
+% ---- Graficos vectoriales (pgfplots / tikz) ----
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc}
+
+% ---- Colores ----
+\usepackage{xcolor}
+\definecolor{azulUNSAAC}{RGB}{0,71,133}
+\definecolor{grisSuave}{RGB}{240,240,240}
+
+% ---- Bibliografia APA7 (biblatex + biber) ----
+\usepackage[
+  backend=biber,
+  style=apa,
+  sortcites=true,
+  sorting=nyt,
+  language=spanish
+]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+\addbibresource{../referencias.bib}
+
+% ---- Listas e indices (algoritmos, ecuaciones, anexos; tablas largas) ----
+% IMPORTANTE: tocloft debe cargarse ANTES de hyperref.
+\usepackage{longtable}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tocloft}
+
+% ---- Hipervinculos ----
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=azulUNSAAC,
+  urlcolor=azulUNSAAC
+}
+
+% ---- Icono ORCID (dibujado con tikz, compatible con pdflatex) ----
+\usepackage{orcidlink}
+
+% ---- Encabezado / pie de pagina ----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+
+% ---- Sangria de primer parrafo ----
+\usepackage{indentfirst}

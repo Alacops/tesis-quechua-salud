@@ -1,0 +1,213 @@
+% ============================================================
+%  DOCUMENTO 1: REVIEW (estilo articulo, formato SIMBIG - sin indice)
+%  Reconocimiento de voz, traduccion automatica y sintesis de voz aplicados
+%  al quechua para la comunicacion medico-paciente: revision sistematica
+%  Compilar:  pdflatex review -> biber review -> pdflatex x2
+% ============================================================
+\documentclass[12pt,a4paper]{article}
+\input{../preambulo.tex}
+
+\title{\vspace{-1.2cm}\bfseries Reconocimiento de voz, traducci{\'o}n autom{\'a}tica y s{\'i}ntesis de voz
+aplicados al quechua para la comunicaci{\'o}n m{\'e}dico-paciente: una revisi{\'o}n sistem{\'a}tica de literatura%
+\thanks{Trabajo del curso Seminario de Tesis II. Docente: Mtro.\ Ing.\ Ra{\'u}l Huillca Huallparimachi.}}
+\author{Alain Armando Condori Contreras\,(021501)\\[2pt]
+  \normalsize Escuela Profesional de Ingenier{\'i}a Inform{\'a}tica y de Sistemas\\[1pt]
+  \normalsize Universidad Nacional de San Antonio Abad del Cusco\\[1pt]
+  \normalsize \texttt{021501@unsaac.edu.pe}}
+\date{Cusco, Per{\'u} --- 2026}
+
+\begin{document}
+\maketitle
+
+% ------------------- RESUMEN -------------------
+\begin{abstract}
+\noindent Esta revisi{\'o}n sintetiza el estado del arte sobre traducci{\'o}n autom{\'a}tica del par
+Quechua--Espa{\~n}ol y las tecnolog{\'i}as de reconocimiento de voz (ASR) y s{\'i}ntesis de voz
+(TTS) aplicables a lenguas de bajo recurso, con foco en el dominio de la consulta m{\'e}dica.
+Se organiza en tres ejes: (i) la barrera ling{\"u}{\'i}stica en salud en contextos
+quechuahablantes, (ii) los modelos preentrenados de c{\'o}digo abierto disponibles
+(Whisper, MMS, NLLB) y (iii) los vac{\'i}os metodol{\'o}gicos que justifican el presente
+trabajo.
+
+\vspace{0.3cm}
+\noindent\textbf{Palabras clave:} traducci{\'o}n autom{\'a}tica, quechua, PLN, lenguas de bajo recurso, ASR, TTS.
+\end{abstract}
+
+% ------------------- 1. INTRODUCCION -------------------
+\section{Introducci{\'o}n}
+La brecha comunicativa entre el personal de salud y los pacientes quechuahablantes es un
+problema documentado y vigente en la regi{\'o}n Cusco \parencite{begazo2026}. Esta revisi{\'o}n
+busca mapear qu{\'e} soluciones tecnol{\'o}gicas existen, qu{\'e} tan maduras est{\'a}n para el
+quechua y d{\'o}nde se ubican los vac{\'i}os que este proyecto puede cubrir.
+
+\subsection{Objetivo de la revisi{\'o}n}
+Identificar y comparar los modelos preentrenados de ASR, traducci{\'o}n autom{\'a}tica y TTS
+que soportan quechua, evaluando su viabilidad para un prototipo de traducci{\'o}n
+bidireccional en consulta m{\'e}dica.
+
+\subsection{Metodolog{\'i}a de b{\'u}squeda}
+Se revisaron fuentes en Google Scholar, arXiv, ACL Anthology y repositorios
+institucionales peruanos, con los t{\'e}rminos: \emph{quechua machine translation},
+\emph{low-resource speech recognition}, \emph{multilingual TTS} y \emph{barrera
+ling{\"u}{\'i}stica salud Per{\'u}}. Criterio de inclusi{\'o}n: publicaciones 2019--2026
+con relevancia directa al par Quechua--Espa{\~n}ol o a lenguas de bajo recurso comparables.
+
+% ------------------- 2. BARRERA LINGUISTICA -------------------
+\section{La barrera ling{\"u}{\'i}stica en salud}
+En Cusco, m{\'a}s del 55\,\% de la poblaci{\'o}n tiene el quechua como lengua materna
+\parencite{essalud2023}. Los estudios cualitativos confirman que la desconexi{\'o}n
+idiom{\'a}tica vulnera la relaci{\'o}n terap{\'e}utica \parencite{begazo2026,cuaila2022}, y a
+ello se suma el analfabetismo en mujeres rurales mayores \parencite{inei2023,dispurse2023}.
+
+La Figura~\ref{fig:barreras} resume las magnitudes de la problem{\'a}tica.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    ybar,
+    width=12cm, height=7cm,
+    bar width=28pt,
+    ymin=0, ymax=100,
+    ylabel={Porcentaje (\%)},
+    symbolic x coords={Lengua materna,Asegurados EsSalud,Analfab. mujer rural},
+    xtick=data,
+    nodes near coords,
+    nodes near coords style={font=\small},
+    x tick label style={align=center,font=\small,text width=2.5cm},
+    enlarge x limits=0.25,
+    ymajorgrids=true,
+    grid style=dashed,
+]
+\addplot[fill=azulUNSAAC] coordinates {
+    (Lengua materna,55)
+    (Asegurados EsSalud,15)
+    (Analfab. mujer rural,22.8)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Magnitud de la barrera ling{\"u}{\'i}stica y de alfabetizaci{\'o}n en Cusco. Elaboraci{\'o}n propia con datos de \textcite{essalud2023} e \textcite{inei2023}.}
+\label{fig:barreras}
+\end{figure}
+
+% ------------------- 3. MODELOS -------------------
+\section{Modelos preentrenados de c{\'o}digo abierto}
+La estrategia dominante en lenguas de bajo recurso ya no es entrenar desde cero, sino
+\emph{adaptar} (fine-tuning) modelos multiling{\"u}es masivos preentrenados sobre grandes
+vol{\'u}menes de datos, transfiriendo su conocimiento a la lengua objetivo con relativamente
+pocos ejemplos etiquetados \parencite{pratap2024mms}. A continuaci{\'o}n se revisan los tres
+componentes del pipeline.
+
+\subsection{Reconocimiento de voz (ASR)}
+Whisper \parencite{radford2023whisper} es un modelo entrenado con 680\,000 horas de audio
+multiling{\"u}e mediante supervisi{\'o}n d{\'e}bil, robusto a ruido y acentos, con quechua entre
+sus idiomas declarados. MMS \parencite{pratap2024mms} extiende el ASR a m{\'a}s de 1\,100
+idiomas, incluyendo variantes del quechua, apoy{\'a}ndose en datos religiosos alineados. En
+ambos casos, el desempe{\~n}o \emph{real} sobre vocabulario cl{\'i}nico y sobre las variantes
+del quechua sure{\~n}o (Cusco--Collao) es una pregunta abierta que este proyecto debe medir
+emp{\'i}ricamente, pues los benchmarks publicados no cubren el dominio m{\'e}dico.
+
+\subsection{Traducci{\'o}n autom{\'a}tica}
+NLLB \parencite{costajussa2022nllb} incluye pares con quechua, aunque con calidad
+heterog{\'e}nea seg{\'u}n la variante. Para el par Quechua--Espa{\~n}ol existen antecedentes
+espec{\'i}ficos: \textcite{ortega2020quechua} demostraron que la traducci{\'o}n neural en una
+lengua polisint{\'e}tica como el quechua se beneficia del tratamiento morfol{\'o}gico
+(segmentaci{\'o}n en subpalabras) frente a enfoques palabra a palabra. El \emph{shared task}
+de AmericasNLP \parencite{mager2021americasnlp} consolid{\'o} conjuntos de datos y l{\'i}neas
+base para diez lenguas ind{\'i}genas americanas, el quechua entre ellas, y evidenci{\'o} que la
+escasez y el ruido de los corpus paralelos siguen siendo el cuello de botella principal.
+
+\subsection{S{\'i}ntesis de voz (TTS)}
+MMS-TTS \parencite{pratap2024mms} provee voces para cientos de idiomas; su naturalidad e
+inteligibilidad en quechua es el principal riesgo t{\'e}cnico a validar, dado que la calidad
+percibida de la voz es cr{\'i}tica cuando el destinatario es un paciente que no sabe leer. Por
+ello el proyecto trata el TTS como componente a caracterizar antes de comprometerlo como
+objetivo central.
+
+\subsection{Recursos de datos para el quechua}
+Un habilitador reciente es la aparici{\'o}n de corpus de voz para lenguas peruanas: el corpus
+\emph{Huqariq} \parencite{zevallos2022huqariq} re{\'u}ne horas de habla en quechua, aimara,
+ash{\'a}ninka y shipibo, y constituye una base valiosa para el fine-tuning del ASR, aunque no
+est{\'a} especializado en vocabulario m{\'e}dico ---brecha que este proyecto aborda con la
+construcci{\'o}n de un corpus cl{\'i}nico propio.
+
+\subsection{M{\'e}tricas de evaluaci{\'o}n}
+La comparaci{\'o}n de sistemas exige m{\'e}tricas estandarizadas. Para el ASR se emplea la
+\emph{tasa de error de palabra} (WER), que mide inserciones, sustituciones y eliminaciones
+frente a una transcripci{\'o}n de referencia; a menor WER, mejor. Para la traducci{\'o}n se usan
+BLEU \parencite{papineni2002bleu} y chrF, que comparan la salida con traducciones humanas de
+referencia. Para el TTS, la calidad se estima con la \emph{Mean Opinion Score} (MOS), un
+promedio de valoraciones subjetivas de inteligibilidad y naturalidad. La
+Tabla~\ref{tab:metricas} resume su uso en este proyecto.
+
+\begin{table}[H]
+\centering
+\caption{M{\'e}tricas de evaluaci{\'o}n por componente del sistema.}
+\label{tab:metricas}
+\small
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+\textbf{Componente} & \textbf{M{\'e}trica} & \textbf{Interpretaci{\'o}n} \\
+\midrule
+ASR         & WER          & Menor es mejor; error de transcripci{\'o}n \\
+Traducci{\'o}n & BLEU / chrF & Mayor es mejor; similitud con referencia humana \\
+TTS         & MOS          & 1--5; percepci{\'o}n de naturalidad e inteligibilidad \\
+Global      & Tiempo de respuesta & Latencia extremo a extremo por turno \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{Comparaci{\'o}n de modelos preentrenados con soporte de quechua.}
+\label{tab:modelos}
+\small
+\begin{tabularx}{\linewidth}{@{}l l X c@{}}
+\toprule
+\textbf{Modelo} & \textbf{Tarea} & \textbf{Cobertura quechua} & \textbf{Licencia} \\
+\midrule
+Whisper & ASR            & Declarada (multiling{\"u}e) & MIT \\
+MMS     & ASR / TTS      & $>$1000 idiomas, incl. quechua & CC-BY-NC \\
+NLLB    & Traducci{\'o}n & Pares con quechua & CC-BY-NC \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ------------------- 4. VACIOS -------------------
+\section{Vac{\'i}os identificados}
+El cruce entre la literatura del problema social \parencite{begazo2026,cuaila2022} y la
+literatura t{\'e}cnica \parencite{radford2023whisper,pratap2024mms,mager2021americasnlp}
+revela una desconexi{\'o}n: el problema est{\'a} bien documentado y la tecnolog{\'i}a base
+existe, pero nadie ha unido ambos extremos. Espec{\'i}ficamente:
+\begin{enumerate}
+  \item \textbf{Ausencia de corpus cl{\'i}nico.} Los recursos existentes
+        \parencite{zevallos2022huqariq} son de dominio general; no hay un corpus
+        Quechua--Espa{\~n}ol de vocabulario de consulta (triaje, s{\'i}ntomas, indicaciones)
+        validado con personal de salud.
+  \item \textbf{Falta de evaluaci{\'o}n en dominio.} No se reportan valores de WER ni BLEU de
+        los modelos preentrenados sobre habla y texto m{\'e}dico en quechua sure{\~n}o.
+  \item \textbf{TTS sin caracterizar.} La inteligibilidad del TTS en quechua para usuarios con
+        baja alfabetizaci{\'o}n ---justamente el caso de uso cr{\'i}tico--- no ha sido medida.
+  \item \textbf{Diseño de interacci{\'o}n no estudiado.} No existe evidencia sobre qu{\'e}
+        modalidad de salida (texto vs. texto+voz) reduce mejor los errores de interpretaci{\'o}n
+        seg{\'u}n el tipo de usuario.
+\end{enumerate}
+
+% ------------------- 5. CONCLUSIONES -------------------
+\section{Conclusiones}
+La revisi{\'o}n confirma tres puntos. Primero, la barrera ling{\"u}{\'i}stica en salud es un
+problema real, vigente y acad{\'e}micamente reconocido en Cusco
+\parencite{begazo2026,essalud2023}. Segundo, existe una base tecnol{\'o}gica madura de modelos
+preentrenados de c{\'o}digo abierto (Whisper, MMS, NLLB) y antecedentes de traducci{\'o}n neural
+para el quechua \parencite{ortega2020quechua,mager2021americasnlp} que hacen viable la
+adaptaci{\'o}n en lugar del entrenamiento desde cero. Tercero, persiste un vac{\'i}o claro en la
+aplicaci{\'o}n de esa tecnolog{\'i}a al dominio cl{\'i}nico con evaluaci{\'o}n emp{\'i}rica. El
+presente proyecto se posiciona en ese vac{\'i}o, priorizando ASR y traducci{\'o}n, midiendo con
+m{\'e}tricas estandarizadas (WER, BLEU, MOS) y tratando el TTS como componente a validar dentro
+del alcance del semestre.
+
+% ------------------- BIBLIOGRAFIA -------------------
+\newpage
+\printbibliography[title={Referencias}]
+
+\end{document}
