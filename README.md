@@ -23,7 +23,7 @@ SEMINARIO_2/
 │   └── fuentes_combinadas.bib
 └── 02_Plan_Tesis/
     ├── plan_tesis_expo.tex  # Plan de tesis (versión exposición, por capítulos) ← PRINCIPAL
-    ├── plan_tesis.tex       # Plan de tesis (versión larga)
+    ├── plan_tesis_expo.pdf  # PDF compilado (documento de entrega)
     └── antecedentes.bib     # Fuentes de la revisión usadas en antecedentes
 ```
 
