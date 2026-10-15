@@ -20,8 +20,9 @@
 *.vrb
 *.xdv
 
-# ---- Empaquetado para Classroom (artefacto generado) ----
+# ---- Empaquetado para Classroom (artefactos generados) ----
 tesis_latex_classroom.zip
+ENTREGA_CLASSROOM/
 
 # ---- Sistema ----
 .DS_Store
