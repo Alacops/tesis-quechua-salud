@@ -20,6 +20,9 @@
 *.vrb
 *.xdv
 
+# ---- Empaquetado para Classroom (artefacto generado) ----
+tesis_latex_classroom.zip
+
 # ---- Sistema ----
 .DS_Store
 Thumbs.db
