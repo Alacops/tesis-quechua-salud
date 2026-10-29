@@ -14,23 +14,21 @@ validado con consultas simuladas. Documentos en LaTeX con citas **APA7**.
 SEMINARIO_2/
 ├── preambulo.tex            # Configuración compartida (APA7, márgenes, gráficos)
 ├── referencias.bib          # Bibliografía núcleo (APA7)
-├── scopus.bib / ieee.bib / acm.bib   # Exportaciones de las bases de datos (58 registros)
 ├── logo_unsaac.png          # Logo institucional usado en las carátulas
 ├── 01_RSL/                  # Revisión sistemática: entrega + evidencia (PRISMA)
 │   ├── rsl_articulo.tex/.pdf    # Artículo de la revisión (2 columnas, refs. numéricas)
 │   ├── diapositivas_rsl.html/.pdf  # Diapositivas (5 slides)
-│   ├── Captura_parcifal.png    # Evidencia del cribado en Parsifal (58 registros)
-│   ├── RSL.pdf                 # Modelo de artículo dado por el docente
 │   ├── queries_busqueda.md     # Cadenas de búsqueda + conteos PRISMA
 │   ├── cribado.md              # Cribado de estudios (inclusión/exclusión)
 │   └── extraccion_datos.md     # Tabla de extracción de datos
-├── 02_Plan_Tesis/
-│   ├── plan_tesis_expo.tex  # Plan de tesis (versión exposición, por capítulos) ← PRINCIPAL
-│   ├── plan_tesis_expo.pdf  # PDF compilado (documento de entrega)
-│   └── antecedentes.bib     # Fuentes de la revisión usadas en antecedentes
-├── Estructuracion_Tesis/    # PDFs de apoyo (problema/objetivos, tipo-nivel-diseño-enfoque)
-└── Guia-Normas-APA-7ma-edicion.pdf
+└── 02_Plan_Tesis/
+    ├── plan_tesis_expo.tex  # Plan de tesis (versión exposición, por capítulos) ← PRINCIPAL
+    ├── plan_tesis_expo.pdf  # PDF compilado (documento de entrega)
+    └── antecedentes.bib     # Fuentes de la revisión usadas en antecedentes
 ```
+
+> Material de apoyo (exportaciones `.bib` de las bases, captura de Parsifal, PDFs de
+> referencia y `Estructuracion_Tesis/`) se mantiene **local**, fuera del control de versiones.
 
 El documento principal de entrega es **`02_Plan_Tesis/plan_tesis_expo.pdf`** (carátula UNSAAC,
 5 capítulos: I Introducción en 6 bloques · II Marco teórico y estado del arte · III Metodología ·

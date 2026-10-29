@@ -24,6 +24,18 @@
 tesis_latex_classroom.zip
 ENTREGA_CLASSROOM/
 
+# ---- Material de apoyo / evidencia (local, no versionado) ----
+Estructuracion_Tesis/
+Guia-Normas-APA-7ma-edicion.pdf
+Plantilla_Plan_Tesis.pdf
+01_RSL/RSL.pdf
+github_url.txt
+# Exportaciones de las bases (insumo de Parsifal, no se compilan)
+scopus.bib
+ieee.bib
+acm.bib
+01_RSL/Captura_parcifal.png
+
 # ---- Sistema ----
 .DS_Store
 Thumbs.db
