@@ -1,4 +1,4 @@
-# Tesis — Sistema bidireccional de traducción de voz Quechua–Español con IA preentrenada para consultas médicas en Cusco
+# Tesis — Desarrollo de un sistema bidireccional de traducción de voz Quechua–Español mediante aprendizaje profundo para consultas médicas en Cusco
 
 **Autor:** Alain Armando Condori Contreras · **Asesor:** Mtro. Ing. Raúl Huillca Huallparimachi
 **Escuela Profesional de Ingeniería Informática y de Sistemas — UNSAAC**
