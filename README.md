@@ -16,15 +16,14 @@ SEMINARIO_2/
 ├── referencias.bib          # Bibliografía núcleo (APA7)
 ├── scopus.bib / ieee.bib / acm.bib   # Exportaciones de las bases de datos (58 registros)
 ├── logo_unsaac.png          # Logo institucional usado en las carátulas
-├── 01_Review/               # Evidencia de la revisión sistemática (PRISMA)
-│   ├── queries_busqueda.md  # Cadenas de búsqueda + conteos PRISMA
-│   ├── cribado.md           # Cribado de estudios (inclusión/exclusión)
-│   └── extraccion_datos.md  # Tabla de extracción de datos
-├── 01_RSL/                  # Entrega RSL (artículo estilo revista + diapositivas)
+├── 01_RSL/                  # Revisión sistemática: entrega + evidencia (PRISMA)
 │   ├── rsl_articulo.tex/.pdf    # Artículo de la revisión (2 columnas, refs. numéricas)
 │   ├── diapositivas_rsl.html/.pdf  # Diapositivas (5 slides)
 │   ├── Captura_parcifal.png    # Evidencia del cribado en Parsifal (58 registros)
-│   └── RSL.pdf                 # Modelo de artículo dado por el docente
+│   ├── RSL.pdf                 # Modelo de artículo dado por el docente
+│   ├── queries_busqueda.md     # Cadenas de búsqueda + conteos PRISMA
+│   ├── cribado.md              # Cribado de estudios (inclusión/exclusión)
+│   └── extraccion_datos.md     # Tabla de extracción de datos
 ├── 02_Plan_Tesis/
 │   ├── plan_tesis_expo.tex  # Plan de tesis (versión exposición, por capítulos) ← PRINCIPAL
 │   ├── plan_tesis_expo.pdf  # PDF compilado (documento de entrega)
