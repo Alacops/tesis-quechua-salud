@@ -6,19 +6,66 @@
 %    III. Metodología de la investigación
 %    IV. Estudio de factibilidad
 %    V.  Aspectos administrativos
-%    + Matriz de consistencia (anexo)
+%    + Matriz de consistencia (al cierre del Cap. III)
 %  Compilar: pdflatex -> biber -> pdflatex -> pdflatex
 % ============================================================
 \documentclass[12pt,a4paper]{article}
 \input{../preambulo.tex}
 
+% ----- Matemática (atención, pérdida, flujo de datos de la cascada) -----
+\usepackage{amsmath}
+
+% ----- Página apaisada para la matriz de consistencia -----
+\usepackage{pdflscape}
+
 % ----- Color de celdas / rampas -----
 \usepackage{colortbl}
 
 % ----- Colores de la "ecuación universal" del título (azul/ámbar/rojo) -----
-\definecolor{colProceso}{RGB}{0,71,133}    % azul  -> Proceso / Acción
-\definecolor{colMetodo}{RGB}{181,128,0}    % ámbar -> Tecnología / Método
-\definecolor{colContexto}{RGB}{176,42,42}  % rojo  -> Contexto / Aplicación
+% Esquema estandarizado (marco del docente): el título se descompone en tres
+% componentes, cada uno con un color fijo reutilizable en todo el proyecto.
+\definecolor{colProceso}{RGB}{122,66,20}   % café  -> Proceso / Acción
+\definecolor{colMetodo}{RGB}{176,42,42}    % rojo  -> Tecnología / Método
+\definecolor{colContexto}{RGB}{31,110,54}  % verde -> Contexto / Aplicación
+
+% ============================================================
+%  CORRECCIONES A OBSERVACIONES (revisión del asesor)
+%  Todo el texto AÑADIDO o CORREGIDO se marca en VERDE con \nuevo{}
+%  o con el entorno {bloqueNuevo}, para que el docente lo distinga.
+% ============================================================
+\definecolor{verdeOK}{RGB}{13,124,51}
+\newcommand{\nuevo}[1]{\textcolor{verdeOK}{#1}}
+\newenvironment{bloqueNuevo}{\par\color{verdeOK}}{\par}
+
+% ----- APA 7: número y título ENCIMA de tablas y figuras; Nota al pie -----
+% (número en negrita, en su propia línea; título en cursiva, alineado a la izq.)
+\captionsetup{labelsep=newline,labelfont=bf,textfont=it,
+              justification=raggedright,singlelinecheck=false}
+\captionsetup[table]{position=above,skip=4pt}
+\captionsetup[figure]{position=above,skip=6pt}
+% Nota APA al pie de una tabla o figura
+\newcommand{\notaAPA}[1]{\par\vspace{2pt}%
+  \begin{minipage}{\linewidth}\footnotesize\textit{Nota.} #1\end{minipage}\par}
+
+% ----- Estilo de tabla del proyecto (cabecera navy + celda de nivel azul) -----
+% Mismo esquema de color que la matriz de consistencia (rampa g5/g4).
+\newcommand{\hdr}[1]{\textcolor{white}{\textbf{#1}}}            % texto de cabecera
+\newcommand{\celnivel}[1]{\cellcolor{g4}\textcolor{white}{\textbf{#1}}} % celda "Nivel"
+
+% ----- Enlaces internos: siglas (quz/quy) y términos del glosario -----
+% Al hacer clic, el lector salta a su descripción (índice de abreviaturas / glosario).
+\DeclareRobustCommand{\sig}[1]{\hyperlink{sig:#1}{\texttt{#1}}}
+\DeclareRobustCommand{\glo}[2]{\hyperlink{glo:#1}{#2}}
+% Ancla de destino que se coloca al FINAL de la definición (no al inicio del término):
+% así \hypertarget no inserta una línea en blanco que desalinee el término de su fila.
+\newcommand{\destino}[1]{\hypertarget{#1}{}}
+
+% ----- APA 7: encabezados -----
+% Nivel 1 (section): centrado + negrita
+\titleformat{\section}{\normalfont\Large\bfseries\filcenter}{\thesection}{1em}{}
+% Nivel 2 (subsection): alineado a la izquierda + negrita (ya definido en preambulo)
+% Nivel 3 (subsubsection): alineado a la izquierda + negrita + cursiva
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{1em}{}
 
 % ----- Rampa estándar de los gráficos: azul claro -> navy -> turquesa -> verde
 %        (mismo degradado del cronograma basado en el proyecto MusicVA) -----
@@ -82,11 +129,15 @@ M{\'E}CANICA\par}
 \vspace{0.5cm}
 \rule{\linewidth}{0.4pt}\par\vspace{0.3cm}
 {\large\bfseries%
-``\textcolor{colProceso}{SISTEMA BIDIRECCIONAL DE TRADUCCI{\'O}N DE VOZ
+``\textcolor{colProceso}{DESARROLLO DE UN SISTEMA BIDIRECCIONAL DE TRADUCCI{\'O}N DE VOZ
 QUECHUA--ESPA{\~N}OL}
-\textcolor{colMetodo}{CON IA PREENTRENADA}
+\textcolor{colMetodo}{MEDIANTE APRENDIZAJE PROFUNDO}
 \textcolor{colContexto}{PARA CONSULTAS M{\'E}DICAS EN CUSCO}''\par}
 \vspace{0.3cm}\rule{\linewidth}{0.4pt}\par
+\vspace{0.25cm}
+{\footnotesize\nuevo{T{\'i}tulo estructurado seg{\'u}n el marco del docente en tres componentes con
+color propio:} \textcolor{colProceso}{proceso/acci{\'o}n}, \textcolor{colMetodo}{tecnolog{\'i}a/m{\'e}todo}
+\nuevo{y} \textcolor{colContexto}{contexto/aplicaci{\'o}n}\nuevo{; se elimin{\'o} la sigla ``IA''.}\par}
 
 \vspace{1.1cm}
 \begin{flushleft}
@@ -117,7 +168,7 @@ materna y cerca de 70\,000 asegurados de EsSalud son quechuahablantes \parencite
 esta barrera idiom{\'a}tica afecta la calidad de la atenci{\'o}n en salud \parencite{begazo2026}.
 El presente trabajo propone desarrollar y evaluar un sistema bidireccional de traducci{\'o}n de
 voz Quechua--Espa{\~n}ol para consultas m{\'e}dicas, que encadena reconocimiento de voz (MMS),
-traducci{\'o}n autom{\'a}tica (NLLB adaptado al quechua de Cusco, \texttt{quz}) y s{\'i}ntesis de
+traducci{\'o}n autom{\'a}tica (NLLB adaptado al quechua de Cusco, \sig{quz}) y s{\'i}ntesis de
 voz (MMS-TTS) mediante el ajuste (\emph{fine-tuning}) de modelos preentrenados de c{\'o}digo
 abierto. La salida por voz en ambos sentidos busca incluir a la poblaci{\'o}n quechuahablante con
 baja o nula alfabetizaci{\'o}n. La validaci{\'o}n se realizar{\'a} con consultas simuladas, sin datos
@@ -126,9 +177,17 @@ de utilidad. Se espera aportar el primer corpus cl{\'i}nico Quechua--Espa{\~n}ol
 emp{\'i}rica sobre la viabilidad de estas tecnolog{\'i}as en el dominio sanitario andino.
 
 \vspace{0.3cm}
-\noindent\textbf{Palabras clave:} traducci{\'o}n autom{\'a}tica, quechua, PLN, inclusi{\'o}n digital,
-comunicaci{\'o}n m{\'e}dico-paciente, ASR, TTS.
+\textit{Palabras clave:} \nuevo{Traducci{\'o}n autom{\'a}tica, Quechua, Procesamiento del
+lenguaje natural, Comunicaci{\'o}n m{\'e}dico-paciente, Inclusi{\'o}n digital.}
 \onehalfspacing
+
+\vspace{0.4cm}
+\noindent\fcolorbox{verdeOK}{white}{\begin{minipage}{0.98\linewidth}\footnotesize
+\textcolor{verdeOK}{\textbf{Nota de revisi{\'o}n.}} El texto en
+\textcolor{verdeOK}{\textbf{verde}} corresponde a las \textbf{correcciones y adiciones} realizadas en
+respuesta a las observaciones del asesor (ajuste del t{\'i}tulo y su alineaci{\'o}n, profundizaci{\'o}n
+matem{\'a}tica del marco te{\'o}rico, \emph{setup} experimental y formato APA de tablas y figuras).
+\end{minipage}}
 
 \newpage
 \tableofcontents                                   % Índice general
@@ -138,8 +197,8 @@ comunicaci{\'o}n m{\'e}dico-paciente, ASR, TTS.
 \listoffigures                                     % Índice de figuras
 
 \clearpage
-\addcontentsline{toc}{section}{\'Indice de cuadros}
-\listoftables                                      % Índice de cuadros
+\addcontentsline{toc}{section}{\'Indice de tablas}
+\listoftables                                      % Índice de tablas
 
 \clearpage
 \addcontentsline{toc}{section}{\'Indice de algoritmos}
@@ -150,12 +209,15 @@ comunicaci{\'o}n m{\'e}dico-paciente, ASR, TTS.
 \addcontentsline{toc}{section}{\'Indice de s{\'i}mbolos}
 \begin{longtable}{@{}p{2.6cm} p{9cm} p{2.4cm}@{}}
 \toprule
-\textbf{S{\'i}mbolo} & \textbf{Descripci{\'o}n} & \textbf{Unidad} \\
+\rowcolor{g5}
+\hdr{S{\'i}mbolo} & \hdr{Descripci{\'o}n} & \hdr{Unidad} \\
 \midrule \endhead
 $\alpha$ & Nivel de significancia estad{\'i}stica & --- \\
-$p$      & Valor de probabilidad (p-valor) & --- \\
 $N$      & Tama{\~n}o de muestra / n.\ de palabras de referencia & --- \\
 $\beta$  & Factor de ponderaci{\'o}n recall/precisi{\'o}n en chrF & --- \\
+$S,D,I$  & \nuevo{Sustituciones, eliminaciones e inserciones (c{\'a}lculo del WER)} & --- \\
+$\theta$ & \nuevo{Par{\'a}metros (pesos) del modelo ajustado por \emph{fine-tuning}} & --- \\
+$\mathcal{L}$ & \nuevo{Funci{\'o}n de p{\'e}rdida (entrop{\'i}a cruzada) del entrenamiento} & --- \\
 \bottomrule
 \end{longtable}
 
@@ -164,7 +226,8 @@ $\beta$  & Factor de ponderaci{\'o}n recall/precisi{\'o}n en chrF & --- \\
 \addcontentsline{toc}{section}{\'Indice de abreviaturas}
 \begin{longtable}{@{}p{3cm} p{12cm}@{}}
 \toprule
-\textbf{Sigla} & \textbf{Significado} \\
+\rowcolor{g5}
+\hdr{Sigla} & \hdr{Significado} \\
 \midrule \endhead
 IA      & Inteligencia artificial \\
 PLN     & Procesamiento del lenguaje natural \\
@@ -172,15 +235,15 @@ ASR     & Reconocimiento autom{\'a}tico del habla (\emph{Automatic Speech Recogn
 STT     & Voz a texto (\emph{Speech-to-Text}) \\
 TTS     & S{\'i}ntesis de voz (\emph{Text-to-Speech}) \\
 MT      & Traducci{\'o}n autom{\'a}tica (\emph{Machine Translation}) \\
-NMT     & Traducci{\'o}n autom{\'a}tica neuronal \\
 MMS     & \emph{Massively Multilingual Speech} (Meta) \\
 NLLB    & \emph{No Language Left Behind} (Meta) \\
 WER     & Tasa de error de palabra (\emph{Word Error Rate}) \\
 BLEU    & \emph{Bilingual Evaluation Understudy} \\
 chrF    & \emph{Character n-gram F-score} \\
 MOS     & \emph{Mean Opinion Score} \\
-quz     & Quechua Collao / Cusco (c{\'o}digo ISO 639-3) \\
-quy     & Quechua Ayacucho (c{\'o}digo ISO 639-3) \\
+quz     & Quechua Collao / Cusco (c{\'o}digo ISO 639-3)\destino{sig:quz} \\
+quy     & Quechua Ayacucho (c{\'o}digo ISO 639-3)\destino{sig:quy} \\
+Transformer & \nuevo{Arquitectura de red neuronal basada en autoatenci{\'o}n (base de MMS/NLLB)} \\
 INEI    & Instituto Nacional de Estad{\'i}stica e Inform{\'a}tica \\
 EsSalud & Seguro Social de Salud del Per{\'u} \\
 UNSAAC  & Universidad Nacional de San Antonio Abad del Cusco \\
@@ -197,14 +260,15 @@ UNSAAC  & Universidad Nacional de San Antonio Abad del Cusco \\
 \addcontentsline{toc}{section}{Glosario de t{\'e}rminos}
 \begin{longtable}{@{}p{3.6cm} p{11.4cm}@{}}
 \toprule
-\textbf{T{\'e}rmino} & \textbf{Definici{\'o}n} \\
+\rowcolor{g5}
+\hdr{T{\'e}rmino} & \hdr{Definici{\'o}n} \\
 \midrule \endhead
-Corpus                  & Conjunto estructurado de textos o grabaciones usado para entrenar o evaluar modelos. \\
-Fine-tuning             & Ajuste de un modelo preentrenado con datos de un dominio espec{\'i}fico. \\
-Lengua de bajo recurso  & Idioma con escasez de datos digitales para entrenar modelos de PLN. \\
-Modelo preentrenado     & Modelo entrenado sobre grandes vol{\'u}menes de datos, reutilizable mediante ajuste. \\
-Lengua polisint{\'e}tica & Lengua que concentra mucha informaci{\'o}n gramatical en una sola palabra, como el quechua. \\
-Pipeline                & Secuencia encadenada de etapas (voz $\to$ texto $\to$ traducci{\'o}n $\to$ voz). \\
+Corpus                  & Conjunto estructurado de textos o grabaciones usado para entrenar o evaluar modelos.\destino{glo:corpus} \\
+Fine-tuning             & Ajuste de un modelo preentrenado con datos de un dominio espec{\'i}fico.\destino{glo:finetuning} \\
+Lengua de bajo recurso  & Idioma con escasez de datos digitales para entrenar modelos de PLN.\destino{glo:bajorecurso} \\
+Modelo preentrenado     & Modelo entrenado sobre grandes vol{\'u}menes de datos, reutilizable mediante ajuste.\destino{glo:preentrenado} \\
+Lengua polisint{\'e}tica & Lengua que concentra mucha informaci{\'o}n gramatical en una sola palabra, como el quechua.\destino{glo:polisintetica} \\
+Pipeline                & Secuencia encadenada de etapas (voz $\to$ texto $\to$ traducci{\'o}n $\to$ voz).\destino{glo:pipeline} \\
 \bottomrule
 \end{longtable}
 
@@ -245,6 +309,8 @@ soluci{\'o}n basada en \emph{voz} y no solo en texto (Figura~\ref{fig:barreras})
 
 \begin{figure}[H]
 \centering
+\caption{Magnitud de la problem{\'a}tica en Cusco.}
+\label{fig:barreras}
 \begin{tikzpicture}
 \begin{axis}[
     ybar, width=12cm, height=6cm, bar width=28pt,
@@ -260,8 +326,7 @@ soluci{\'o}n basada en \emph{voz} y no solo en texto (Figura~\ref{fig:barreras})
 \addplot[fill=g12, draw=g11, bar shift=0pt] coordinates {(Analfab. mujer rural,22.8)};
 \end{axis}
 \end{tikzpicture}
-\caption{Magnitud de la problem{\'a}tica en Cusco. Elaboraci{\'o}n propia con datos de \textcite{essalud2023} e \textcite{inei2023}.}
-\label{fig:barreras}
+\notaAPA{Elaboraci{\'o}n propia con datos de \textcite{essalud2023} e \textcite{inei2023}.}
 \end{figure}
 
 \subsection{Tecnolog{\'i}a o m{\'e}todo}
@@ -269,10 +334,10 @@ El estado del arte en procesamiento del lenguaje natural ofrece hoy una oportuni
 exist{\'i}a hace pocos a{\~n}os. La estrategia dominante para lenguas de bajo recurso ya no consiste
 en entrenar modelos desde cero, sino en adaptar (\emph{fine-tuning}) grandes modelos multiling{\"u}es
 preentrenados. En la voz, el proyecto MMS \parencite{pratap2024mms} cubre el quechua de Cusco
-(\texttt{quz}) en reconocimiento y s{\'i}ntesis; Whisper \parencite{radford2023whisper} declara una
+(\sig{quz}) en reconocimiento y s{\'i}ntesis; Whisper \parencite{radford2023whisper} declara una
 cobertura marginal del quechua y se reserva como l{\'i}nea base. En traducci{\'o}n, NLLB
-\parencite{costajussa2022nllb} incluye el quechua de Ayacucho (\texttt{quy}) y no el de Cusco, por lo
-que el par debe adaptarse a \texttt{quz} ---esa brecha dialectal es el n{\'u}cleo del aporte
+\parencite{costajussa2022nllb} incluye el quechua de Ayacucho (\sig{quy}) y no el de Cusco, por lo
+que el par debe adaptarse a \sig{quz} ---esa brecha dialectal es el n{\'u}cleo del aporte
 t{\'e}cnico---. Existen adem{\'a}s antecedentes de traducci{\'o}n neural para esta lengua
 polisint{\'e}tica \parencite{ortega2020quechua,mager2021americasnlp} y recursos como el corpus
 \emph{Huqariq} \parencite{zevallos2022huqariq}.
@@ -282,7 +347,7 @@ Persiste una desconexi{\'o}n entre ambos mundos: el problema social est{\'a} bie
 tecnolog{\'i}a base existe, pero nadie ha unido los dos extremos. No se dispone de un corpus
 cl{\'i}nico Quechua--Espa{\~n}ol ni de una evaluaci{\'o}n emp{\'i}rica del desempe{\~n}o de estos
 modelos sobre el vocabulario propio de la consulta m{\'e}dica (triaje, s{\'i}ntomas e indicaciones),
-y NLLB a{\'u}n no cubre la variante de Cusco (\texttt{quz}). Cerrar esa intersecci{\'o}n es el aporte
+y NLLB a{\'u}n no cubre la variante de Cusco (\sig{quz}). Cerrar esa intersecci{\'o}n es el aporte
 de este proyecto.
 
 \subsection{Problema espec{\'i}fico}
@@ -292,16 +357,15 @@ basado en modelos preentrenados, y en la medida en que su ajuste al dominio cl{\
 precisi{\'o}n y la comprensi{\'o}n frente a la ausencia de apoyo tecnol{\'o}gico.
 
 \subsubsection{Problema general}
-{\textquestiondown}De qu{\'e} manera un sistema bidireccional de traducci{\'o}n de voz
-Quechua--Espa{\~n}ol, basado en modelos de IA preentrenados, influye en la comunicaci{\'o}n entre el
-personal de salud y los pacientes quechuahablantes durante las consultas m{\'e}dicas en Cusco?
+{\textquestiondown}\nuevo{C{\'o}mo desarrollar un sistema bidireccional de traducci{\'o}n de voz
+Quechua--Espa{\~n}ol para la comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo
+(ajuste de modelos preentrenados basados en Transformer), en las consultas m{\'e}dicas en Cusco?}
 
 \subsubsection{Problemas espec{\'i}ficos}
 \begin{enumerate}
-  \item {\textquestiondown}Qu{\'e} caracter{\'i}sticas debe reunir un corpus de vocabulario cl{\'i}nico Quechua--Espa{\~n}ol para el ajuste de los modelos de traducci{\'o}n por voz?
-  \item {\textquestiondown}En qu{\'e} medida el ajuste (\emph{fine-tuning}) de modelos preentrenados mejora la precisi{\'o}n sobre el vocabulario cl{\'i}nico?
-  \item {\textquestiondown}Qu{\'e} modalidad de salida (texto para el personal; texto y voz para el paciente) resulta m{\'a}s confiable y comprensible?
-  \item {\textquestiondown}Qu{\'e} nivel de utilidad, confianza y comprensi{\'o}n perciben el personal y los pacientes al usar el sistema en consultas simuladas?
+  \item \nuevo{(Diagn{\'o}stico) {\textquestiondown}Cu{\'a}les son las barreras de la comunicaci{\'o}n m{\'e}dico-paciente con pacientes quechuahablantes y los requerimientos ling{\"u}{\'i}sticos (vocabulario cl{\'i}nico y corpus Quechua--Espa{\~n}ol) para un sistema de traducci{\'o}n por voz?}
+  \item \nuevo{(Construcci{\'o}n) {\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n por voz construyendo el corpus cl{\'i}nico y adaptando (\emph{fine-tuning}) los modelos preentrenados (MMS y NLLB de \sig{quy} a \sig{quz}) en un \emph{pipeline} ASR+MT+TTS?}
+  \item \nuevo{(Validaci{\'o}n) {\textquestiondown}En qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n, la calidad de la voz y la comprensi{\'o}n en la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo tecnol{\'o}gico?}
 \end{enumerate}
 
 \subsection{Propuesta, objetivo y justificaci{\'o}n}
@@ -309,44 +373,43 @@ personal de salud y los pacientes quechuahablantes durante las consultas m{\'e}d
 \subsubsection{Propuesta}
 Se propone desarrollar y evaluar un sistema bidireccional de traducci{\'o}n de voz
 Quechua--Espa{\~n}ol para consultas m{\'e}dicas, que encadena reconocimiento de voz (MMS),
-traducci{\'o}n autom{\'a}tica (NLLB adaptado de \texttt{quy} a \texttt{quz}) y s{\'i}ntesis de voz
+traducci{\'o}n autom{\'a}tica (NLLB adaptado de \sig{quy} a \sig{quz}) y s{\'i}ntesis de voz
 (MMS-TTS) mediante el ajuste de modelos preentrenados de c{\'o}digo abierto, con salida por voz en
 ambos sentidos del di{\'a}logo.
 
 \subsubsection{Objetivo general}
-Desarrollar y evaluar un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol, basado
-en modelos de IA preentrenados, para mejorar la comunicaci{\'o}n m{\'e}dico-paciente durante las
-consultas m{\'e}dicas en Cusco.
+\nuevo{Desarrollar un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol para la
+comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo (ajuste de modelos preentrenados
+basados en Transformer: MMS y NLLB), en las consultas m{\'e}dicas en Cusco.}
 
 \subsubsection{Objetivos espec{\'i}ficos}
 \begin{enumerate}
-  \item Construir y validar un corpus de vocabulario y frases de consulta m{\'e}dica en Quechua--Espa{\~n}ol.
-  \item Adaptar (\emph{fine-tuning}) los modelos preentrenados de voz (MMS) y, como aporte central, el modelo de traducci{\'o}n NLLB del quechua de Ayacucho (\texttt{quy}) al de Cusco (\texttt{quz}) sobre el dominio cl{\'i}nico.
-  \item Integrar el \emph{pipeline} bidireccional con salida por voz y texto para ambos interlocutores, utilizable por pacientes con baja o nula alfabetizaci{\'o}n.
-  \item Validar el sistema en consultas simuladas, midiendo precisi{\'o}n, calidad de voz, tiempo y percepci{\'o}n.
+  \item \nuevo{(Diagn{\'o}stico) Caracterizar las barreras de la comunicaci{\'o}n m{\'e}dico-paciente con pacientes quechuahablantes y los requerimientos ling{\"u}{\'i}sticos de un corpus cl{\'i}nico Quechua--Espa{\~n}ol para el ajuste de los modelos.}
+  \item \nuevo{(Construcci{\'o}n) Desarrollar el sistema bidireccional construyendo el corpus cl{\'i}nico y adaptando (\emph{fine-tuning}) los modelos preentrenados ---MMS y, como aporte central, NLLB del quechua de Ayacucho (\sig{quy}) al de Cusco (\sig{quz})--- integrados en un \emph{pipeline} ASR+MT+TTS con salida por voz y texto.}
+  \item \nuevo{(Validaci{\'o}n) Evaluar en qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n (WER, BLEU, chrF), la calidad de la voz (MOS) y la comprensi{\'o}n en consultas m{\'e}dicas simuladas, frente a la ausencia de apoyo tecnol{\'o}gico.}
 \end{enumerate}
 
 \subsubsection{Hip{\'o}tesis}
-\textbf{General:} un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol, basado en
-modelos de IA preentrenados, mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante
-las consultas m{\'e}dicas en Cusco frente a la ausencia de apoyo tecnol{\'o}gico.
+\textbf{General:} Un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol, basado en
+\nuevo{aprendizaje profundo (modelos preentrenados basados en Transformer)}, mejora
+significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas m{\'e}dicas en Cusco
+frente a la ausencia de apoyo tecnol{\'o}gico.
 \begin{itemize}
-  \item \textbf{H1:} un corpus cl{\'i}nico Quechua--Espa{\~n}ol validado proporciona la base l{\'e}xica necesaria para el ajuste de los modelos.
-  \item \textbf{H2:} el ajuste (\emph{fine-tuning}) de los modelos preentrenados reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar.
-  \item \textbf{H3:} la salida texto+voz mejora la comprensi{\'o}n de las indicaciones frente a solo texto, sobre todo con baja alfabetizaci{\'o}n.
-  \item \textbf{H4:} el uso del sistema mejora significativamente la comprensi{\'o}n mutua percibida frente a la ausencia de apoyo tecnol{\'o}gico.
+  \item \nuevo{\textbf{H1 (Diagn{\'o}stico):} La comunicaci{\'o}n m{\'e}dico-paciente con pacientes quechuahablantes presenta barreras ling{\"u}{\'i}sticas que hacen necesario y viable un corpus cl{\'i}nico Quechua--Espa{\~n}ol para el ajuste de los modelos.}
+  \item \nuevo{\textbf{H2 (Construcci{\'o}n):} El ajuste (\emph{fine-tuning}) de los modelos preentrenados integrados en el \emph{pipeline} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar.}
+  \item \nuevo{\textbf{H3 (Validaci{\'o}n):} El uso del sistema mejora significativamente la precisi{\'o}n, la calidad de la voz y la comprensi{\'o}n mutua en la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo tecnol{\'o}gico, sobre todo con baja alfabetizaci{\'o}n.}
 \end{itemize}
 
 \subsubsection{Justificaci{\'o}n}
-\textbf{Te{\'o}rica:} aporta evidencia emp{\'i}rica del desempe{\~n}o de modelos preentrenados en una
-lengua de bajo recurso y morfolog{\'i}a compleja. \textbf{Pr{\'a}ctica:} entrega un prototipo
-piloteable en un centro de salud. \textbf{Social:} ataca una inequidad documentada en el acceso a la
+\textbf{Te{\'o}rica:} Aporta evidencia emp{\'i}rica del desempe{\~n}o de modelos preentrenados en una
+lengua de bajo recurso y morfolog{\'i}a compleja. \textbf{Pr{\'a}ctica:} Entrega un prototipo
+piloteable en un centro de salud. \textbf{Social:} Ataca una inequidad documentada en el acceso a la
 salud \parencite{begazo2026}, en l{\'i}nea con el derecho de los pacientes a ser atendidos en su
-lengua materna \parencite{essalud2023}. \textbf{Metodol{\'o}gica:} establece un proceso replicable
+lengua materna \parencite{essalud2023}. \textbf{Metodol{\'o}gica:} Establece un proceso replicable
 (corpus + ajuste + evaluaci{\'o}n) en otras variantes del quechua o en otros dominios. Entre las
 contribuciones originales esperadas destacan el \textbf{primer corpus de dominio m{\'e}dico}
 Quechua--Espa{\~n}ol para tecnolog{\'i}as del habla, la \textbf{adaptaci{\'o}n de NLLB de
-\texttt{quy} a \texttt{quz}} en el dominio cl{\'i}nico (aporte t{\'e}cnico central) y un
+\sig{quy} a \sig{quz}} en el dominio cl{\'i}nico (aporte t{\'e}cnico central) y un
 \textbf{sistema integrado ASR+MT+TTS} con salida por voz para usuarios con baja alfabetizaci{\'o}n.
 En conjunto, el proyecto contribuye a la equidad en el acceso a la salud de la poblaci{\'o}n
 quechuahablante de Cusco, a la seguridad del acto m{\'e}dico y a la revitalizaci{\'o}n y el prestigio
@@ -355,15 +418,15 @@ digital del quechua.
 \subsubsection{Alcances y limitaciones}
 \noindent\textbf{Alcances.}
 \begin{itemize}
-  \item Par ling{\"u}{\'i}stico Quechua de Cusco (\texttt{quz}) -- Espa{\~n}ol, en ambos sentidos.
+  \item Par ling{\"u}{\'i}stico Quechua de Cusco (\sig{quz}) -- Espa{\~n}ol, en ambos sentidos.
   \item Vocabulario acotado de consulta general (triaje, s{\'i}ntomas, indicaciones).
   \item Prototipo integrado ASR+MT+TTS con salida por voz y texto.
   \item Validaci{\'o}n con consultas simuladas en un centro de salud de referencia en Cusco.
 \end{itemize}
 \noindent\textbf{Limitaciones.}
 \begin{itemize}
-  \item \textbf{Temporal:} ejecuci{\'o}n entre octubre 2026 y enero 2027.
-  \item \textbf{{\'E}tica:} se emplean di{\'a}logos simulados/actuados, sin datos reales de pacientes.
+  \item \textbf{Temporal:} Ejecuci{\'o}n entre octubre 2026 y enero 2027.
+  \item \textbf{{\'E}tica:} Se emplean di{\'a}logos simulados/actuados, sin datos reales de pacientes.
   \item Desempe{\~n}o condicionado por la escasez de datos de dominio cl{\'i}nico en quechua.
   \item Resultados circunscritos a la variante de Cusco; no generalizables sin ajuste a otras variantes.
 \end{itemize}
@@ -376,8 +439,9 @@ arte derivado de la revisi{\'o}n sistem{\'a}tica. El \textbf{Cap{\'i}tulo~III} d
 metodolog{\'i}a: enfoque, dise{\~n}o, variables, unidades de an{\'a}lisis, t{\'e}cnicas,
 procedimiento, protocolo de evaluaci{\'o}n y aspectos {\'e}ticos. El \textbf{Cap{\'i}tulo~IV}
 analiza la factibilidad t{\'e}cnica, econ{\'o}mica y operativa. El \textbf{Cap{\'i}tulo~V} expone los
-aspectos administrativos ---cronograma, presupuesto y equipo---. Finalmente, la \textbf{matriz de
-consistencia} articula el problema, los objetivos, las hip{\'o}tesis y las variables.
+aspectos administrativos ---cronograma, presupuesto y equipo---. \nuevo{La \textbf{matriz de
+consistencia}, incluida al cierre del Cap{\'i}tulo~III, articula de forma integral el problema, los
+objetivos, las hip{\'o}tesis, las variables y la metodolog{\'i}a.}
 
 % ##################################################################
 % CAPÍTULO II: MARCO TEÓRICO Y ESTADO DEL ARTE
@@ -388,7 +452,7 @@ consistencia} articula el problema, los objetivos, las hip{\'o}tesis y las varia
 Los trabajos previos sobre tecnolog{\'i}as del habla y traducci{\'o}n autom{\'a}tica para el quechua
 se organizan en tres niveles ---internacional, nacional y local---. En conjunto evidencian avances
 s{\'o}lidos por componente (ASR, MT y TTS), pero ninguno aborda su integraci{\'o}n en el dominio
-m{\'e}dico-paciente ni la variante de Cusco (\texttt{quz}).
+m{\'e}dico-paciente ni la variante de Cusco (\sig{quz}).
 
 \subsubsection{Antecedentes internacionales}
 La traducci{\'o}n neural para el quechua fue abordada por primera vez por \textcite{ortega2020quechua},
@@ -402,6 +466,10 @@ exploraron modelos preentrenados y datos sint{\'e}ticos \parencite{Ebrahimi20242
 \textbf{26.7 BLEU} entre 2023 y 2025 \parencite{Ortega2023261,Ortega2024173,Ortega2025260}. Estos
 avances se apoyan en grandes modelos multiling{\"u}es preentrenados ---MMS \parencite{pratap2024mms},
 NLLB \parencite{costajussa2022nllb} y Whisper \parencite{radford2023whisper}---.
+\nuevo{En cuanto a la \emph{metodolog{\'i}a}, estos trabajos combinan el ajuste de modelos
+multiling{\"u}es (NLLB-200, MMS) con aumento de datos sint{\'e}ticos y segmentaci{\'o}n
+morfol{\'o}gica, y eval{\'u}an con BLEU y chrF; de ellos se reutiliza el enfoque de \emph{fine-tuning}
+sobre \sig{quz} y el protocolo de evaluaci{\'o}n.}
 
 \subsubsection{Antecedentes nacionales}
 En el Per{\'u}, \textcite{Zevallos202061} implementaron un ASR de quechua con HMM/HTK alcanzando
@@ -416,6 +484,10 @@ traducci{\'o}n de voz, \textcite{Alvarez-Crespo2023837} (UPC) desarrollaron un s
 real Espa{\~n}ol$\to$Quechua con arquitectura en cascada, y \textcite{9514251} construyeron una
 plataforma para recolectar un corpus de voz Espa{\~n}ol/Quechua mediante la API
 \emph{Siminchikkunarayku}. Ninguno de estos trabajos abord{\'o} el dominio sanitario.
+\nuevo{Metodol{\'o}gicamente predominan el entrenamiento ASR con HMM/HTK y el aumento de datos
+(Zevallos et al.), el ajuste de modelos neuronales por transferencia (Barbaran y Ticona; Cueva
+Medina et al.) y las arquitecturas en cascada para traducci{\'o}n de voz (Alvarez-Crespo et al.),
+evaluados con WER, BLEU y MOS.}
 
 \subsubsection{Antecedentes locales}
 En Cusco, la evidencia se concentra en el problema m{\'a}s que en la soluci{\'o}n:
@@ -425,7 +497,7 @@ telef{\'o}nica en quechua para sus asegurados cusque{\~n}os \parencite{essalud20
 andina vecina, \textcite{cuaila2022} asoci{\'o} el dominio del quechua del personal con la calidad de
 atenci{\'o}n percibida. En el plano tecnol{\'o}gico, el primer sistema de traducci{\'o}n neural para el
 quechua se desarroll{\'o} con participaci{\'o}n de \emph{Hinantin Software} de Cusco
-\parencite{ortega2020quechua}, y la variante Collao/Cusco (\texttt{quz}) fue incorporada reci{\'e}n en
+\parencite{ortega2020quechua}, y la variante Collao/Cusco (\sig{quz}) fue incorporada reci{\'e}n en
 la campa{\~n}a QUESPA 2025 \parencite{Ortega2025260}. A ello se suma el reto de la alfabetizaci{\'o}n en
 zonas rurales andinas \parencite{inei2023,dispurse2023}. No se identific{\'o} ning{\'u}n antecedente
 local que integre reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz para la atenci{\'o}n en salud,
@@ -434,7 +506,7 @@ lo que confirma la pertinencia de esta investigaci{\'o}n.
 \subsection{Estado del arte y brecha de investigaci{\'o}n}
 A partir de una \textbf{revisi{\'o}n sistem{\'a}tica} (Scopus, IEEE Xplore y ACM Digital Library;
 62 registros identificados, 58 tras depurar duplicados y 30 evaluados a texto completo), los
-antecedentes de la secci{\'o}n anterior se sintetizan por componente en el Cuadro~\ref{tab:sintesis}
+antecedentes de la secci{\'o}n anterior se sintetizan por componente en el Tabla~\ref{tab:sintesis}
 ---sin repetir las citas ya detalladas---, lo que permite ubicar con precisi{\'o}n qu{\'e} se ha
 resuelto y qu{\'e} sigue abierto.
 
@@ -445,7 +517,8 @@ resuelto y qu{\'e} sigue abierto.
 \small
 \begin{tabularx}{\linewidth}{@{}l X l@{}}
 \toprule
-\textbf{Componente} & \textbf{Avance / mejor resultado reportado} & \textbf{{\textquestiondown}Salud?} \\
+\rowcolor{g5}
+\hdr{Componente} & \hdr{Avance / mejor resultado reportado} & \hdr{{\textquestiondown}Salud?} \\
 \midrule
 ASR (quechua)                  & WER 12.70\,\% (HMM/HTK) y 22.75\,\% con aumento de datos & No \\
 MT (QU--ES)                    & Hasta $+$11\,\% chrF; BLEU 15.47 con modelos ajustados   & No \\
@@ -454,14 +527,15 @@ Traducci{\'o}n de voz (cascada) & 26.7 BLEU (QUESPA 2025, variante Collao)      
 Recursos / corpus              & QuBERT, \emph{Huqariq}, API \emph{Siminchikkunarayku}    & Habilitador \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia a partir de la revisi{\'o}n sistem{\'a}tica (Scopus, IEEE Xplore y ACM); s{\'i}ntesis por componente. La columna ``{\textquestiondown}Salud?'' indica si el trabajo abord{\'o} el dominio sanitario.}
 \end{table}
 
 La s{\'i}ntesis evidencia avances s{\'o}lidos por componente, pero ninguno en el \textbf{dominio
-cl{\'i}nico} ni con la variante de Cusco (\texttt{quz}) integrada de extremo a extremo. La
+cl{\'i}nico} ni con la variante de Cusco (\sig{quz}) integrada de extremo a extremo. La
 \textbf{brecha} es, por tanto, la intersecci{\'o}n ---hoy vac{\'i}a--- entre las tecnolog{\'i}as del
 habla para el quechua y la comunicaci{\'o}n m{\'e}dico-paciente: no existe un corpus cl{\'i}nico
 Quechua--Espa{\~n}ol ni una evaluaci{\'o}n emp{\'i}rica de estos modelos en salud, y NLLB a{\'u}n no
-cubre \texttt{quz}. Cerrar esa intersecci{\'o}n es el aporte de este proyecto.
+cubre \sig{quz}. Cerrar esa intersecci{\'o}n es el aporte de este proyecto.
 
 \subsection{Fundamentos te{\'o}ricos}
 
@@ -469,22 +543,57 @@ cubre \texttt{quz}. Cerrar esa intersecci{\'o}n es el aporte de este proyecto.
 El \textbf{reconocimiento autom{\'a}tico de voz (ASR)} convierte una se{\~n}al de voz en texto; la
 \textbf{traducci{\'o}n autom{\'a}tica (MT)}, hoy mayoritariamente \emph{neuronal} con arquitecturas
 Transformer, traduce entre idiomas; y la \textbf{s{\'i}ntesis de voz (TTS)} genera voz a partir de
-texto. En \textbf{lenguas de bajo recurso} ---como el quechua, de morfolog{\'i}a polisint{\'e}tica---
+texto. En \textbf{lenguas de bajo recurso} ---como el quechua, de morfolog{\'i}a \glo{polisintetica}{polisint{\'e}tica}---
 estas tareas se benefician de la transferencia desde modelos entrenados sobre grandes vol{\'u}menes de
 datos multiling{\"u}es.
 
+\begin{bloqueNuevo}
+\noindent La base com{\'u}n de estos modelos es la arquitectura \emph{Transformer}
+\parencite{vaswani2017attention}, cuyo n{\'u}cleo es el mecanismo de \emph{autoatenci{\'o}n}: cada
+token se proyecta en consultas $Q$, claves $K$ y valores $V$, y la atenci{\'o}n pondera la
+informaci{\'o}n relevante del contexto mediante
+\begin{equation}
+\mathrm{Attention}(Q,K,V) = \mathrm{softmax}\!\left(\frac{QK^{\top}}{\sqrt{d_k}}\right)V,
+\label{eq:atencion}
+\end{equation}
+\regecuacion{Mecanismo de autoatenci{\'o}n del Transformer}
+donde $d_k$ es la dimensi{\'o}n de las claves y el factor $1/\sqrt{d_k}$ estabiliza los gradientes.
+Este mecanismo modela dependencias de largo alcance, decisivo en una lengua polisint{\'e}tica como el
+quechua, donde una sola palabra concentra mucha informaci{\'o}n gramatical.
+\end{bloqueNuevo}
+
 \subsubsection{Modelos multiling{\"u}es preentrenados (MMS, NLLB, Whisper)}
-\textbf{MMS} \parencite{pratap2024mms} cubre el quechua de Cusco (\texttt{quz}) en reconocimiento y
+\textbf{MMS} \parencite{pratap2024mms} cubre el quechua de Cusco (\sig{quz}) en reconocimiento y
 s{\'i}ntesis; \textbf{NLLB} \parencite{costajussa2022nllb} ofrece traducci{\'o}n multiling{\"u}e que
-incluye el quechua de Ayacucho (\texttt{quy}); y \textbf{Whisper} \parencite{radford2023whisper} se
+incluye el quechua de Ayacucho (\sig{quy}); y \textbf{Whisper} \parencite{radford2023whisper} se
 emplea como referencia de ASR con cobertura marginal del quechua. Estos modelos permiten reutilizar
 conocimiento ling{\"u}{\'i}stico general y especializarlo mediante ajuste.
+\nuevo{Conviene distinguir la \emph{teor{\'i}a} de la \emph{herramienta}: el Transformer
+(ecuaci{\'o}n~\ref{eq:atencion}) es el modelo abstracto, mientras que MMS, NLLB y Whisper son
+\emph{frameworks} preentrenados que lo implementan y que en esta tesis se reutilizan por ajuste
+fino.}
 
 \subsubsection{Ajuste fino y adaptaci{\'o}n dialectal (\texttt{quy}$\to$\texttt{quz})}
 El \emph{ajuste fino} (\emph{fine-tuning}) adapta un modelo preentrenado a un dominio o variante
 espec{\'i}ficos con relativamente pocos datos. El aporte t{\'e}cnico central de esta tesis es la
-adaptaci{\'o}n del par de traducci{\'o}n del quechua de Ayacucho (\texttt{quy}) al de Cusco
-(\texttt{quz}) sobre el vocabulario cl{\'i}nico, cerrando la brecha dialectal que hoy limita a NLLB.
+adaptaci{\'o}n del par de traducci{\'o}n del quechua de Ayacucho (\sig{quy}) al de Cusco
+(\sig{quz}) sobre el vocabulario cl{\'i}nico, cerrando la brecha dialectal que hoy limita a NLLB.
+
+\begin{bloqueNuevo}
+\noindent Formalmente, partiendo de los pesos preentrenados $\theta_0$, el ajuste minimiza la
+\emph{entrop{\'i}a cruzada} sobre el corpus de dominio $\mathcal{D}$:
+\begin{equation}
+\mathcal{L}(\theta) = -\!\!\sum_{(x,y)\in\mathcal{D}}\;\sum_{t=1}^{|y|}
+\log P_{\theta}\!\left(y_t \mid y_{<t},\, x\right),
+\label{eq:perdida}
+\end{equation}
+\regecuacion{Funci{\'o}n de p{\'e}rdida (entrop{\'i}a cruzada) del ajuste fino}
+y los par{\'a}metros se actualizan por descenso de gradiente
+$\theta \leftarrow \theta - \eta\,\nabla_{\theta}\mathcal{L}(\theta)$, con tasa de aprendizaje $\eta$.
+De este modo, el ajuste reorienta la distribuci{\'o}n del modelo hacia el vocabulario cl{\'i}nico y la
+variante \sig{quz}; esta es la base te{\'o}rica que explica la reducci{\'o}n esperada del WER y la
+mejora de BLEU/chrF postuladas en la hip{\'o}tesis H2.
+\end{bloqueNuevo}
 
 \subsubsection{Arquitectura en cascada ASR$\to$MT$\to$TTS}
 El encadenamiento de los tres componentes en una \textbf{arquitectura en cascada} habilita un
@@ -492,20 +601,78 @@ di{\'a}logo bidireccional por voz: la voz del hablante se transcribe (ASR), el t
 y la traducci{\'o}n se reproduce en la lengua del interlocutor (TTS). La modularidad facilita ajustar
 y evaluar cada etapa por separado.
 
+\begin{bloqueNuevo}
+\noindent El flujo de datos es
+$a \xrightarrow{\text{ASR}} t_s \xrightarrow{\text{MT}} t_t \xrightarrow{\text{TTS}} a_t$:
+la se{\~n}al de audio $a$ se transcribe a texto origen $t_s$, se traduce a texto destino $t_t$ y se
+sintetiza como audio $a_t$ (v{\'e}ase el Algoritmo~\ref{alg:pipeline} del Cap{\'i}tulo~III). Al ser
+etapas secuenciales, la latencia por turno es aditiva,
+$T = T_{\mathrm{ASR}} + T_{\mathrm{MT}} + T_{\mathrm{TTS}}$; el presupuesto objetivo se resume en la
+Tabla~\ref{tab:latencias}, lo que justifica evaluar cada m{\'o}dulo por separado y su integraci{\'o}n.
+\end{bloqueNuevo}
+
+\begin{table}[H]
+\centering
+\caption{Presupuesto de latencia por etapa de la cascada (objetivo por turno).}
+\label{tab:latencias}
+\small
+{\color{verdeOK}
+\begin{tabularx}{\linewidth}{@{}l X r@{}}
+\toprule
+\rowcolor{g5}
+\hdr{Etapa} & \hdr{Operaci{\'o}n} & \hdr{Latencia objetivo (s)} \\
+\midrule
+ASR (MMS) & Voz $\to$ texto origen ($t_s$)        & $\le 1.5$ \\
+MT (NLLB) & Texto origen $\to$ texto destino ($t_t$) & $\le 1.0$ \\
+TTS (MMS) & Texto destino $\to$ voz ($a_t$)       & $\le 1.5$ \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Total por turno} ($T$)} & $\mathbf{\le 4.0}$ \\
+\bottomrule
+\end{tabularx}}
+\notaAPA{Valores objetivo para el prototipo en equipo de gama media; se verifican emp{\'i}ricamente en el Cap{\'i}tulo~III (m{\'e}tricas de eficiencia).}
+\end{table}
+
 \subsubsection{M{\'e}tricas de evaluaci{\'o}n}
 El desempe{\~n}o se mide con m{\'e}tricas estandarizadas: \textbf{WER} para el reconocimiento,
 \textbf{BLEU} \parencite{papineni2002bleu} y \textbf{chrF} \parencite{popovic2015chrf} para la
 traducci{\'o}n ---esta {\'u}ltima adecuada para lenguas morfol{\'o}gicamente ricas--- y \textbf{MOS}
-para la naturalidad de la voz sintetizada. Su formulaci{\'o}n operativa se detalla en el
-Cap{\'i}tulo~III.
+para la naturalidad de la voz sintetizada.
+
+\begin{bloqueNuevo}
+\noindent Se definen formalmente a continuaci{\'o}n. La \emph{tasa de error de palabra} compara la
+transcripci{\'o}n con la referencia:
+\begin{equation}
+\mathrm{WER} = \frac{S + D + I}{N},
+\label{eq:wer}
+\end{equation}
+\regecuacion{Tasa de error de palabra (WER)}
+con $S$, $D$ e $I$ sustituciones, eliminaciones e inserciones sobre $N$ palabras de referencia.
+\emph{BLEU} mide la precisi{\'o}n de $n$-gramas con penalizaci{\'o}n por brevedad (BP):
+\begin{equation}
+\mathrm{BLEU} = \mathrm{BP}\cdot\exp\!\left(\textstyle\sum_{n=1}^{4} w_n \log p_n\right),
+\label{eq:bleu}
+\end{equation}
+\regecuacion{Puntaje BLEU}
+donde $p_n$ es la precisi{\'o}n de $n$-gramas y $w_n$ su peso. \emph{chrF}, m{\'a}s robusta en
+morfolog{\'i}a rica, es la media arm{\'o}nica ponderada de precisi{\'o}n (chrP) y \emph{recall} (chrR)
+de $n$-gramas de \emph{caracteres}:
+\begin{equation}
+\mathrm{chrF}_{\beta} = (1 + \beta^{2})\,\frac{\mathrm{chrP}\cdot\mathrm{chrR}}{\beta^{2}\,\mathrm{chrP} + \mathrm{chrR}}.
+\label{eq:chrf}
+\end{equation}
+\regecuacion{Puntaje chrF ($F$-score de $n$-gramas de caracteres)}
+Por {\'u}ltimo, el \emph{Mean Opinion Score} es el promedio de $J$ juicios perceptuales
+$m_j \in [1,5]$, es decir $\mathrm{MOS} = \tfrac{1}{J}\sum_{j=1}^{J} m_j$. La aplicaci{\'o}n operativa
+de estas m{\'e}tricas se retoma en el Cap{\'i}tulo~III.
+\end{bloqueNuevo}
 
 \subsection{Definici{\'o}n de t{\'e}rminos b{\'a}sicos}
 \begin{itemize}
-  \item \textbf{Corpus:} conjunto estructurado de textos o grabaciones para entrenar o evaluar modelos.
-  \item \textbf{Modelo preentrenado:} modelo entrenado sobre grandes vol{\'u}menes de datos, reutilizable mediante ajuste.
-  \item \textbf{Lengua de bajo recurso:} idioma con escasez de datos digitales para el PLN.
-  \item \textbf{Lengua polisint{\'e}tica:} lengua que concentra mucha informaci{\'o}n gramatical en una sola palabra, como el quechua.
-  \item \textbf{Pipeline:} secuencia encadenada de etapas (voz $\to$ texto $\to$ traducci{\'o}n $\to$ voz).
+  \item \textbf{Corpus:} Conjunto estructurado de textos o grabaciones para entrenar o evaluar modelos.
+  \item \textbf{Modelo preentrenado:} Modelo entrenado sobre grandes vol{\'u}menes de datos, reutilizable mediante ajuste.
+  \item \textbf{Lengua de bajo recurso:} Idioma con escasez de datos digitales para el PLN.
+  \item \textbf{Lengua polisint{\'e}tica:} Lengua que concentra mucha informaci{\'o}n gramatical en una sola palabra, como el quechua.
+  \item \textbf{Pipeline:} Secuencia encadenada de etapas (voz $\to$ texto $\to$ traducci{\'o}n $\to$ voz).
 \end{itemize}
 
 % ##################################################################
@@ -516,23 +683,31 @@ Cap{\'i}tulo~III.
 \subsection{Enfoque, tipo y dise{\~n}o de investigaci{\'o}n}
 
 \subsubsection{Enfoque de investigaci{\'o}n}
-La investigaci{\'o}n adopta un enfoque \textbf{cuantitativo con complemento cualitativo} (mixto): las
-m{\'e}tricas de desempe{\~n}o (WER, BLEU, chrF, MOS, latencia) aportan la evidencia cuantitativa, y la
-percepci{\'o}n de utilidad y comprensi{\'o}n aporta el complemento cualitativo.
+La investigaci{\'o}n adopta un enfoque \textbf{\nuevo{cuantitativo}} \nuevo{\parencite{hernandez2018metodologia}:
+todas las variables ---tanto las de desempe{\~n}o (WER, BLEU, chrF, MOS, latencia) como las de
+percepci{\'o}n (escalas Likert y MOS)--- se miden con instrumentos num{\'e}ricos y se analizan con
+estad{\'i}stica descriptiva e inferencial, sin recurrir a categor{\'i}as cualitativas.}
 
-\subsubsection{Tipo de investigaci{\'o}n}
-Es de tipo \textbf{aplicado} ---resuelve un problema concreto mediante un prototipo--- y de nivel
-\textbf{explicativo}, pues contrasta el efecto del sistema frente a la ausencia de apoyo
-tecnol{\'o}gico.
+\subsubsection{Tipo y nivel de investigaci{\'o}n}
+\nuevo{Siguiendo a \textcite{hernandez2018metodologia}, es de tipo \textbf{aplicado} ---resuelve un
+problema concreto mediante el desarrollo de un prototipo, sin buscar teor{\'i}a nueva--- y de nivel
+\textbf{aplicativo}, con alcance \emph{descriptivo} en la fase de diagn{\'o}stico (caracterizaci{\'o}n
+de barreras y requerimientos) y \emph{explicativo} en la validaci{\'o}n, al contrastar el efecto del
+sistema frente a la ausencia de apoyo tecnol{\'o}gico. La investigaci{\'o}n se organiza en las tres
+fases del modelo de ingenier{\'i}a ---\textbf{diagn{\'o}stico}, \textbf{construcci{\'o}n} y
+\textbf{validaci{\'o}n}---, en correspondencia con los tres objetivos espec{\'i}ficos.}
 
 \subsubsection{Dise{\~n}o de investigaci{\'o}n}
-El dise{\~n}o es \textbf{pre-experimental / cuasi-experimental}; la unidad de an{\'a}lisis es el
-\emph{turno de traducci{\'o}n} dentro de una consulta simulada. La Figura~\ref{fig:arq} muestra el
-flujo del sistema y el Algoritmo~\ref{alg:pipeline} detalla el procesamiento de un turno de
-di{\'a}logo.
+El dise{\~n}o es \textbf{\nuevo{experimental, de tipo pre-experimental}} \nuevo{(se manipula la
+variable independiente ---uso del sistema y modalidad de salida--- y se mide su efecto, sin grupo de
+control aleatorizado)}; la unidad de an{\'a}lisis es el \emph{turno de traducci{\'o}n} dentro de una
+consulta simulada. La Figura~\ref{fig:arq} muestra el flujo del sistema y el
+Algoritmo~\ref{alg:pipeline} detalla el procesamiento de un turno de di{\'a}logo.
 
 \begin{figure}[H]
 \centering
+\caption{Pipeline modular \textbf{bidireccional} por voz; la traducci{\'o}n NLLB adaptada al quechua de Cusco (\sig{quz}) es el n{\'u}cleo del aporte.}
+\label{fig:arq}
 \begin{tikzpicture}[
     node distance=0.6cm and 0.7cm,
     boxA/.style={rectangle, rounded corners, draw=g4, thick, fill=g3!18, text width=2.0cm, align=center, minimum height=1.2cm, font=\scriptsize},
@@ -542,8 +717,8 @@ di{\'a}logo.
     bi/.style={{Stealth[length=2.5mm]}-{Stealth[length=2.5mm]}, thick, draw=g5}
 ]
 \node[io] (pac) {Paciente\\(voz quechua)};
-\node[boxA, right=of pac] (v1) {MMS\\STT / TTS\\(\texttt{quz})};
-\node[core, right=of v1] (mt) {Traducci{\'o}n\\NLLB\\\texttt{quz}$\leftrightarrow$es};
+\node[boxA, right=of pac] (v1) {MMS\\STT / TTS\\(\sig{quz})};
+\node[core, right=of v1] (mt) {Traducci{\'o}n\\NLLB\\\sig{quz}$\leftrightarrow$es};
 \node[boxB, right=of mt] (v2) {MMS\\STT / TTS\\(es)};
 \node[io, right=of v2] (med) {M{\'e}dico\\(voz espa{\~n}ol)};
 \draw[bi] (pac) -- (v1);
@@ -551,8 +726,7 @@ di{\'a}logo.
 \draw[bi] (mt) -- (v2);
 \draw[bi] (v2) -- (med);
 \end{tikzpicture}
-\caption{Pipeline modular \textbf{bidireccional} por voz; la traducci{\'o}n NLLB adaptada al quechua de Cusco (\texttt{quz}) es el n{\'u}cleo del aporte. Elaboraci{\'o}n propia.}
-\label{fig:arq}
+\notaAPA{Elaboraci{\'o}n propia.}
 \end{figure}
 
 \begin{algorithm}[H]
@@ -570,6 +744,14 @@ di{\'a}logo.
 \end{algorithmic}
 \end{algorithm}
 
+\begin{bloqueNuevo}
+\noindent Las funciones $\textsc{STT}$, $\textsc{MT}$ y $\textsc{TTS}$ no son cajas negras: internamente
+aplican la autoatenci{\'o}n del Transformer (ecuaci{\'o}n~\ref{eq:atencion}) sobre secuencias de
+\emph{tokens}, con los pesos $\theta$ previamente especializados por \emph{fine-tuning}
+(ecuaci{\'o}n~\ref{eq:perdida}). As{\'i}, el paso~2 (MT con NLLB) es el que concentra la
+adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}, aporte central de la tesis.
+\end{bloqueNuevo}
+
 \subsection{Variables y operacionalizaci{\'o}n}
 
 \subsubsection{Identificaci{\'o}n de variables}
@@ -579,7 +761,7 @@ transcripci{\'o}n y traducci{\'o}n, la calidad de la voz y la comprensi{\'o}n/pe
 nivel de alfabetizaci{\'o}n act{\'u}a como \textbf{variable interviniente}.
 
 \subsubsection{Matriz de operacionalizaci{\'o}n de variables}
-El Cuadro~\ref{tab:variables} resume la operacionalizaci{\'o}n.
+El Tabla~\ref{tab:variables} resume la operacionalizaci{\'o}n.
 
 \begin{table}[H]
 \centering
@@ -588,9 +770,10 @@ El Cuadro~\ref{tab:variables} resume la operacionalizaci{\'o}n.
 \small
 \begin{tabularx}{\linewidth}{@{}l X l@{}}
 \toprule
-\textbf{Variable} & \textbf{Definici{\'o}n / dimensi{\'o}n} & \textbf{Indicador} \\
+\rowcolor{g5}
+\hdr{Variable} & \hdr{Definici{\'o}n / dimensi{\'o}n} & \hdr{Indicador} \\
 \midrule
-\multirow{2}{*}{Independiente} & Uso del sistema de traducci{\'o}n IA & Con / sin sistema \\
+\multirow{2}{*}{Independiente} & Uso del sistema de traducci{\'o}n & Con / sin sistema \\
                                & Modalidad de salida & Texto / texto+voz \\
 \midrule
 \multirow{3}{*}{Dependiente}   & Precisi{\'o}n de transcripci{\'o}n & WER \\
@@ -600,6 +783,7 @@ El Cuadro~\ref{tab:variables} resume la operacionalizaci{\'o}n.
 Interviniente                  & Nivel de alfabetizaci{\'o}n & Alto / bajo \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. WER: tasa de error de palabra; BLEU/chrF: m{\'e}tricas de traducci{\'o}n; MOS: \emph{Mean Opinion Score} (ecuaciones del Cap{\'i}tulo~II).}
 \end{table}
 
 \subsection{Unidades de an{\'a}lisis y selecci{\'o}n de consultas}
@@ -615,18 +799,48 @@ biling{\"u}e) que act{\'u}an roles en consultas simuladas; \emph{no} se usan pac
 cl{\'i}nicos reales. Muestreo no probabil{\'i}stico por conveniencia (10--15 participantes; 30--50
 frases-gui{\'o}n por escenario).
 
+\subsubsection{\nuevo{Entorno tecnol{\'o}gico (\emph{setup} experimental)}}
+\begin{bloqueNuevo}
+El ajuste y la evaluaci{\'o}n se ejecutan en el entorno de la Tabla~\ref{tab:setup}. El
+\emph{fine-tuning} de MMS y NLLB requiere GPU; la inferencia del \emph{pipeline} integrado se valida
+adem{\'a}s en equipo de gama media, compatible con un piloto en el punto de atenci{\'o}n.
+\end{bloqueNuevo}
+
+\begin{table}[H]
+\centering
+\caption{\nuevo{Entorno de hardware y software del experimento.}}
+\label{tab:setup}
+\small
+{\color{verdeOK}
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule
+\rowcolor{g5}
+\hdr{Componente} & \hdr{Especificaci{\'o}n prevista} \\
+\midrule
+GPU            & NVIDIA con $\ge 12$\,GB VRAM (p.\,ej.\ RTX 3060/T4); cr{\'e}ditos en la nube para fases intensivas \\
+CPU / RAM      & 8 n{\'u}cleos / $\ge 16$\,GB \\
+Almacenamiento & $\ge 256$\,GB SSD \\
+Sistema        & Linux (Ubuntu 22.04) o Windows 11 con WSL2 \\
+Lenguaje       & Python 3.11 \\
+\emph{Frameworks} & PyTorch 2.x, Hugging Face \texttt{transformers}, \texttt{datasets}, \texttt{peft} (LoRA) \\
+Evaluaci{\'o}n & \texttt{jiwer} (WER), \texttt{sacrebleu} (BLEU/chrF); MOS por panel \\
+\bottomrule
+\end{tabularx}}
+\notaAPA{Las herramientas corresponden a los modelos justificados en el Cap{\'i}tulo~II (MMS, NLLB, Whisper) y a sus ecosistemas de c{\'o}digo abierto.}
+\end{table}
+
 \subsection{T{\'e}cnicas e instrumentos de recolecci{\'o}n}
 \begin{itemize}
-  \item \textbf{Corpus:} lista de vocabulario y frases de triaje/s{\'i}ntomas/indicaciones, construida y revisada con personal de salud (fichas de validaci{\'o}n de contenido).
-  \item \textbf{Registro de desempe{\~n}o:} \emph{logs} autom{\'a}ticos del sistema (WER, BLEU, latencia por turno).
-  \item \textbf{Encuesta de percepci{\'o}n:} cuestionario tipo Likert (utilidad, confianza, comprensi{\'o}n) al personal y a los pacientes-actores.
-  \item \textbf{Prueba de comprensi{\'o}n:} tarea de recuperaci{\'o}n de la indicaci{\'o}n (\% de aciertos) para contrastar H2 y H3.
+  \item \textbf{Corpus:} Lista de vocabulario y frases de triaje/s{\'i}ntomas/indicaciones, construida y revisada con personal de salud (fichas de validaci{\'o}n de contenido).
+  \item \textbf{Registro de desempe{\~n}o:} \emph{Logs} autom{\'a}ticos del sistema (WER, BLEU, latencia por turno).
+  \item \textbf{Encuesta de percepci{\'o}n:} Cuestionario tipo Likert (utilidad, confianza, comprensi{\'o}n) al personal y a los pacientes-actores.
+  \item \textbf{Prueba de comprensi{\'o}n:} Tarea de recuperaci{\'o}n de la indicaci{\'o}n (\% de aciertos) para contrastar H2 y H3.
 \end{itemize}
 
 \subsection{Procedimiento metodol{\'o}gico}
 \begin{enumerate}
   \item Construcci{\'o}n y validaci{\'o}n del corpus m{\'e}dico Quechua--Espa{\~n}ol.
-  \item Ajuste (\emph{fine-tuning}) de MMS (reconocimiento y s{\'i}ntesis) y, como aporte central, de NLLB para el par quechua de Cusco (\texttt{quz})--Espa{\~n}ol.
+  \item Ajuste (\emph{fine-tuning}) de MMS (reconocimiento y s{\'i}ntesis) y, como aporte central, de NLLB para el par quechua de Cusco (\sig{quz})--Espa{\~n}ol.
   \item Integraci{\'o}n del \emph{pipeline} y de la salida diferenciada por voz y texto.
   \item Ejecuci{\'o}n de consultas simuladas bajo las condiciones experimentales.
   \item Registro de m{\'e}tricas y aplicaci{\'o}n de instrumentos de percepci{\'o}n.
@@ -635,18 +849,13 @@ frases-gui{\'o}n por escenario).
 \subsection{Protocolo de evaluaci{\'o}n}
 
 \subsubsection{M{\'e}tricas de reconocimiento y traducci{\'o}n}
-La precisi{\'o}n del reconocimiento se mide con la tasa de error de palabra (WER):
-\begin{equation}
-\mathrm{WER} = \frac{S + D + I}{N},
-\end{equation}
-\regecuacion{Tasa de error de palabra (WER)}
-donde $S$, $D$ e $I$ son sustituciones, eliminaciones e inserciones sobre $N$ palabras de
-referencia. La traducci{\'o}n se eval{\'u}a con BLEU \parencite{papineni2002bleu} y chrF
-\parencite{popovic2015chrf}; esta {\'u}ltima, adecuada para lenguas morfol{\'o}gicamente ricas:
-\begin{equation}
-\mathrm{chrF}_{\beta} = (1 + \beta^{2})\,\frac{\mathrm{chrP}\cdot\mathrm{chrR}}{\beta^{2}\,\mathrm{chrP} + \mathrm{chrR}}.
-\end{equation}
-\regecuacion{Puntaje chrF ($F$-score de $n$-gramas de caracteres)}
+La precisi{\'o}n del reconocimiento se mide con la \textbf{tasa de error de palabra (WER)} y la de la
+traducci{\'o}n con \textbf{BLEU} \parencite{papineni2002bleu} y \textbf{chrF} \parencite{popovic2015chrf},
+adecuada para lenguas morfol{\'o}gicamente ricas. \nuevo{Sus formulaciones se definieron en el
+Cap{\'i}tulo~II (ecuaciones~\ref{eq:wer}, \ref{eq:bleu} y~\ref{eq:chrf}).} Operativamente, el WER se
+calcula por turno sobre la transcripci{\'o}n del ASR y BLEU/chrF sobre la traducci{\'o}n del MT, en
+ambos sentidos \sig{quz}$\leftrightarrow$es, comparando contra referencias validadas por hablantes
+nativos.
 
 \subsubsection{M{\'e}tricas de calidad de voz y comprensi{\'o}n}
 La calidad de la voz sintetizada se valora con el \emph{Mean Opinion Score} (MOS). La comprensi{\'o}n
@@ -661,7 +870,10 @@ entrada y el inicio de la voz de salida) y el consumo de recursos de c{\'o}mputo
 Estad{\'i}stica descriptiva para WER/BLEU/MOS/latencia y pruebas de comparaci{\'o}n de
 medias/proporciones (t de Student o Wilcoxon seg{\'u}n normalidad), con un nivel de significancia
 $\alpha = 0{,}05$, para contrastar las hip{\'o}tesis (modelo ajustado vs. sin ajustar; texto vs.
-texto+voz).
+texto+voz). \nuevo{La elecci{\'o}n entre ambas pruebas se decide con un contraste previo de
+normalidad (Shapiro--Wilk): si los datos son normales se aplica la \emph{t} de Student
+(param{\'e}trica); si no, la prueba de Wilcoxon (no param{\'e}trica, basada en rangos), adecuada para
+muestras peque{\~n}as como la de este estudio.}
 
 \subsection{Aspectos {\'e}ticos y de gesti{\'o}n de datos}
 El estudio usa {\'u}nicamente di{\'a}logos \textbf{simulados/actuados}, sin informaci{\'o}n cl{\'i}nica
@@ -669,6 +881,70 @@ real, evitando la necesidad de aprobaci{\'o}n de un comit{\'e} de {\'e}tica hosp
 pacientes. Se obtiene consentimiento informado de los participantes voluntarios y se anonimizan las
 grabaciones, en cumplimiento del atributo de {\'e}tica del curso. Los datos se almacenan de forma
 segura y se usan solo con fines de investigaci{\'o}n.
+
+\begin{landscape}
+\subsection{\nuevo{Matriz de consistencia}}
+\begin{bloqueNuevo}
+\noindent Cada fila articula, en horizontal, problema, objetivo, hip{\'o}tesis, variables, indicadores y m{\'e}todo de an{\'a}lisis (Tabla~\ref{tab:matriz-consist}).
+\end{bloqueNuevo}
+\vspace{1pt}
+
+\captionof{table}{\nuevo{Matriz de consistencia del proyecto.}}
+\label{tab:matriz-consist}
+
+% ----- barra de Tema (azul claro, como en la plantilla) -----
+\setlength{\fboxsep}{6pt}%
+\noindent\colorbox{g1}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\centering
+  \footnotesize\textbf{Tema:} \nuevo{Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol mediante aprendizaje profundo para consultas m{\'e}dicas en Cusco}}}
+\vspace{2pt}
+
+\fontsize{7}{8.3}\selectfont
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{3.5pt}
+\arrayrulecolor{black!15}
+\noindent
+\begin{tabularx}{\linewidth}{@{}
+  >{\centering\arraybackslash}m{2.1cm}
+  *{6}{>{\raggedright\arraybackslash}X}@{}}
+\rowcolor{g5}
+\hdr{Nivel} & \hdr{Problema} & \hdr{Objetivo} & \hdr{Hip{\'o}tesis} & \hdr{Variables} & \hdr{Dimensiones / indicadores} & \hdr{Metodolog{\'i}a} \\
+\midrule
+\celnivel{General} &
+{\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n de voz QU--ES para la comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo, en Cusco? &
+Desarrollar el sistema mediante el ajuste de modelos preentrenados (MMS, NLLB) para la comunicaci{\'o}n m{\'e}dico-paciente en Cusco. &
+Mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo. &
+\textbf{VI:} uso y modalidad (texto / texto+voz). \textbf{VD:} precisi{\'o}n, voz, comprensi{\'o}n. &
+WER, BLEU, chrF, MOS; \% comprensi{\'o}n; latencia (s). &
+Aplicada; cuantitativo; experimental (pre-exp.); t / Wilcoxon ($\alpha=0{,}05$). \\
+\midrule
+\celnivel{Espec{\'i}fico 1 (Diagn{\'o}stico)} &
+{\textquestiondown}Cu{\'a}les son las barreras de comunicaci{\'o}n y los requisitos del corpus cl{\'i}nico QU--ES? &
+Caracterizar las barreras y los requerimientos del corpus cl{\'i}nico QU--ES. &
+Las barreras hacen necesario y viable un corpus cl{\'i}nico para el ajuste. &
+Barreras; corpus (calidad y cobertura). &
+Cobertura l{\'e}xica; \% de concordancia. &
+Nivel descriptivo; juicio de expertos; fichas de validaci{\'o}n. \\
+\midrule
+\celnivel{Espec{\'i}fico 2 (Construcci{\'o}n)} &
+{\textquestiondown}C{\'o}mo desarrollar el sistema (corpus + \emph{fine-tuning} de MMS y NLLB \sig{quy}$\to$\sig{quz} + \emph{pipeline})? &
+Desarrollar el sistema: corpus + \emph{fine-tuning} de MMS y NLLB (\sig{quy}$\to$\sig{quz}), integrados en el \emph{pipeline}. &
+El \emph{fine-tuning} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar. &
+Modelo (base vs.\ ajustado); \emph{pipeline}. &
+WER; BLEU; chrF; latencia (s). &
+Nivel aplicativo; \emph{logs} autom{\'a}ticos; t / Wilcoxon (ajustado vs.\ base). \\
+\midrule
+\celnivel{Espec{\'i}fico 3 (Validaci{\'o}n)} &
+{\textquestiondown}En qu{\'e} medida el sistema mejora la precisi{\'o}n, la voz y la comprensi{\'o}n frente a la ausencia de apoyo? &
+Evaluar la mejora en precisi{\'o}n, voz y comprensi{\'o}n en consultas simuladas. &
+Mejora significativamente la precisi{\'o}n, la voz y la comprensi{\'o}n mutua. &
+Precisi{\'o}n; voz; comprensi{\'o}n; percepci{\'o}n. &
+WER/BLEU/chrF; MOS; \% de aciertos; Likert. &
+Nivel explicativo; experimental; estad{\'i}stica inferencial. \\
+\bottomrule
+\end{tabularx}
+\arrayrulecolor{black}
+\notaAPA{Elaboraci{\'o}n propia. Las tres filas espec{\'i}ficas siguen el modelo de ingenier{\'i}a de tres fases (diagn{\'o}stico, construcci{\'o}n y validaci{\'o}n), en correspondencia 1 a 1 con los objetivos. VI/VD: variable independiente/dependiente. Las f{\'o}rmulas de WER, BLEU, chrF y MOS se definen en el Cap{\'i}tulo~II.}
+\end{landscape}
 
 % ##################################################################
 % CAPÍTULO IV: ESTUDIO DE FACTIBILIDAD
@@ -699,7 +975,7 @@ Whisper de Meta/OpenAI y sus ecosistemas), herramientas de evaluaci{\'o}n (c{\'a
 chrF) y entornos reproducibles de \emph{fine-tuning}.
 
 \subsection{Factibilidad econ{\'o}mica}
-El presupuesto estimado (Cuadro~\ref{tab:presupuesto}) asciende a \textbf{S/ 7\,350.00}, dominado por
+El presupuesto estimado (Tabla~\ref{tab:presupuesto}) asciende a \textbf{S/ 7\,350.00}, dominado por
 hardware con GPU y cr{\'e}ditos de c{\'o}mputo; es asumible en el marco de un trabajo de tesis y
 puede financiarse con recursos propios y/o apoyo institucional.
 
@@ -720,7 +996,7 @@ de la tecnolog{\'i}a.
 
 \subsection{Cronograma de actividades}
 El proyecto se ejecuta en \textbf{4 meses (octubre 2026 -- enero 2027)}, organizado por semanas. El
-Cuadro~\ref{tab:cronograma} presenta el diagrama de Gantt, con las actividades agrupadas en tres fases
+Tabla~\ref{tab:cronograma} presenta el diagrama de Gantt, con las actividades agrupadas en tres fases
 ---\emph{administrativa}, de \emph{desarrollo} (ASR, MT y TTS) e \emph{investigaci{\'o}n y cierre}---;
 los m{\'o}dulos ASR, MT y TTS se ejecutan de forma parcialmente paralela mediante el ajuste de modelos
 preentrenados.
@@ -778,10 +1054,11 @@ preentrenados.
   \gbar{11}{13}{15}{g11}{Redacci{\'o}n del informe final}
   \gbar{12}{16}{16}{g12}{Sustentaci{\'o}n}
 \end{tikzpicture}}
+\notaAPA{Elaboraci{\'o}n propia. Cada columna es una semana (octubre 2026 -- enero 2027); el color indica la fase.}
 \end{table}
 
 \subsection{Presupuesto y financiamiento}
-El Cuadro~\ref{tab:presupuesto} resume los recursos estimados para el desarrollo del proyecto.
+El Tabla~\ref{tab:presupuesto} resume los recursos estimados para el desarrollo del proyecto.
 
 \begin{table}[H]
 \centering
@@ -790,7 +1067,8 @@ El Cuadro~\ref{tab:presupuesto} resume los recursos estimados para el desarrollo
 \small
 \begin{tabularx}{\linewidth}{@{}l X r@{}}
 \toprule
-\textbf{Tipo} & \textbf{Descripci{\'o}n} & \textbf{Costo (S/)} \\
+\rowcolor{g5}
+\hdr{Tipo} & \hdr{Descripci{\'o}n} & \hdr{Costo (S/)} \\
 \midrule
 Hardware & Laptop/PC con GPU (entrenamiento y \emph{fine-tuning}) & 4\,500.00 \\
 C{\'o}mputo & Cr{\'e}ditos de GPU en la nube (horas de ajuste) & 900.00 \\
@@ -802,10 +1080,11 @@ Otros & Gastos no previstos & 250.00 \\
 \multicolumn{2}{@{}l}{\textbf{Total}} & \textbf{7\,350.00} \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Montos estimados en soles (S/). Elaboraci{\'o}n propia.}
 \end{table}
 
 \subsection{Equipo de investigaci{\'o}n}
-El Cuadro~\ref{tab:equipo} detalla el equipo responsable del proyecto.
+El Tabla~\ref{tab:equipo} detalla el equipo responsable del proyecto.
 
 \begin{table}[H]
 \centering
@@ -814,13 +1093,15 @@ El Cuadro~\ref{tab:equipo} detalla el equipo responsable del proyecto.
 \small
 \begin{tabularx}{\linewidth}{@{}l X@{}}
 \toprule
-\textbf{Rol} & \textbf{Responsable / funci{\'o}n} \\
+\rowcolor{g5}
+\hdr{Rol} & \hdr{Responsable / funci{\'o}n} \\
 \midrule
 Tesista   & Alain Armando Condori Contreras ---dise{\~n}o, desarrollo y evaluaci{\'o}n del sistema---. \\
 Asesor    & Mtro. Ing. Ra{\'u}l Huillca Huallparimachi ---orientaci{\'o}n metodol{\'o}gica y t{\'e}cnica---. \\
 Colaboradores & Personal de salud biling{\"u}e (validaci{\'o}n del corpus) y participantes voluntarios (consultas simuladas). \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia.}
 \end{table}
 
 % ================= BIBLIOGRAFÍA =================
@@ -833,90 +1114,8 @@ Colaboradores & Personal de salud biling{\"u}e (validaci{\'o}n del corpus) y par
 \addcontentsline{toc}{section}{Anexos}
 
 % ----- Anexo 1 -----
-\subsection*{Anexo 1: Matriz de consistencia l{\'o}gica}
-\addcontentsline{toc}{subsection}{Anexo 1: Matriz de consistencia l{\'o}gica}
-Articula la coherencia interna entre el problema, los objetivos, las hip{\'o}tesis y las variables.
-
-\begin{table}[H]
-\centering
-\caption{Matriz de consistencia l{\'o}gica.}
-\label{tab:matriz}
-\scriptsize
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}p{3.1cm} X X X@{}}
-\toprule
-\textbf{Problema} & \textbf{Objetivo} & \textbf{Hip{\'o}tesis} & \textbf{Variable/Indicador} \\
-\midrule
-General: {\textquestiondown}De qu{\'e} manera el sistema influye en la comunicaci{\'o}n m{\'e}dico-paciente? &
-Desarrollar y evaluar el sistema de traducci{\'o}n bidireccional por voz. &
-El sistema mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente. &
-Comprensi{\'o}n (\% aciertos, Likert). \\
-\midrule
-E1: {\textquestiondown}Qu{\'e} corpus cl{\'i}nico se requiere? &
-Construir y validar el corpus Quechua--Espa{\~n}ol. &
-H1: el corpus validado aporta la base l{\'e}xica para el ajuste. &
-Cobertura l{\'e}xica, validaci{\'o}n de contenido. \\
-\midrule
-E2: {\textquestiondown}El ajuste mejora la precisi{\'o}n? &
-Adaptar NLLB al quechua de Cusco (\texttt{quz}) y MMS al dominio cl{\'i}nico. &
-H2: el ajuste reduce el WER y mejora el BLEU/chrF. &
-WER, BLEU/chrF. \\
-\midrule
-E3: {\textquestiondown}Qu{\'e} modalidad de salida es m{\'a}s comprensible? &
-Integrar la salida por voz y texto bidireccional para ambos interlocutores. &
-H3: texto+voz mejora la comprensi{\'o}n. &
-\% aciertos, MOS. \\
-\midrule
-E4: {\textquestiondown}Qu{\'e} utilidad/confianza perciben los usuarios? &
-Validar en consulta simulada y medir percepci{\'o}n. &
-H4: mejora la comprensi{\'o}n mutua percibida. &
-Escala Likert, tiempo. \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-% ----- Anexo 2 -----
-\subsection*{Anexo 2: Matriz de consistencia metodol{\'o}gica}
-\addcontentsline{toc}{subsection}{Anexo 2: Matriz de consistencia metodol{\'o}gica}
-Conecta cada objetivo espec{\'i}fico con la variable que mide, la t{\'e}cnica e instrumento de
-recolecci{\'o}n y el m{\'e}todo de an{\'a}lisis previsto.
-
-\begin{table}[H]
-\centering
-\caption{Matriz de consistencia metodol{\'o}gica.}
-\label{tab:matriz-met}
-\scriptsize
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\linewidth}{@{}p{3.1cm} X X X@{}}
-\toprule
-\textbf{Objetivo espec{\'i}fico} & \textbf{Variable / indicador} & \textbf{T{\'e}cnica e instrumento} & \textbf{M{\'e}todo de an{\'a}lisis} \\
-\midrule
-OE1. Construir y validar el corpus cl{\'i}nico QU--ES. &
-Cobertura y validez del corpus (validaci{\'o}n de contenido). &
-Fichas de validaci{\'o}n revisadas con personal de salud biling{\"u}e. &
-Juicio de expertos; \% de concordancia. \\
-\midrule
-OE2. Ajustar (\emph{fine-tuning}) MMS y NLLB al dominio cl{\'i}nico. &
-Precisi{\'o}n de reconocimiento y traducci{\'o}n (WER, BLEU, chrF). &
-\emph{Logs} autom{\'a}ticos del sistema por turno. &
-Estad{\'i}stica descriptiva; prueba t/Wilcoxon (ajustado vs. base). \\
-\midrule
-OE3. Integrar el \emph{pipeline} con salida por voz y texto. &
-Calidad de voz y comprensi{\'o}n (MOS, \% aciertos). &
-Prueba de comprensi{\'o}n; valoraci{\'o}n MOS. &
-Comparaci{\'o}n texto vs. texto+voz. \\
-\midrule
-OE4. Validar en consultas simuladas y medir percepci{\'o}n. &
-Utilidad, confianza y latencia (Likert, segundos). &
-Cuestionario Likert; cron{\'o}metro/\emph{logs}. &
-Estad{\'i}stica descriptiva; pruebas de comparaci{\'o}n. \\
-\bottomrule
-\end{tabularx}
-\end{table}
-
-% ----- Anexo 3 -----
-\subsection*{Anexo 3: Ficha t{\'e}cnica de registro experimental}
-\addcontentsline{toc}{subsection}{Anexo 3: Ficha t{\'e}cnica de registro experimental}
+\subsection*{Anexo 1: Ficha t{\'e}cnica de registro experimental}
+\addcontentsline{toc}{subsection}{Anexo 1: Ficha t{\'e}cnica de registro experimental}
 Plantilla para registrar cada \emph{turno de traducci{\'o}n} durante las consultas simuladas.
 
 \begin{table}[H]
@@ -926,11 +1125,12 @@ Plantilla para registrar cada \emph{turno de traducci{\'o}n} durante las consult
 \small
 \begin{tabularx}{\linewidth}{@{}p{4.6cm} X@{}}
 \toprule
-\textbf{Campo} & \textbf{Valor registrado} \\
+\rowcolor{g5}
+\hdr{Campo} & \hdr{Valor registrado} \\
 \midrule
 ID de turno / sesi{\'o}n            & \rule{5cm}{0.3pt} \\
 Escenario (triaje/s{\'i}ntomas/indicaciones) & \rule{5cm}{0.3pt} \\
-Direcci{\'o}n (\texttt{quz}$\to$es / es$\to$\texttt{quz}) & \rule{5cm}{0.3pt} \\
+Direcci{\'o}n (\sig{quz}$\to$es / es$\to$\sig{quz}) & \rule{5cm}{0.3pt} \\
 Transcripci{\'o}n ASR / WER         & \rule{5cm}{0.3pt} \\
 Traducci{\'o}n MT / BLEU / chrF     & \rule{5cm}{0.3pt} \\
 Calidad de voz (MOS)               & \rule{5cm}{0.3pt} \\
@@ -938,22 +1138,24 @@ Latencia por turno (s)             & \rule{5cm}{0.3pt} \\
 Observaciones                      & \rule{5cm}{0.3pt} \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. Se completa una ficha por cada turno de traducci{\'o}n registrado.}
 \end{table}
 
-% ----- Anexo 4 -----
-\subsection*{Anexo 4: Plantilla del banco de frases de consulta (evaluaci{\'o}n)}
-\addcontentsline{toc}{subsection}{Anexo 4: Plantilla del banco de frases de consulta (evaluaci{\'o}n)}
+% ----- Anexo 2 -----
+\subsection*{Anexo 2: Plantilla del banco de frases de consulta (evaluaci{\'o}n)}
+\addcontentsline{toc}{subsection}{Anexo 2: Plantilla del banco de frases de consulta (evaluaci{\'o}n)}
 Gui{\'o}n base de frases por escenario; el equivalente en quechua de Cusco se valida con hablantes
 nativos antes de su uso.
 
 \begin{table}[H]
 \centering
-\caption{Banco de frases de consulta simulada (ejemplos; \texttt{quz} por validar).}
+\caption{Banco de frases de consulta simulada (ejemplos; \sig{quz} por validar).}
 \label{tab:banco}
 \small
 \begin{tabularx}{\linewidth}{@{}l X l@{}}
 \toprule
-\textbf{Categor{\'i}a} & \textbf{Enunciado (espa{\~n}ol)} & \textbf{Equivalente (\texttt{quz})} \\
+\rowcolor{g5}
+\hdr{Categor{\'i}a} & \hdr{Enunciado (espa{\~n}ol)} & \hdr{Equivalente (\sig{quz})} \\
 \midrule
 Triaje       & {\textquestiondown}Qu{\'e} lo trae a la consulta?          & [por validar] \\
 Triaje       & {\textquestiondown}Hace cu{\'a}nto tiempo se siente mal?    & [por validar] \\
@@ -963,11 +1165,12 @@ Indicaciones & Tome esta pastilla cada 8 horas.                          & [por 
 Indicaciones & Regrese en 3 d{\'i}as si no mejora.                        & [por validar] \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. El equivalente en quechua de Cusco (\sig{quz}) se valida con hablantes nativos antes de su uso.}
 \end{table}
 
-% ----- Anexo 5 -----
-\subsection*{Anexo 5: Cuestionario de percepci{\'o}n (escala Likert)}
-\addcontentsline{toc}{subsection}{Anexo 5: Cuestionario de percepci{\'o}n (escala Likert)}
+% ----- Anexo 3 -----
+\subsection*{Anexo 3: Cuestionario de percepci{\'o}n (escala Likert)}
+\addcontentsline{toc}{subsection}{Anexo 3: Cuestionario de percepci{\'o}n (escala Likert)}
 Escala de 1 (\emph{totalmente en desacuerdo}) a 5 (\emph{totalmente de acuerdo}); se aplica al
 personal y a los pacientes-actores.
 
@@ -978,7 +1181,8 @@ personal y a los pacientes-actores.
 \small
 \begin{tabularx}{\linewidth}{@{}c X c@{}}
 \toprule
-\textbf{N.\textordmasculine} & \textbf{{\'I}tem} & \textbf{1--5} \\
+\rowcolor{g5}
+\hdr{N.\textordmasculine} & \hdr{{\'I}tem} & \hdr{1--5} \\
 \midrule
 1 & El sistema facilit{\'o} la comunicaci{\'o}n durante la consulta.     & \rule{1.6cm}{0.3pt} \\
 2 & Conf{\'i}o en la traducci{\'o}n que entreg{\'o} el sistema.          & \rule{1.6cm}{0.3pt} \\
@@ -988,14 +1192,15 @@ personal y a los pacientes-actores.
 6 & Usar{\'i}a el sistema en una consulta real.                         & \rule{1.6cm}{0.3pt} \\
 \bottomrule
 \end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. Escala Likert de 1 (totalmente en desacuerdo) a 5 (totalmente de acuerdo).}
 \end{table}
 
-% ----- Anexo 6 -----
-\subsection*{Anexo 6: Modelo de consentimiento informado}
-\addcontentsline{toc}{subsection}{Anexo 6: Modelo de consentimiento informado}
+% ----- Anexo 4 -----
+\subsection*{Anexo 4: Modelo de consentimiento informado}
+\addcontentsline{toc}{subsection}{Anexo 4: Modelo de consentimiento informado}
 \noindent\textit{Yo, \rule{5cm}{0.3pt}, declaro haber sido informado(a) sobre los objetivos del
-estudio ``Sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol con IA preentrenada
-para consultas m{\'e}dicas en Cusco''. Entiendo que participar{\'e} de forma voluntaria en consultas
+estudio ``\nuevo{Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol
+mediante aprendizaje profundo para consultas m{\'e}dicas en Cusco}''. Entiendo que participar{\'e} de forma voluntaria en consultas
 \textbf{simuladas} ---sin datos cl{\'i}nicos reales---, que las grabaciones ser{\'a}n anonimizadas y
 usadas solo con fines de investigaci{\'o}n, y que puedo retirarme en cualquier momento sin
 perjuicio.}

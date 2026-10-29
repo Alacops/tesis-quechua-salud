@@ -1,0 +1,402 @@
+% ============================================================
+%  REVISIÓN SISTEMÁTICA DE LA LITERATURA (RSL) — artículo (estilo revista, 2 columnas)
+%  Tecnologías ASR/MT/TTS para el quechua en la comunicación médico-paciente
+%  Autor: Alain Armando Condori Contreras (UNSAAC)
+%  Compilar:  pdflatex -> biber -> pdflatex -> pdflatex
+% ============================================================
+\documentclass[10pt,twocolumn,a4paper]{article}
+
+% ---- Idioma y codificación ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath,amssymb}
+
+% ---- Geometría compacta de revista ----
+\usepackage[a4paper,top=1.8cm,bottom=2cm,left=1.9cm,right=1.9cm,columnsep=0.7cm]{geometry}
+
+% ---- Gráficos y tablas ----
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{placeins}
+\usepackage[font=small,labelfont=bf,labelsep=period,justification=justified]{caption}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc,fit,backgrounds}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.2em}
+
+% ---- Paleta (rampa azul -> turquesa -> verde del proyecto) ----
+\usepackage{xcolor}
+\usepackage{colortbl}
+\definecolor{cNavy}{HTML}{1E4870}
+\definecolor{cBlue}{HTML}{2E6DA0}
+\definecolor{cSky}{HTML}{8AC4E6}
+\definecolor{cTeal}{HTML}{229184}
+\definecolor{cGreen}{HTML}{40B183}
+\definecolor{cLime}{HTML}{7BC95A}
+\definecolor{cAmber}{HTML}{C47A1E}
+\definecolor{cRed}{HTML}{B02A2A}
+\definecolor{cBox}{HTML}{EEF3F8}
+\definecolor{cBoxB}{HTML}{E9F3EE}
+\definecolor{cExc}{HTML}{F6ECEC}
+
+% ---- Tipografía de títulos (sans, color) ----
+\usepackage{helvet}
+\usepackage{titlesec}
+% Capítulos numerados en romano y CENTRADOS (estilo del modelo del docente)
+\renewcommand{\thesection}{\Roman{section}}
+\titleformat{\section}[block]{\filcenter\color{cNavy}\sffamily\normalsize\bfseries\scshape}{\thesection.}{0.6em}{}
+% Subtítulos internos sin numerar (se usan con \subsection*), en negrita a la izquierda
+\titleformat{\subsection}{\color{cBlue}\sffamily\normalsize\bfseries}{}{0pt}{}
+\titlespacing*{\section}{0pt}{2.0ex plus .2ex}{1.0ex}
+\titlespacing*{\subsection}{0pt}{1.1ex plus .2ex}{0.4ex}
+
+% ---- Bibliografía APA7 ----
+\usepackage[backend=biber,style=numeric,sorting=none,sortcites=true,language=spanish]{biblatex}
+\addbibresource{../referencias.bib}
+\addbibresource{../02_Plan_Tesis/antecedentes.bib}
+% referencias (tamaño cómodo para llenar la última página)
+\renewcommand*{\bibfont}{\footnotesize}
+\setlength{\bibitemsep}{0.2\baselineskip}
+\setlength{\bibhang}{1.4em}
+
+\usepackage[hidelinks]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=cNavy,citecolor=cBlue,urlcolor=cBlue}
+\usepackage{orcidlink}
+
+% ---- Pie de página ----
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\footnotesize\sffamily\color{cNavy}Revisi\'on sistem\'atica de la literatura \,\textbullet\, Seminario de Investigaci\'on II \,\textbullet\, UNSAAC \,\textbullet\, 2026 \quad \textbf{\thepage}}
+
+% ---- Ayudas ----
+\newcommand{\hd}[1]{\textcolor{white}{\sffamily\bfseries #1}}
+\newcommand{\quz}{\texttt{quz}}
+
+% estilos de nodos PRISMA
+\tikzset{
+  fase/.style={rectangle, rounded corners=2pt, text=white, font=\sffamily\bfseries\scriptsize,
+               minimum width=0.95cm, align=center, inner sep=3pt},
+  caja/.style={rectangle, rounded corners=3pt, draw=cNavy, line width=0.8pt, fill=cBox,
+               text width=4.5cm, align=center, font=\scriptsize, inner sep=5pt, minimum height=1.05cm},
+  exc/.style={rectangle, rounded corners=3pt, draw=cRed!70, line width=0.7pt, fill=cExc,
+              text width=4.3cm, align=center, font=\scriptsize, inner sep=5pt},
+  fl/.style={-{Stealth[length=2mm]}, line width=0.9pt, draw=cNavy},
+}
+
+\begin{document}
+
+% ======================= TÍTULO + RESUMEN (ancho completo) =======================
+\twocolumn[{%
+\begin{center}
+{\includegraphics[height=1.55cm]{../logo_unsaac.png}}\\[5pt]
+{\footnotesize\sffamily\color{cBlue}\bfseries UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD DEL CUSCO \textbullet\ INGENIER\'IA INFORM\'ATICA Y DE SISTEMAS}\\[6pt]
+\setlength{\fboxsep}{10pt}%
+\colorbox{cNavy}{\parbox{\dimexpr\textwidth-2\fboxsep\relax}{\centering\sffamily\bfseries\color{white}\large
+TECNOLOG\'IAS DE RECONOCIMIENTO DE VOZ, TRADUCCI\'ON AUTOM\'ATICA Y S\'INTESIS DE VOZ PARA EL QUECHUA EN LA COMUNICACI\'ON M\'EDICO-PACIENTE: UNA REVISI\'ON SISTEM\'ATICA}}\\[5pt]
+{\itshape\sffamily\small Speech recognition, machine translation and speech synthesis technologies for Quechua in medical--patient communication: a systematic review}\\[8pt]
+{\normalsize\textbf{Alain Armando Condori Contreras}\,\orcidlink{0009-0000-0000-0000}}\\[1pt]
+{\footnotesize Escuela Profesional de Ingenier\'ia Inform\'atica y de Sistemas, UNSAAC, Cusco--Per\'u \,\textbullet\, \texttt{021501@unsaac.edu.pe}}\\[1pt]
+{\footnotesize\itshape Asesor: Mtro.\ Ing.\ Ra\'ul Huillca Huallparimachi \,\textbullet\, Cusco, Per\'u --- 2026}\\[2pt]
+{\scriptsize\color{cBlue}ORCID: https://orcid.org/XXXX-XXXX-XXXX-XXXX (por registrar)}
+\end{center}
+\vspace{4pt}
+
+\noindent\begin{minipage}{\textwidth}
+\setlength{\fboxsep}{8pt}%
+\fcolorbox{cNavy}{cBox}{\parbox{\dimexpr\textwidth-2\fboxsep-2\fboxrule\relax}{%
+\footnotesize
+\textbf{\color{cNavy}Resumen.} Esta revisi\'on sistem\'atica sintetiza el estado del arte del reconocimiento autom\'atico del habla (ASR), la traducci\'on autom\'atica (MT) y la s\'intesis de voz (TTS) aplicados al \textbf{quechua} ---lengua de bajo recurso y morfolog\'ia polisint\'etica---, con foco en el dominio de la \textbf{consulta m\'edica}. Siguiendo el protocolo \textbf{PRISMA}, se identificaron 62 registros (Scopus 41, IEEE Xplore 2, ACM 19); tras eliminar 4 duplicados se cribaron 58, se evaluaron 30 a texto completo y se incluyeron 26. La evidencia muestra avances s\'olidos por componente ---ASR con WER de 12.70\,\%, MT con BLEU de hasta 15.47 y +11\,\% de chrF con NLLB-200, TTS con MOS de 4.9 y traducci\'on de voz en cascada que alcanza 26.7 BLEU (QUESPA 2025, variante Collao)---, pero \textbf{ning\'un estudio aborda el dominio cl\'inico ni la variante de Cusco (\quz) de forma integrada}. Ese vac\'io justifica un sistema bidireccional basado en el ajuste (\emph{fine-tuning}) de modelos preentrenados (MMS y NLLB) validado con consultas m\'edicas simuladas.\par
+\vspace{3pt}
+\textbf{\color{cNavy}Palabras clave:} traducci\'on autom\'atica, quechua, procesamiento del lenguaje natural, lenguas de bajo recurso, ASR, TTS.\par
+\vspace{3pt}
+\textit{\textbf{Abstract.} This systematic review synthesizes the state of the art of automatic speech recognition (ASR), machine translation (MT) and speech synthesis (TTS) for Quechua, a low-resource polysynthetic language, focusing on the medical consultation domain. Following PRISMA, 62 records were identified (Scopus 41, IEEE Xplore 2, ACM 19); after removing 4 duplicates, 58 were screened, 30 assessed in full text and 26 included. Evidence shows solid per-component progress ---ASR WER 12.70\,\%, MT BLEU up to 15.47 and +11\,\% chrF with NLLB-200, TTS MOS 4.9, and cascade speech translation reaching 26.7 BLEU (QUESPA 2025, Collao)--- but no study addresses the clinical domain nor the integrated Cusco variant. This gap justifies a fine-tuning-based bidirectional pipeline (MMS + NLLB) validated with simulated medical consultations.}\par
+\vspace{3pt}
+\textit{\textbf{Keywords:} machine translation, Quechua, natural language processing, low-resource languages, ASR, TTS.}
+}}
+\end{minipage}
+\vspace{10pt}
+}]
+
+% ======================= 1. INTRODUCCIÓN =======================
+\section{Introducci\'on}
+La comunicaci\'on entre el personal de salud y los pacientes quechuahablantes constituye una barrera documentada y vigente en la regi\'on de Cusco, donde m\'as del 55\,\% de la poblaci\'on tiene el quechua como lengua materna \parencite{essalud2023}. Diversos estudios cualitativos confirman que la desconexi\'on idiom\'atica vulnera la relaci\'on terap\'eutica y la seguridad del acto m\'edico \parencite{begazo2026,cuaila2022}, situaci\'on agravada por el analfabetismo de la poblaci\'on rural ---cerca del 22.8\,\% de las mujeres rurales no sabe leer ni escribir \parencite{inei2023,dispurse2023}---, lo que obliga a soluciones basadas en \emph{voz} y no solo en texto.
+
+Paralelamente, el procesamiento del lenguaje natural (PLN) ofrece hoy una oportunidad que no exist\'ia hace pocos a\~nos: la estrategia dominante para lenguas de bajo recurso ya no es entrenar modelos desde cero, sino \emph{adaptar} (\emph{fine-tuning}) grandes modelos multiling\"ues preentrenados, transfiriendo su conocimiento con relativamente pocos ejemplos \parencite{pratap2024mms,costajussa2022nllb}. Sin embargo, no es evidente qu\'e tan maduras est\'an estas tecnolog\'ias para el quechua ni d\'onde se ubican los vac\'ios que un sistema de traducci\'on por voz para la consulta m\'edica deber\'ia cubrir. Esta revisi\'on sistem\'atica mapea la evidencia disponible para responder esa pregunta.
+
+% ======================= 2. OBJETIVOS Y PREGUNTAS =======================
+\section{Objetivos y preguntas de investigaci\'on}
+El \textbf{objetivo general} es identificar, comparar y sintetizar el estado del arte de las tecnolog\'ias de ASR, MT y TTS que soportan el quechua, evaluando su viabilidad para un prototipo de traducci\'on bidireccional por voz en la consulta m\'edica. Para ello se formulan cinco preguntas de investigaci\'on ( RQ, \emph{Research Questions}):
+\begin{itemize}[label=\textcolor{cTeal}{\footnotesize$\blacktriangleright$}]
+  \item \textbf{RQ1.} \textit{¿Qu\'e tecnolog\'ias de ASR, MT y TTS se han desarrollado para el quechua?}
+  \item \textbf{RQ2.} \textit{¿Qu\'e arquitecturas, corpus y recursos emplean?}
+  \item \textbf{RQ3.} \textit{¿Qu\'e resultados reportan seg\'un m\'etricas estandarizadas?}
+  \item \textbf{RQ4.} \textit{¿Alguno aborda el dominio m\'edico o cl\'inico?}
+  \item \textbf{RQ5.} \textit{¿Qu\'e vac\'ios y limitaciones persisten?}
+\end{itemize}
+
+% ======================= 3. METODOLOGÍA =======================
+\section{Metodolog\'ia}
+La revisi\'on sigui\'o el protocolo \textbf{PRISMA} (\emph{Preferred Reporting Items for Systematic Reviews and Meta-Analyses}) en sus cuatro fases ---identificaci\'on, cribado, elegibilidad e inclusi\'on--- (Figura~\ref{fig:prisma}).
+
+\subsection*{Fuentes y estrategia de b\'usqueda}
+Se consultaron tres bases de datos cient\'ificas: \textbf{Scopus}, \textbf{IEEE Xplore} y \textbf{ACM Digital Library}, con una ventana temporal de \textbf{2019--2026}. La deduplicaci\'on se realiz\'o en \emph{Zotero} (que uni\'o 4 duplicados internos de ACM) y el cribado y la selecci\'on se gestionaron con la herramienta de revisiones sistem\'aticas \emph{Parsifal}. La b\'usqueda combin\'o dos bloques conceptuales mediante el operador l\'ogico \texttt{AND}:
+\begin{itemize}[label=\textcolor{cBlue}{\scriptsize$\bullet$}]
+  \item \textbf{Lengua:} \emph{Quechua OR Quechuan OR Runasimi OR ``Runa Simi'' OR Quichua OR Qhichwa}.
+  \item \textbf{Tecnolog\'ia:} \emph{``speech recognition'' OR ASR OR ``speech-to-text'' OR STT OR ``machine translation'' OR NMT OR SMT OR ``speech synthesis'' OR TTS OR ``text-to-speech'' OR ``voice synthesis''}.
+\end{itemize}
+El dominio m\'edico \emph{no} se incluy\'o en la cadena de b\'usqueda ---devolver\'ia casi cero resultados---; se aplic\'o como criterio de relevancia (RQ4) en la extracci\'on de datos.
+
+\subsection*{Criterios de selecci\'on}
+Se \textbf{incluyeron} estudios primarios sobre ASR, MT o TTS del quechua, o recursos/corpus/modelos que los habilitan. Se \textbf{excluyeron}: trabajos sobre otra lengua sin aporte transferible, PLN de quechua fuera del alcance (sin ASR/MT/TTS), documentos no primarios (editoriales, pre\'ambulos, rese\~nas de actas, libros) y falsos positivos de b\'usqueda a texto completo.
+
+\subsection*{Resultado del proceso de selecci\'on}
+Se identificaron \textbf{62 registros} (Scopus 41, IEEE Xplore 2, ACM 19). Tras eliminar 4 duplicados, se cribaron 58 por t\'itulo y resumen, de los cuales se excluyeron 28 (ACM 15, IEEE 1, Scopus 12). Se evaluaron \textbf{30 a texto completo} y se incluyeron \textbf{26 estudios} en la s\'intesis cualitativa. El flujo PRISMA completo se presenta en la Figura~\ref{fig:prisma}.
+
+% ---------- FIGURA: DIAGRAMA PRISMA (ancho completo) ----------
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[node distance=13mm and 26mm]
+% ---- columna central de cajas (proceso) ----
+\node[caja] (A) {Registros identificados en bases de datos \textbf{(n = 62)}\\ \scriptsize Scopus 41 \,\textbullet\, IEEE 2 \,\textbullet\, ACM 19};
+\node[caja, below=of A] (C) {Registros cribados por t\'itulo y resumen \textbf{(n = 58)}};
+\node[caja, below=of C] (D) {Art\'iculos a texto completo evaluados \textbf{(n = 30)}};
+\node[caja, below=of D, fill=cBoxB, draw=cGreen] (E) {Estudios incluidos en la s\'intesis \textbf{(n = 26)}};
+% ---- cajas de exclusión (derecha) ----
+\node[exc, right=of A] (X1) {Duplicados eliminados \textbf{(n = 4)}};
+\node[exc, right=of C] (X2) {Excluidos en cribado \textbf{(n = 28)}\\ \scriptsize ACM 15 \,\textbullet\, IEEE 1 \,\textbullet\, Scopus 12};
+\node[exc, right=of D] (X3) {Excluidos a texto completo \textbf{(n = 4)}\\ \scriptsize por confirmar (RQ fuera de foco)};
+% ---- bandas de fase (izquierda, rotadas, alineadas a cada caja) ----
+\node[fase, fill=cNavy, rotate=90, anchor=center] at ($(A.west)+(-0.85cm,0)$) {IDENTIFICACI\'ON};
+\node[fase, fill=cBlue, rotate=90, anchor=center] at ($(C.west)+(-0.85cm,0)$) {CRIBADO};
+\node[fase, fill=cTeal, rotate=90, anchor=center] at ($(D.west)+(-0.85cm,0)$) {ELEGIBILIDAD};
+\node[fase, fill=cGreen, rotate=90, anchor=center] at ($(E.west)+(-0.85cm,0)$) {INCLUSI\'ON};
+% ---- flechas ----
+\draw[fl] (A) -- (C);  \draw[fl] (C) -- (D);  \draw[fl] (D) -- (E);
+\draw[fl, draw=cRed!70] (A.east) -- (X1.west);
+\draw[fl, draw=cRed!70] (C.east) -- (X2.west);
+\draw[fl, draw=cRed!70] (D.east) -- (X3.west);
+\end{tikzpicture}
+\caption{Diagrama de flujo PRISMA del proceso de selecci\'on de estudios.}
+\label{fig:prisma}
+\end{figure*}
+
+% ======================= RESULTADOS (subtítulo sin numerar) =======================
+\subsection*{Resultados}
+Antes de entrar en los n\'umeros, la Figura~\ref{fig:metricas} explica en palabras sencillas qu\'e mide cada m\'etrica. Los 26 estudios incluidos se reparten entre los pasos del sistema ---la cadena \emph{voz\,$\to$\,texto\,$\to$\,traducci\'on\,$\to$\,voz}, Figuras~\ref{fig:pipe} y~\ref{fig:dist}---: domina la traducci\'on autom\'atica, seguida del reconocimiento de voz y la traducci\'on de voz en cascada; la s\'intesis de voz es, con diferencia, la menos estudiada.
+
+% ---------- FIGURA: GUÍA DE MÉTRICAS (ancho completo) ----------
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[font=\sffamily,
+  card/.style={rectangle, rounded corners=6pt, draw=gray!30, line width=0.8pt, fill=white,
+               text width=4.6cm, minimum height=3cm, align=center, inner sep=7pt, anchor=north},
+]
+\node[card] (c1) at (-5.1,0) {%
+  {\sffamily\bfseries\large\color{cBlue}WER\ $\downarrow$}\\[4pt]
+  {\footnotesize\textbf{Reconocimiento de voz (ASR)}}\\[4pt]
+  {\footnotesize Porcentaje de palabras mal entendidas.\\ \textbf{Cuanto m\'as bajo, mejor.}}};
+\node[card] (c2) at (0,0) {%
+  {\sffamily\bfseries\large\color{cTeal}BLEU / chrF\ $\uparrow$}\\[4pt]
+  {\footnotesize\textbf{Traducci\'on (MT)}}\\[4pt]
+  {\footnotesize Parecido de la traducci\'on con una humana (0--100).\\ \textbf{Cuanto m\'as alto, mejor.}}};
+\node[card] (c3) at (5.1,0) {%
+  {\sffamily\bfseries\large\color{cGreen}MOS\ $\uparrow$}\\[4pt]
+  {\footnotesize\textbf{Voz sintetizada (TTS)}}\\[4pt]
+  {\footnotesize Naturalidad de la voz seg\'un oyentes (1--5).\\ \textbf{Cuanto m\'as alto, mejor.}}};
+\end{tikzpicture}
+\caption{\textbf{Gu\'ia r\'apida de las m\'etricas} usadas en este art\'iculo.}
+\label{fig:metricas}
+\end{figure*}
+
+% ---------- FIGURA: PIPELINE CONCEPTUAL (1 columna) ----------
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\sffamily},
+  io/.style={rectangle, rounded corners=3pt, draw=cNavy, line width=0.8pt, fill=cBox,
+             font=\scriptsize\sffamily, align=center, inner sep=3pt, text width=1.2cm, minimum height=1.0cm},
+  st/.style={rectangle, rounded corners=4pt, text=white, align=center,
+             inner sep=2pt, text width=1.2cm, minimum height=1.0cm},
+  mtr/.style={font=\sffamily\scriptsize, text=cNavy},
+  fw/.style={-{Stealth[length=2mm]}, line width=1.1pt, draw=cNavy},
+]
+\node[io] (vin) {Voz en\\ \textbf{quechua}};
+\node[st, fill=cBlue, right=0.4cm of vin]  (asr) {\sffamily\bfseries\footnotesize ASR\\[-1pt]{\tiny escucha}};
+\node[st, fill=cTeal, right=0.4cm of asr]  (mt)  {\sffamily\bfseries\footnotesize MT\\[-1pt]{\tiny traduce}};
+\node[st, fill=cGreen, right=0.4cm of mt]  (tts) {\sffamily\bfseries\footnotesize TTS\\[-1pt]{\tiny locuta}};
+\node[io, right=0.4cm of tts] (vout) {Voz en\\ \textbf{espa\~nol}};
+\draw[fw] (vin)--(asr); \draw[fw] (asr)--(mt); \draw[fw] (mt)--(tts); \draw[fw] (tts)--(vout);
+\node[mtr, below=1.5pt of asr] {WER 12.7\%};
+\node[mtr, below=1.5pt of mt]  {BLEU 15.5};
+\node[mtr, below=1.5pt of tts] {MOS 4.9};
+\draw[fw, draw=cAmber] ([yshift=-10mm]vout.south) --
+      node[below=0pt,font=\scriptsize\sffamily,text=cAmber,align=center]{y de vuelta: del espa\~nol al quechua (funciona en los dos sentidos)}
+      ([yshift=-10mm]vin.south);
+\end{tikzpicture}
+\caption{C\'omo funciona el sistema, paso a paso: la voz en quechua se \textbf{escucha} (ASR), se \textbf{traduce} (MT) y se \textbf{convierte en voz} en espa\~nol (TTS); y al rev\'es. Debajo, el mejor resultado que la literatura reporta en cada paso.}
+\label{fig:pipe}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[x=0.45cm, y=1cm, font=\sffamily]
+% líneas de referencia
+\foreach \g in {5,10} {
+  \draw[gray!22,line width=0.4pt] (\g,0.55) -- (\g,5.5);
+  \node[font=\scriptsize,text=gray!55] at (\g,0.2) {\g};
+}
+% eje base
+\draw[cNavy,line width=0.8pt] (0,0.55)--(0,5.5);
+% barras: nombre / valor / color / fila / texto-color
+\foreach \n/\v/\c/\y/\tc in {%
+  MT/12/cBlue/5/white, ASR/5/cSky/4/cNavy, {Trad.\ de voz}/5/cGreen/3/white,
+  TTS/1/cTeal/2/white, Recursos/3/cLime/1/cNavy}{
+  \fill[\c, rounded corners=1.5pt] (0,\y-0.3) rectangle (\v,\y+0.3);
+  \node[left,  font=\scriptsize\bfseries, text=cNavy] at (-0.3,\y) {\n};
+  \node[right, font=\scriptsize\bfseries, text=cNavy] at (\v+0.2,\y) {\v};
+}
+\node[font=\scriptsize,text=cNavy] at (6.2,-0.35) {n.\textsuperscript{o} de estudios (de 26)};
+\end{tikzpicture}
+\caption{\textbf{¿Qu\'e se ha estudiado m\'as?} Reparto de los 26 estudios por componente. La traducci\'on autom\'atica domina; la s\'intesis de voz es la gran asignatura pendiente.}
+\label{fig:dist}
+\end{figure}
+
+\subsection*{Reconocimiento de voz (ASR) --- RQ1--RQ3}
+El reconocimiento de voz (ASR) ---convertir el habla en texto--- ha pasado de m\'etodos estad\'isticos cl\'asicos a redes neuronales que aprenden del propio audio. \textcite{Zevallos202061} lograron que solo el \textbf{12.70\,\% de las palabras} se transcribieran mal (WER) sobre el corpus Siminchikkunarayku; m\'as tarde, crear voz artificial para tener m\'as ejemplos de entrenamiento permiti\'o usar modelos m\'as modernos, con un error del 22.75\,\% en una prueba m\'as exigente \parencite{Zevallos20223518}. \textcite{Chen20246444} probaron modelos que aprenden sin necesidad de transcripciones (XLS-R / wav2vec\,2.0) en seis lenguas ind\'igenas, el quechua entre ellas. Con todo, \textbf{ninguno midi\'o su desempe\~no con vocabulario m\'edico} ni con la variante de Cusco--Collao, dos condiciones clave para la consulta.
+
+\subsection*{Traducci\'on autom\'atica (MT) --- RQ1--RQ3}
+La traducci\'on autom\'atica (MT) ---pasar texto de un idioma a otro--- es el componente m\'as estudiado. El reto es la \emph{morfolog\'ia polisint\'etica} del quechua: una sola palabra larga puede equivaler a toda una frase en espa\~nol. Por eso, partir las palabras en trozos m\'as peque\~nos funciona mejor que traducir palabra por palabra \parencite{ortega2020quechua}, y hacerlo guiado por la gram\'atica (m\'etodo PRPE) alcanza resultados que superan incluso a modelos mucho m\'as grandes \parencite{Chen202120}. Reaprovechando modelos ya entrenados, \textcite{Gow-Smith2023192} ampliaron \textbf{NLLB-200} ---un traductor abierto de 200 idiomas--- y mejoraron la calidad un \textbf{+11\,\%}; \textcite{Barbaran2026464} alcanzan \textbf{BLEU 15.47} ajustando el modelo \emph{opus-mt}, y \textcite{CuevaMedina2024} combinan un modelo Transformer con QuBERT. Otros exploran crear datos artificiales \parencite{Dhawan2026119,Ebrahimi2024236}, transferir conocimiento desde otras lenguas \parencite{Ahmed2023156} y enfoques multiling\"ues \parencite{Veliz2021241,Oncevay2021194}. Todos trabajan en lenguaje general, no m\'edico.
+
+\subsection*{S\'intesis de voz (TTS) --- RQ1--RQ3}
+La s\'intesis de voz (TTS) ---convertir texto en audio hablado--- es el componente menos cubierto. \textcite{HuamanCuro2026} compararon cuatro sistemas (Tacotron\,2, FastPitch, VITS y XTTS\,v2) para el quechua chanca; el mejor, \textbf{XTTS\,v2}, obtuvo una \textbf{naturalidad de 4.9 sobre 5} (MOS), es decir, una voz casi humana. Es un gran referente, pero falta medir qu\'e tan f\'acil de entender resulta en la variante de Cusco y, sobre todo, para personas con baja alfabetizaci\'on ---justo el caso de uso cr\'itico.
+
+\subsection*{Traducci\'on de voz en cascada --- RQ1--RQ3}
+Encadenar primero el reconocimiento de voz y luego la traducci\'on (arquitectura \emph{en cascada}: se transcribe y despu\'es se traduce) ha madurado r\'apido para el quechua. La serie \textbf{QUESPA} del congreso IWSLT muestra una mejora clara entre 2023 y 2025 (Figura~\ref{fig:quespa}): de unos 16 puntos BLEU \parencite{Ortega2023261} a 19.7 \parencite{Ortega2024173} y a \textbf{26.7} en la variante Collao \parencite{Ortega2025260}. En sentido contrario, \textcite{Alvarez-Crespo2023837} crearon un subtitulado en tiempo real de espa\~nol a quechua, validado por hablantes. Esta l\'inea es la referencia natural para un sistema bidireccional por voz.
+
+\subsection*{Recursos habilitadores --- RQ2}
+Adaptar modelos exige datos y herramientas, y existen recursos recientes: un gran corpus de texto junto con el modelo \textbf{QuBERT} \parencite{Zevallos20221}, el corpus de voz \emph{Huqariq} \parencite{zevallos2022huqariq} y una plataforma biling\"ue con la API \emph{Siminchikkunarayku} \parencite{9514251}. Ninguno, sin embargo, est\'a especializado en vocabulario m\'edico.
+
+\subsection*{S\'intesis comparativa}
+La Tabla~\ref{tab:sintesis} (al final de la Discusi\'on) resume la evidencia por componente e indica el \emph{dominio} en que se logr\'o cada mejor resultado: \textbf{todos pertenecen al dominio general} y \textbf{ninguno al sanitario} (RQ4).
+
+% ======================= DISCUSIÓN (subtítulo sin numerar) =======================
+\subsection*{Discusi\'on: vac\'ios identificados (RQ4--RQ5)}
+El cruce entre la literatura del problema social \parencite{begazo2026,cuaila2022} y la literatura t\'ecnica revela una desconexi\'on: el problema est\'a bien documentado y la tecnolog\'ia base existe, pero nadie ha unido ambos extremos. Espec\'ificamente:
+\begin{enumerate}[label=\textbf{\textcolor{cNavy}{\arabic*.}}]
+  \item \textbf{Ausencia de corpus cl\'inico.} Los recursos existentes \parencite{zevallos2022huqariq} son de dominio general; no hay un corpus Quechua--Espa\~nol de vocabulario de consulta (triaje, s\'intomas, indicaciones) validado con personal de salud.
+  \item \textbf{Falta de evaluaci\'on en dominio.} No se reportan valores de WER ni BLEU de los modelos sobre habla y texto m\'edico en quechua sure\~no.
+  \item \textbf{TTS sin caracterizar.} La inteligibilidad del TTS para usuarios con baja alfabetizaci\'on no ha sido medida.
+  \item \textbf{Interacci\'on no estudiada.} No hay evidencia sobre qu\'e modalidad de salida (texto vs.\ texto+voz) reduce mejor los errores de interpretaci\'on.
+  \item \textbf{Variante de Cusco (\quz) subrepresentada.} S\'olo la campa\~na QUESPA 2025 \parencite{Ortega2025260} incorpor\'o la variante Collao de forma incipiente.
+\end{enumerate}
+
+Este desajuste se resume en el mapa de la Figura~\ref{fig:taxo}: la base tecnol\'ogica existe y es s\'olida para los cinco componentes, pero el espacio del \textbf{dominio cl\'inico} ---en rojo--- permanece vac\'io y define el nicho de este proyecto.
+
+% ---------- FIGURA 5 (QUESPA) + TABLA 1 — al final de la Discusión ----------
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[x=1.7cm, y=0.125cm, font=\sffamily]
+% líneas de referencia horizontales
+\foreach \g in {0,10,20,30} {
+  \draw[gray!22,line width=0.4pt] (0.45,\g) -- (3.3,\g);
+  \node[left,font=\scriptsize\bfseries,text=gray!70] at (0.45,\g) {\g};
+}
+% eje vertical
+\draw[cNavy,line width=0.8pt] (0.45,0)--(0.45,32);
+\node[rotate=90,font=\scriptsize\bfseries,text=cNavy] at (-0.05,16) {BLEU (quechua\,$\to$\,espa\~nol)};
+% barras: x / valor / año / color
+\foreach \x/\v/\yr/\c in {1/16/2023/cSky, 2/19.7/2024/cTeal, 3/26.7/2025/cGreen}{
+  \fill[\c, rounded corners=1.5pt] (\x-0.3,0) rectangle (\x+0.3,\v);
+  \node[above=2pt,font=\footnotesize\bfseries,text=cNavy] at (\x,\v) {\v};
+  \node[below=2pt,font=\scriptsize\bfseries,text=cNavy] at (\x,0) {\yr};
+}
+% flecha de crecimiento (arranca a la derecha del "16" y termina antes de la última barra)
+\draw[-{Stealth[length=2.4mm]},cAmber,line width=1.4pt]
+     (1.35,20) .. controls (1.95,24.5) and (2.3,25.3) .. (2.62,25.6);
+\node[text=cAmber,font=\footnotesize\bfseries] at (1.75,30.8) {+67\,\% en 2 a\~nos};
+% cómo se obtiene (nota debajo del eje, sin tapar la gráfica)
+\node[font=\scriptsize,text=cNavy,align=center] at (1.9,-7.5)
+     {\textbf{\textcolor{cAmber}{+67\,\%}} $=\;(26{,}7-16)\div 16\approx 0{,}67$};
+\end{tikzpicture}
+\caption{\textbf{La calidad mejora r\'apido.} Traducci\'on de voz quechua\,$\to$\,espa\~nol (serie QUESPA del IWSLT). En dos a\~nos el BLEU subi\'o de 16 a 26.7 (\textbf{+67\,\%}): el sistema pas\'o de traducciones \emph{apenas comprensibles} a transmitir el \emph{mensaje de forma entendible}. (BLEU: m\'as alto = mejor.)}
+\label{fig:quespa}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{S\'intesis del estado del arte por componente y \textbf{dominio} donde destac\'o cada resultado. Ninguno proviene del dominio cl\'inico.}
+\label{tab:sintesis}
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\linewidth}{@{}l X l@{}}
+\rowcolor{cNavy}
+\hd{Componente} & \hd{Mejor resultado reportado} & \hd{Dominio} \\
+\midrule
+ASR & WER 12.70\,\% (HMM/HTK); 22.75\,\% con aumento de datos & General \\
+MT & BLEU 15.47 / chrF 49.80; +11\,\% chrF (NLLB-200) & General \\
+TTS & MOS 4.9 (XTTS\,v2) & General (chanca) \\
+Trad.\ voz & 26.7 BLEU (QUESPA 2025, Collao) & General (Collao) \\
+Recursos & QuBERT, \emph{Huqariq}, Siminchikkunarayku & Transversal \\
+\rowcolor{cExc}
+\multicolumn{2}{@{}l}{\textbf{\color{cRed}Dominio cl\'inico / consulta m\'edica}} & \textbf{\color{cRed}0} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+% ======================= CONCLUSIONES (subtítulo sin numerar) =======================
+\subsection*{Conclusiones}
+La revisi\'on confirma tres puntos. Primero, la barrera ling\"u\'istica en salud es un problema real, vigente y acad\'emicamente reconocido en Cusco \parencite{begazo2026,essalud2023}. Segundo, existe una base tecnol\'ogica madura de modelos preentrenados de c\'odigo abierto (MMS, NLLB, Whisper) y antecedentes de traducci\'on neural y de voz para el quechua que hacen viable la \emph{adaptaci\'on} en lugar del entrenamiento desde cero \parencite{Gow-Smith2023192,Ortega2025260}. Tercero, persiste un vac\'io claro en la aplicaci\'on de esa tecnolog\'ia al dominio cl\'inico con evaluaci\'on emp\'irica y en la variante de Cusco. El presente proyecto se posiciona en ese vac\'io: un sistema bidireccional por voz que \emph{adapta} (en vez de crear desde cero) modelos abiertos ya existentes ---MMS para la voz y NLLB para la traducci\'on---, extendi\'endolos de la variante de Ayacucho (\texttt{quy}) a la de Cusco (\quz) sobre un corpus cl\'inico propio, medido con las m\'etricas est\'andar (WER, BLEU, chrF, MOS) y validado con consultas m\'edicas simuladas.
+
+% ---------- FIGURA 6 (MAPA) — al final de las Conclusiones ----------
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  every node/.style={font=\sffamily},
+  centro/.style={circle, fill=cNavy, text=white, align=center, inner sep=1pt,
+                 text width=2.55cm, minimum size=3.1cm, font=\sffamily\scriptsize},
+  rama/.style={rectangle, rounded corners=5pt, text=white, align=center,
+               font=\sffamily\scriptsize, inner sep=3pt, text width=2.1cm, minimum height=1.35cm},
+  gap/.style={rectangle, rounded corners=6pt, draw=cRed!60!black, line width=2pt, fill=cRed, text=white,
+              align=center, font=\sffamily\small, inner sep=6pt, text width=4.6cm, minimum height=1.15cm},
+  lk/.style={line width=1.2pt},
+]
+% --- núcleo ---
+\node[centro] (c) {{\small\bfseries TRADUCCI\'ON}\\[1pt] {\small\bfseries POR VOZ}\\[3pt] {\scriptsize(quechua\,$\leftrightarrow$\,espa\~nol)}};
+% --- ramas: tecnología madura (dominio general) ---
+\node[rama, fill=cBlue]                     (mt)  at (0, 2.95)    {\textbf{MT} \emph{traduce}\\ BLEU 15.47\\ {\tiny$\checkmark$\,maduro (general)}};
+\node[rama, fill=cSky!85!cBlue, text=cNavy] (asr) at (-2.95, 1.2) {\textbf{ASR} \emph{escucha}\\ WER 12.70\,\%\\ {\tiny$\checkmark$\,maduro (general)}};
+\node[rama, fill=cTeal]                     (tts) at ( 2.95, 1.2) {\textbf{TTS} \emph{locuta}\\ MOS 4.9/5\\ {\tiny$\checkmark$\,maduro (general)}};
+\node[rama, fill=cGreen]                    (sv)  at (-2.95,-1.2) {\textbf{Trad.\ voz}\\ 26.7 BLEU\\ {\tiny$\checkmark$\,maduro (general)}};
+\node[rama, fill=cLime, text=cNavy]         (rec) at ( 2.95,-1.2) {\textbf{Recursos}\\ QuBERT, Huqariq\\ {\tiny$\checkmark$\,maduro (general)}};
+% --- rama: el VACÍO (rojo) ---
+\node[gap] (gp) at (0,-3.05) {\textbf{Dominio SALUD + Cusco (\quz)}\\[1pt] \textbf{\large 0 estudios} --- aqu\'i entra la tesis};
+% --- enlaces ---
+\draw[lk,cBlue]        (c) -- (mt);
+\draw[lk,cSky!70!cBlue](c) -- (asr);
+\draw[lk,cTeal]        (c) -- (tts);
+\draw[lk,cGreen]       (c) -- (sv);
+\draw[lk,cLime]        (c) -- (rec);
+\draw[lk,cRed,dashed]  (c) -- (gp);
+\end{tikzpicture}
+\caption{\textbf{El estado del arte en una imagen.} Cada componente (azul/verde) ya cuenta con \textbf{tecnolog\'ia madura} en el dominio general ---marcada con $\checkmark$ y su mejor resultado---; el \'unico espacio vac\'io ---en rojo, punteado--- es el \textbf{dominio m\'edico} y la \textbf{variante de Cusco}: el nicho de esta tesis.}
+\label{fig:taxo}
+\end{figure}
+
+% ======================= IV. REFERENCIAS (capítulo numerado) =======================
+% Asegura que TODAS las figuras se ubiquen en el cuerpo, antes de las referencias.
+\FloatBarrier
+\section{Referencias}
+\printbibliography[heading=none]
+
+\end{document}
