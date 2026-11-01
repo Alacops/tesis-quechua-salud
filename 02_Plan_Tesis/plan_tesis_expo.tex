@@ -34,8 +34,12 @@
 %  o con el entorno {bloqueNuevo}, para que el docente lo distinga.
 % ============================================================
 \definecolor{verdeOK}{RGB}{13,124,51}
-\newcommand{\nuevo}[1]{\textcolor{verdeOK}{#1}}
-\newenvironment{bloqueNuevo}{\par\color{verdeOK}}{\par}
+% R1 consolidado: las correcciones de la 1a ronda quedan en NEGRO (texto normal).
+\newcommand{\nuevo}[1]{#1}
+\newenvironment{bloqueNuevo}{\par}{\par}
+% R2 (2a ronda): se marcan en VERDE para que el docente las distinga.
+\newcommand{\obsdos}[1]{\textcolor{verdeOK}{#1}}
+\newenvironment{bloqueObsDos}{\par\color{verdeOK}}{\par}
 
 % ----- APA 7: número y título ENCIMA de tablas y figuras; Nota al pie -----
 % (número en negrita, en su propia línea; título en cursiva, alineado a la izq.)
@@ -61,8 +65,10 @@
 \newcommand{\destino}[1]{\hypertarget{#1}{}}
 
 % ----- APA 7: encabezados -----
-% Nivel 1 (section): centrado + negrita
-\titleformat{\section}{\normalfont\Large\bfseries\filcenter}{\thesection}{1em}{}
+% Nivel 1 (section): centrado + negrita, rotulado "CAPÍTULO <n>:" en MAYÚSCULAS (APA7, obs. asesor)
+\titleformat{\section}{\normalfont\Large\bfseries\filcenter}{CAP{\'I}TULO~\thesection:}{0.4em}{\MakeUppercase}
+% Encabezados SIN número (Resumen, índices, Glosario, Anexos): centrados, sin "CAPÍTULO" ni mayúsculas
+\titleformat{name=\section,numberless}{\normalfont\Large\bfseries\filcenter}{}{0pt}{}
 % Nivel 2 (subsection): alineado a la izquierda + negrita (ya definido en preambulo)
 % Nivel 3 (subsubsection): alineado a la izquierda + negrita + cursiva
 \titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{1em}{}
@@ -134,10 +140,6 @@ QUECHUA--ESPA{\~N}OL}
 \textcolor{colMetodo}{MEDIANTE APRENDIZAJE PROFUNDO}
 \textcolor{colContexto}{PARA CONSULTAS M{\'E}DICAS EN CUSCO}''\par}
 \vspace{0.3cm}\rule{\linewidth}{0.4pt}\par
-\vspace{0.25cm}
-{\footnotesize\nuevo{T{\'i}tulo estructurado seg{\'u}n el marco del docente en tres componentes con
-color propio:} \textcolor{colProceso}{proceso/acci{\'o}n}, \textcolor{colMetodo}{tecnolog{\'i}a/m{\'e}todo}
-\nuevo{y} \textcolor{colContexto}{contexto/aplicaci{\'o}n}\nuevo{; se elimin{\'o} la sigla ``IA''.}\par}
 
 \vspace{1.1cm}
 \begin{flushleft}
@@ -184,9 +186,10 @@ lenguaje natural, Comunicaci{\'o}n m{\'e}dico-paciente, Inclusi{\'o}n digital.}
 \vspace{0.4cm}
 \noindent\fcolorbox{verdeOK}{white}{\begin{minipage}{0.98\linewidth}\footnotesize
 \textcolor{verdeOK}{\textbf{Nota de revisi{\'o}n.}} El texto en
-\textcolor{verdeOK}{\textbf{verde}} corresponde a las \textbf{correcciones y adiciones} realizadas en
-respuesta a las observaciones del asesor (ajuste del t{\'i}tulo y su alineaci{\'o}n, profundizaci{\'o}n
-matem{\'a}tica del marco te{\'o}rico, \emph{setup} experimental y formato APA de tablas y figuras).
+\textcolor{verdeOK}{\textbf{verde}} corresponde a las \textbf{correcciones de la segunda ronda} de
+observaciones del asesor (ampliaci{\'o}n del contexto en tres niveles, traslado de las hip{\'o}tesis a
+la metodolog{\'i}a, antecedentes con estructura APA, saltos de p{\'a}gina por cap{\'i}tulo y vigencia
+de las fuentes); las correcciones de la primera ronda ya se integraron al texto en negro.
 \end{minipage}}
 
 \newpage
@@ -281,24 +284,112 @@ Pipeline                & Secuencia encadenada de etapas (voz $\to$ texto $\to$ 
 \section{Introducci{\'o}n}
 La introducci{\'o}n de este plan sigue el \emph{sistema de seis bloques}: parte del contexto y el
 problema general, presenta la tecnolog{\'i}a disponible, identifica el vac{\'i}o de investigaci{\'o}n,
-precisa el problema espec{\'i}fico, formula la propuesta con sus objetivos, hip{\'o}tesis y
-justificaci{\'o}n, y cierra con la organizaci{\'o}n del documento.
+precisa el problema espec{\'i}fico, formula la propuesta con sus objetivos y
+justificaci{\'o}n, y cierra con la organizaci{\'o}n del documento. \obsdos{Las hip{\'o}tesis se
+presentan en el Cap{\'i}tulo~III (Metodolog{\'i}a), conforme a la observaci{\'o}n del asesor.}
 
 \subsection{Contexto y problema general}
+\obsdos{El contexto de esta investigaci{\'o}n se aborda en tres niveles ---internacional, nacional y
+regional--- que, en conjunto, muestran c{\'o}mo una barrera ling{\"u}{\'i}stica hist{\'o}rica se
+combina hoy con una oportunidad tecnol{\'o}gica inexistente hace pocos a{\~n}os.}
+
+\subsubsection{\obsdos{Contexto internacional}}
+\begin{bloqueObsDos}
+\noindent De las miles de lenguas que se hablan en el mundo, solo una peque{\~n}a fracci{\'o}n cuenta
+con recursos digitales suficientes para sostener tecnolog{\'i}as del lenguaje; la gran mayor{\'i}a
+son \emph{lenguas de bajo recurso}, con escasa o nula presencia en los sistemas de voz y
+traducci{\'o}n autom{\'a}tica. Esta asimetr{\'i}a digital reproduce, en el plano tecnol{\'o}gico, las
+desigualdades que ya enfrentan sus hablantes en el acceso a servicios b{\'a}sicos. En el {\'a}mbito
+sanitario, la comunicaci{\'o}n entre un profesional de salud y un paciente que no comparten la misma
+lengua es un problema reconocido a escala global: la barrera idiom{\'a}tica compromete la
+anamnesis, el diagn{\'o}stico, el consentimiento informado y la adherencia al tratamiento, y por
+ello el derecho de la persona a ser atendida en su lengua materna se considera un componente de la
+calidad y la seguridad del acto m{\'e}dico.
+
+\noindent En paralelo, el procesamiento del lenguaje natural ha experimentado un cambio de
+paradigma que abre una ventana de oportunidad para estas lenguas. La estrategia dominante ya no es
+entrenar modelos desde cero ---inviable con pocos datos---, sino adaptar (\emph{fine-tuning})
+grandes modelos multiling{\"u}es preentrenados que incorporan cientos de idiomas: en la voz, MMS
+\parencite{pratap2024mms} y Whisper \parencite{radford2023whisper}; en la traducci{\'o}n, NLLB
+\parencite{costajussa2022nllb}. Competencias internacionales como AmericasNLP
+\parencite{mager2021americasnlp} y las tareas de traducci{\'o}n de voz de IWSLT
+\parencite{Ortega2025260} han impulsado de forma sostenida el trabajo sobre lenguas ind{\'i}genas
+americanas. En este panorama, el quechua ---la lengua originaria con mayor n{\'u}mero de hablantes
+de Am{\'e}rica, extendida por varios pa{\'i}ses andinos--- concentra buena parte de ese esfuerzo,
+aunque todav{\'i}a de manera fragmentaria y por componentes aislados.
+
+\noindent En el terreno sanitario, la pr{\'a}ctica internacional recomendada frente a la barrera
+idiom{\'a}tica es la mediaci{\'o}n ling{\"u}{\'i}stica ---int{\'e}rpretes presenciales o
+telef{\'o}nicos---; sin embargo, su disponibilidad es limitada y pr{\'a}cticamente nula en entornos
+rurales y de atenci{\'o}n primaria, donde ocurre el primer contacto con el sistema de salud. Por eso
+las tecnolog{\'i}as del habla ---reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz--- se perfilan
+a escala global como un apoyo emergente a la comunicaci{\'o}n cl{\'i}nica, con la ventaja decisiva de
+operar por \emph{voz}: a diferencia de las soluciones basadas en texto, no exigen alfabetizaci{\'o}n
+y resultan utilizables por poblaciones con baja escolaridad. Esta orientaci{\'o}n se inscribe en un
+esfuerzo m{\'a}s amplio de \emph{inclusi{\'o}n digital} y de preservaci{\'o}n de las lenguas
+originarias, hoy reconocido como un objetivo de equidad tecnol{\'o}gica: dotar de presencia digital a
+una lengua es tambi{\'e}n una forma de sostener los derechos de sus hablantes.
+\end{bloqueObsDos}
+
+\subsubsection{\obsdos{Contexto nacional}}
 El Per{\'u} es un pa{\'i}s plurilingüe en el que el quechua es la lengua originaria con mayor
 n{\'u}mero de hablantes. Los Censos Nacionales 2017 registran a millones de peruanos que declaran
 el quechua como lengua materna, con una marcada concentraci{\'o}n en la sierra sur
-\parencite{inei2017}. En la regi{\'o}n Cusco esta presencia es particularmente intensa: m{\'a}s del
+\parencite{inei2017}.
+\begin{bloqueObsDos}
+\noindent El Estado reconoce el car{\'a}cter multiling{\"u}e del pa{\'i}s y el derecho de los
+ciudadanos a relacionarse con las instituciones p{\'u}blicas en su lengua materna; sin embargo, en
+la pr{\'a}ctica los servicios esenciales ---la salud entre ellos--- operan de manera predominante en
+espa{\~n}ol, lo que condiciona su acceso efectivo para la poblaci{\'o}n quechuahablante. A esta
+brecha ling{\"u}{\'i}stica se suma una brecha educativa: cerca del 22.8\,\% de las mujeres rurales no
+sabe leer ni escribir \parencite{inei2023}, con programas de alfabetizaci{\'o}n a{\'u}n limitados en
+las zonas andinas \parencite{dispurse2023}. Esta doble barrera ---de idioma y de
+alfabetizaci{\'o}n--- implica que una soluci{\'o}n tecnol{\'o}gica pertinente para el pa{\'i}s no
+puede basarse solo en texto, sino que debe operar principalmente por \emph{voz}. En el plano
+institucional ya existen se{\~n}ales de respuesta: EsSalud reactiv{\'o} en 2023 una central
+telef{\'o}nica de atenci{\'o}n en quechua \parencite{essalud2023}, y la comunidad acad{\'e}mica
+peruana ha producido recursos y modelos iniciales para el quechua en reconocimiento, traducci{\'o}n
+y s{\'i}ntesis de voz, aunque ninguno orientado a la consulta m{\'e}dica.
+
+\noindent El sistema de salud peruano incorpora, al menos en el plano normativo, un enfoque
+intercultural que reconoce la pertinencia ling{\"u}{\'i}stica de la atenci{\'o}n; no obstante, su
+traducci{\'o}n en herramientas operativas dentro del consultorio sigue siendo escasa. La atenci{\'o}n
+primaria se presta en una red amplia y dispersa de establecimientos ---postas y centros de salud---
+situados en zonas andinas donde la poblaci{\'o}n usuaria es mayoritariamente quechuahablante, lo que
+convierte la distancia idiom{\'a}tica en un problema cotidiano y estructural, no excepcional. En ese
+contexto, la investigaci{\'o}n nacional en procesamiento del lenguaje para el quechua ha crecido de
+forma sostenida en la {\'u}ltima d{\'e}cada, pero se ha concentrado en resolver cada componente por
+separado ---reconocimiento, traducci{\'o}n o s{\'i}ntesis--- y sobre dominios generales, sin integrar
+un sistema completo ni abordar el vocabulario propio de la atenci{\'o}n en salud.
+\end{bloqueObsDos}
+
+\subsubsection{\obsdos{Contexto regional (Cusco) y planteamiento del problema}}
+En la regi{\'o}n Cusco la presencia del quechua es particularmente intensa: m{\'a}s del
 55\,\% de la poblaci{\'o}n tiene el quechua como lengua materna \parencite{essalud2023}. Esta
 realidad ling{\"u}{\'i}stica condiciona el acceso efectivo a los servicios p{\'u}blicos
 esenciales ---la atenci{\'o}n en salud entre ellos--- cuando operan de manera predominante en
 espa{\~n}ol.
 
+\begin{bloqueObsDos}
+\noindent La red de salud de Cusco atiende a una poblaci{\'o}n extensa y geogr{\'a}ficamente
+dispersa, con numerosas comunidades rurales y altoandinas donde el quechua es la lengua de uso
+cotidiano y el espa{\~n}ol tiene presencia limitada. A esta realidad se suma una particularidad
+ling{\"u}{\'i}stica decisiva para la propuesta: el quechua de Cusco corresponde a la variante Collao
+(\sig{quz}), distinta de la de Ayacucho (\sig{quy}) tanto en l{\'e}xico como en rasgos
+fonol{\'o}gicos; esta diferencia dialectal ---no menor para un sistema autom{\'a}tico--- es
+justamente la que los modelos de traducci{\'o}n disponibles a{\'u}n no cubren para Cusco. Por
+a{\~n}adidura, la consulta m{\'e}dica no es solo un intercambio de informaci{\'o}n, sino un encuentro
+cultural en el que la confianza y la comprensi{\'o}n mutua condicionan la adherencia al tratamiento;
+cuando esa comunicaci{\'o}n falla, el riesgo cl{\'i}nico recae sobre la poblaci{\'o}n m{\'a}s
+vulnerable.
+\end{bloqueObsDos}
+
 En el {\'a}mbito sanitario, la distancia idiom{\'a}tica entre un personal de salud mayoritariamente
 castellanohablante y una poblaci{\'o}n usuaria quechuahablante origina una barrera comunicativa con
 consecuencias cl{\'i}nicas directas. EsSalud reconoce que cerca de 70\,000 de sus asegurados en
 Cusco son quechuahablantes y reactiv{\'o} en 2023 la central telef{\'o}nica en quechua
-\parencite{essalud2023}; sin embargo, esa medida no alcanza la interacci{\'o}n cara a cara del
+\parencite{essalud2023}; sin embargo, \obsdos{esa medida ---de alcance telef{\'o}nico y
+unidireccional--- no alcanza} la interacci{\'o}n cara a cara del
 consultorio, donde se recogen s{\'i}ntomas, se formula el diagn{\'o}stico y se entregan las
 indicaciones. La evidencia confirma la gravedad del problema: \textcite{begazo2026} documenta
 c{\'o}mo la desconexi{\'o}n idiom{\'a}tica vulnera la relaci{\'o}n terap{\'e}utica en hospitales de
@@ -306,6 +397,15 @@ Cusco, y \textcite{cuaila2022} halla una relaci{\'o}n entre el conocimiento del 
 y la calidad de atenci{\'o}n percibida. A ello se suma una barrera de alfabetizaci{\'o}n: cerca del
 22.8\,\% de las mujeres rurales no sabe leer ni escribir \parencite{inei2023}, lo que obliga a una
 soluci{\'o}n basada en \emph{voz} y no solo en texto (Figura~\ref{fig:barreras}).
+
+\begin{bloqueObsDos}
+\noindent En s{\'i}ntesis, el problema general que motiva este plan es la \textbf{barrera
+comunicativa entre el personal de salud castellanohablante y los pacientes quechuahablantes de
+Cusco} durante la consulta cara a cara, agravada por la baja alfabetizaci{\'o}n y no resuelta por
+las medidas vigentes. Existiendo hoy modelos multiling{\"u}es preentrenados que cubren parcialmente
+el quechua, la pregunta es si pueden adaptarse e integrarse en un sistema de traducci{\'o}n por voz,
+bidireccional, para asistir esa interacci{\'o}n cl{\'i}nica.
+\end{bloqueObsDos}
 
 \begin{figure}[H]
 \centering
@@ -389,17 +489,6 @@ basados en Transformer: MMS y NLLB), en las consultas m{\'e}dicas en Cusco.}
   \item \nuevo{(Validaci{\'o}n) Evaluar en qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n (WER, BLEU, chrF), la calidad de la voz (MOS) y la comprensi{\'o}n en consultas m{\'e}dicas simuladas, frente a la ausencia de apoyo tecnol{\'o}gico.}
 \end{enumerate}
 
-\subsubsection{Hip{\'o}tesis}
-\textbf{General:} Un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol, basado en
-\nuevo{aprendizaje profundo (modelos preentrenados basados en Transformer)}, mejora
-significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas m{\'e}dicas en Cusco
-frente a la ausencia de apoyo tecnol{\'o}gico.
-\begin{itemize}
-  \item \nuevo{\textbf{H1 (Diagn{\'o}stico):} La comunicaci{\'o}n m{\'e}dico-paciente con pacientes quechuahablantes presenta barreras ling{\"u}{\'i}sticas que hacen necesario y viable un corpus cl{\'i}nico Quechua--Espa{\~n}ol para el ajuste de los modelos.}
-  \item \nuevo{\textbf{H2 (Construcci{\'o}n):} El ajuste (\emph{fine-tuning}) de los modelos preentrenados integrados en el \emph{pipeline} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar.}
-  \item \nuevo{\textbf{H3 (Validaci{\'o}n):} El uso del sistema mejora significativamente la precisi{\'o}n, la calidad de la voz y la comprensi{\'o}n mutua en la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo tecnol{\'o}gico, sobre todo con baja alfabetizaci{\'o}n.}
-\end{itemize}
-
 \subsubsection{Justificaci{\'o}n}
 \textbf{Te{\'o}rica:} Aporta evidencia emp{\'i}rica del desempe{\~n}o de modelos preentrenados en una
 lengua de bajo recurso y morfolog{\'i}a compleja. \textbf{Pr{\'a}ctica:} Entrega un prototipo
@@ -433,11 +522,11 @@ digital del quechua.
 
 \subsection{Organizaci{\'o}n de la tesis}
 El documento se organiza en cinco cap{\'i}tulos. El \textbf{Cap{\'i}tulo~I} presenta la
-introducci{\'o}n ---contexto, tecnolog{\'i}a, vac{\'i}o, problema, propuesta, objetivos, hip{\'o}tesis
+introducci{\'o}n ---contexto, tecnolog{\'i}a, vac{\'i}o, problema, propuesta, objetivos
 y justificaci{\'o}n---. El \textbf{Cap{\'i}tulo~II} desarrolla el marco te{\'o}rico y el estado del
 arte derivado de la revisi{\'o}n sistem{\'a}tica. El \textbf{Cap{\'i}tulo~III} detalla la
-metodolog{\'i}a: enfoque, dise{\~n}o, variables, unidades de an{\'a}lisis, t{\'e}cnicas,
-procedimiento, protocolo de evaluaci{\'o}n y aspectos {\'e}ticos. El \textbf{Cap{\'i}tulo~IV}
+metodolog{\'i}a: enfoque, dise{\~n}o, \obsdos{hip{\'o}tesis}, variables, unidades de an{\'a}lisis,
+t{\'e}cnicas, procedimiento, protocolo de evaluaci{\'o}n y aspectos {\'e}ticos. El \textbf{Cap{\'i}tulo~IV}
 analiza la factibilidad t{\'e}cnica, econ{\'o}mica y operativa. El \textbf{Cap{\'i}tulo~V} expone los
 aspectos administrativos ---cronograma, presupuesto y equipo---. \nuevo{La \textbf{matriz de
 consistencia}, incluida al cierre del Cap{\'i}tulo~III, articula de forma integral el problema, los
@@ -446,6 +535,7 @@ objetivos, las hip{\'o}tesis, las variables y la metodolog{\'i}a.}
 % ##################################################################
 % CAPÍTULO II: MARCO TEÓRICO Y ESTADO DEL ARTE
 % ##################################################################
+\clearpage
 \section{Marco te{\'o}rico y estado del arte}
 
 \subsection{Antecedentes}
@@ -454,52 +544,103 @@ se organizan en tres niveles ---internacional, nacional y local---. En conjunto 
 s{\'o}lidos por componente (ASR, MT y TTS), pero ninguno aborda su integraci{\'o}n en el dominio
 m{\'e}dico-paciente ni la variante de Cusco (\sig{quz}).
 
+\obsdos{A continuaci{\'o}n se desarrollan los antecedentes m{\'a}s relevantes siguiendo, en cada caso,
+cinco elementos: (i) la cita y el t{\'i}tulo del estudio, (ii) su dise{\~n}o metodol{\'o}gico, (iii)
+los instrumentos o modelos empleados, (iv) sus resultados y conclusi{\'o}n principal, y (v) su aporte
+a la presente tesis. Al final, la Tabla~\ref{tab:sintesis} sintetiza el conjunto por componente.}
+
 \subsubsection{Antecedentes internacionales}
-La traducci{\'o}n neural para el quechua fue abordada por primera vez por \textcite{ortega2020quechua},
-que introdujo t{\'e}cnicas de segmentaci{\'o}n morfol{\'o}gica para esta lengua polisint{\'e}tica. Las
-competencias AmericasNLP impulsaron el {\'a}rea: \textcite{Gow-Smith2023192} extendieron NLLB-200 con
-una mejora promedio de 11\,\% en chrF, mientras que \textcite{Ahmed2023156} y \textcite{Dhawan2026119}
-exploraron modelos preentrenados y datos sint{\'e}ticos \parencite{Ebrahimi2024236}. En el habla,
-\textcite{Chen20246444} evaluaron representaciones autosupervisadas para lenguas ind{\'i}genas y
-\textcite{Chen202120} propusieron una segmentaci{\'o}n guiada por la morfolog{\'i}a. La serie
-\emph{QUESPA} en IWSLT llev{\'o} la traducci{\'o}n de voz Quechua--Espa{\~n}ol de cerca de 16 a
-\textbf{26.7 BLEU} entre 2023 y 2025 \parencite{Ortega2023261,Ortega2024173,Ortega2025260}. Estos
-avances se apoyan en grandes modelos multiling{\"u}es preentrenados ---MMS \parencite{pratap2024mms},
-NLLB \parencite{costajussa2022nllb} y Whisper \parencite{radford2023whisper}---.
-\nuevo{En cuanto a la \emph{metodolog{\'i}a}, estos trabajos combinan el ajuste de modelos
-multiling{\"u}es (NLLB-200, MMS) con aumento de datos sint{\'e}ticos y segmentaci{\'o}n
-morfol{\'o}gica, y eval{\'u}an con BLEU y chrF; de ellos se reutiliza el enfoque de \emph{fine-tuning}
-sobre \sig{quz} y el protocolo de evaluaci{\'o}n.}
+\begin{bloqueObsDos}
+\noindent\textbf{Antecedente 1.} \textcite{ortega2020quechua}, en su art{\'i}culo
+\emph{Neural machine translation with a polysynthetic low resource language} (revista
+\emph{Machine Translation}), abordaron por primera vez la traducci{\'o}n autom{\'a}tica neuronal
+Espa{\~n}ol--Quechua. El estudio es de enfoque cuantitativo y dise{\~n}o experimental, orientado a
+superar la escasez de datos de una lengua polisint{\'e}tica. Como instrumento central emplearon redes
+neuronales de traducci{\'o}n con t{\'e}cnicas de segmentaci{\'o}n morfol{\'o}gica (subpalabras guiadas
+por la morfolog{\'i}a), evaluadas con la m{\'e}trica BLEU. Los resultados demostraron que la
+segmentaci{\'o}n morfol{\'o}gica mejora la traducci{\'o}n frente a una l{\'i}nea base sin ella, y los
+autores concluyeron que el tratamiento expl{\'i}cito de la morfolog{\'i}a es decisivo en lenguas
+aglutinantes. Este antecedente aporta a la tesis la justificaci{\'o}n ling{\"u}{\'i}stica del
+problema y el precedente de que el quechua requiere un tratamiento morfol{\'o}gico espec{\'i}fico al
+ajustar los modelos de traducci{\'o}n.
+
+\noindent\textbf{Antecedente 2.} \textcite{Ortega2023261,Ortega2025260}, en la serie
+\emph{QUESPA Submission for the IWSLT Dialectal and Low-resource Speech Translation Task}
+(conferencia IWSLT, 2023--2025), desarrollaron sistemas de traducci{\'o}n de voz
+Quechua--Espa{\~n}ol. El dise{\~n}o es experimental y comparativo entre ediciones sucesivas. Como
+instrumentos usaron una arquitectura en cascada (reconocimiento de voz seguido de traducci{\'o}n)
+sobre modelos multiling{\"u}es preentrenados (MMS y NLLB) afinados por transferencia, evaluados con
+BLEU. Los resultados elevaron el desempe{\~n}o de cerca de 16 a \textbf{26.7 BLEU} entre 2023 y 2025,
+e incorporaron reci{\'e}n en 2025 la variante Collao/Cusco (\sig{quz}); los autores concluyeron que
+el ajuste de modelos preentrenados es la v{\'i}a m{\'a}s eficaz para esta lengua. Este antecedente es
+el m{\'a}s cercano a la propuesta: aporta la arquitectura en cascada y el protocolo de evaluaci{\'o}n
+que esta tesis reutiliza, y a la vez revela la brecha que se busca cerrar ---la variante \sig{quz} y
+el dominio cl{\'i}nico a{\'u}n no han sido abordados de extremo a extremo---.
+\end{bloqueObsDos}
 
 \subsubsection{Antecedentes nacionales}
-En el Per{\'u}, \textcite{Zevallos202061} implementaron un ASR de quechua con HMM/HTK alcanzando
-\textbf{12.70\,\% de WER}, mejorado luego mediante aumento de datos hasta 22.75\,\% de WER
-\parencite{Zevallos20223518}; el mismo grupo aport{\'o} el modelo \emph{QuBERT}
-\parencite{Zevallos20221} y el corpus \emph{Huqariq} \parencite{zevallos2022huqariq}. En s{\'i}ntesis
-de voz, \textcite{HuamanCuro2026} evaluaron cuatro arquitecturas TTS para el quechua chanca con un MOS
-de hasta \textbf{4.9}. En traducci{\'o}n, \textcite{Barbaran2026464} (UTP) y \textcite{CuevaMedina2024}
-(UCSM, Arequipa) ajustaron modelos neuronales Quechua--Espa{\~n}ol, y \textcite{Veliz2021241} (PUCP) y
-\textcite{Oncevay2021194} trabajaron enfoques multiling{\"u}es para las lenguas del Per{\'u}. En
-traducci{\'o}n de voz, \textcite{Alvarez-Crespo2023837} (UPC) desarrollaron un subtitulado en tiempo
-real Espa{\~n}ol$\to$Quechua con arquitectura en cascada, y \textcite{9514251} construyeron una
-plataforma para recolectar un corpus de voz Espa{\~n}ol/Quechua mediante la API
-\emph{Siminchikkunarayku}. Ninguno de estos trabajos abord{\'o} el dominio sanitario.
-\nuevo{Metodol{\'o}gicamente predominan el entrenamiento ASR con HMM/HTK y el aumento de datos
-(Zevallos et al.), el ajuste de modelos neuronales por transferencia (Barbaran y Ticona; Cueva
-Medina et al.) y las arquitecturas en cascada para traducci{\'o}n de voz (Alvarez-Crespo et al.),
-evaluados con WER, BLEU y MOS.}
+\begin{bloqueObsDos}
+\noindent\textbf{Antecedente 3.} \textcite{Zevallos202061}, en
+\emph{Automatic Speech Recognition of Quechua Language Using HMM Toolkit} (Springer, CCIS),
+implementaron un reconocedor de voz para el quechua. El estudio es cuantitativo-experimental; como
+instrumento emplearon modelos ocultos de Markov (HMM/HTK) entrenados sobre un corpus de voz
+quechua, evaluados con la tasa de error de palabra (WER). Alcanzaron un \textbf{12.70\,\% de WER} y,
+en un trabajo posterior de aumento de datos \parencite{Zevallos20223518}, consolidaron el
+desempe{\~n}o hasta un 22.75\,\% de WER sobre datos m{\'a}s variados; concluyeron que la escasez de
+datos es el principal limitante del ASR quechua. El aporte a la tesis es doble: establece una
+l{\'i}nea base nacional de WER para el m{\'o}dulo de reconocimiento y respalda el uso de estrategias
+de aumento de datos ante la escasez de corpus cl{\'i}nico.
+
+\noindent\textbf{Antecedente 4.} \textcite{HuamanCuro2026}, en \emph{Quechua Speech Synthesizers}
+(Springer, CCIS), evaluaron la s{\'i}ntesis de voz para el quechua. El dise{\~n}o es experimental y
+comparativo entre cuatro arquitecturas de TTS; como instrumentos usaron modelos neuronales de
+s{\'i}ntesis entrenados sobre quechua chanca, valorados con el \emph{Mean Opinion Score} (MOS)
+mediante juicios perceptuales. Obtuvieron un MOS de hasta \textbf{4.9}, cercano a la voz humana, y
+concluyeron que es viable generar voz quechua de alta naturalidad con arquitecturas actuales. Este
+antecedente aporta a la tesis la factibilidad del m{\'o}dulo de salida por voz (TTS) ---clave para
+usuarios con baja alfabetizaci{\'o}n--- y el uso del MOS como instrumento de medici{\'o}n de la
+calidad de voz.
+
+\noindent\textbf{Antecedente 5.} \textcite{CuevaMedina2024}, en \emph{Development of a Neural Machine
+Translation Model Optimized with BERT for Translation from Quechua to Spanish} (LACCEI), ajustaron un
+modelo neuronal de traducci{\'o}n Quechua--Espa{\~n}ol. El estudio es aplicado, de dise{\~n}o
+experimental; como instrumento emplearon un modelo de traducci{\'o}n neuronal optimizado con
+representaciones tipo BERT, evaluado con m{\'e}tricas de traducci{\'o}n (BLEU/chrF). Los resultados
+mostraron mejoras al incorporar modelos preentrenados frente a enfoques previos, y los autores
+concluyeron que la transferencia desde modelos de lenguaje mejora la calidad de la traducci{\'o}n en
+contextos de bajo recurso. El aporte a la tesis es metodol{\'o}gico: confirma, en el contexto
+peruano, la estrategia de \emph{fine-tuning} sobre modelos preentrenados que aqu{\'i} se adopta para
+la adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}.
+\end{bloqueObsDos}
 
 \subsubsection{Antecedentes locales}
-En Cusco, la evidencia se concentra en el problema m{\'a}s que en la soluci{\'o}n:
-\textcite{begazo2026} document{\'o} c{\'o}mo la barrera idiom{\'a}tica vulnera la relaci{\'o}n
-terap{\'e}utica en hospitales de referencia de la ciudad, y EsSalud reactiv{\'o} en 2023 una central
-telef{\'o}nica en quechua para sus asegurados cusque{\~n}os \parencite{essalud2023}; en una regi{\'o}n
-andina vecina, \textcite{cuaila2022} asoci{\'o} el dominio del quechua del personal con la calidad de
-atenci{\'o}n percibida. En el plano tecnol{\'o}gico, el primer sistema de traducci{\'o}n neural para el
+\begin{bloqueObsDos}
+\noindent\textbf{Antecedente 6.} \textcite{begazo2026}, en \emph{Barreras ling{\"u}{\'i}sticas y
+culturales en la atenci{\'o}n hospitalaria: la experiencia de pacientes quechua-hablantes}
+(proyecto de investigaci{\'o}n), caracteriz{\'o} la barrera idiom{\'a}tica en hospitales de
+referencia de Cusco. Es un estudio de campo centrado en la experiencia de los pacientes; como
+instrumentos us{\'o} t{\'e}cnicas de recolecci{\'o}n sobre la interacci{\'o}n cl{\'i}nica real.
+Document{\'o} c{\'o}mo la desconexi{\'o}n idiom{\'a}tica vulnera la relaci{\'o}n terap{\'e}utica, y
+concluy{\'o} que la barrera compromete la calidad y la seguridad de la atenci{\'o}n. En una
+regi{\'o}n andina vecina, \textcite{cuaila2022} hall{\'o} una relaci{\'o}n directa entre el dominio
+del quechua del personal y la calidad de atenci{\'o}n percibida. Estos trabajos aportan a la tesis la
+evidencia local del problema que motiva la propuesta y respaldan la pertinencia de una
+soluci{\'o}n por voz para el consultorio cusque{\~n}o.
+\end{bloqueObsDos}
+
+\noindent En el plano tecnol{\'o}gico local, el primer sistema de traducci{\'o}n neural para el
 quechua se desarroll{\'o} con participaci{\'o}n de \emph{Hinantin Software} de Cusco
 \parencite{ortega2020quechua}, y la variante Collao/Cusco (\sig{quz}) fue incorporada reci{\'e}n en
-la campa{\~n}a QUESPA 2025 \parencite{Ortega2025260}. A ello se suma el reto de la alfabetizaci{\'o}n en
-zonas rurales andinas \parencite{inei2023,dispurse2023}. No se identific{\'o} ning{\'u}n antecedente
+la campa{\~n}a QUESPA 2025 \parencite{Ortega2025260}. A ello se suma el reto de la alfabetizaci{\'o}n
+en zonas rurales andinas \parencite{inei2023,dispurse2023}. \obsdos{Complementan este panorama otros
+antecedentes nacionales e internacionales ---traducci{\'o}n de voz en cascada
+Espa{\~n}ol$\to$Quechua \parencite{Alvarez-Crespo2023837}, enfoques multiling{\"u}es para las lenguas
+del Per{\'u} \parencite{Veliz2021241,Oncevay2021194}, segmentaci{\'o}n morfol{\'o}gica
+\parencite{Chen202120}, representaciones autosupervisadas \parencite{Chen20246444}, aumento de datos
+sint{\'e}ticos \parencite{Gow-Smith2023192,Ahmed2023156,Dhawan2026119,Ebrahimi2024236} y recursos
+como \emph{QuBERT} \parencite{Zevallos20221}, \emph{Huqariq} \parencite{zevallos2022huqariq} y la API
+\emph{Siminchikkunarayku} \parencite{9514251}---, todos sintetizados en la Tabla~\ref{tab:sintesis}.}
+No se identific{\'o} ning{\'u}n antecedente
 local que integre reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz para la atenci{\'o}n en salud,
 lo que confirma la pertinencia de esta investigaci{\'o}n.
 
@@ -616,7 +757,7 @@ Tabla~\ref{tab:latencias}, lo que justifica evaluar cada m{\'o}dulo por separado
 \caption{Presupuesto de latencia por etapa de la cascada (objetivo por turno).}
 \label{tab:latencias}
 \small
-{\color{verdeOK}
+{
 \begin{tabularx}{\linewidth}{@{}l X r@{}}
 \toprule
 \rowcolor{g5}
@@ -678,6 +819,7 @@ de estas m{\'e}tricas se retoma en el Cap{\'i}tulo~III.
 % ##################################################################
 % CAPÍTULO III: METODOLOGÍA DE LA INVESTIGACIÓN
 % ##################################################################
+\clearpage
 \section{Metodolog{\'i}a de la investigaci{\'o}n}
 
 \subsection{Enfoque, tipo y dise{\~n}o de investigaci{\'o}n}
@@ -743,6 +885,8 @@ Algoritmo~\ref{alg:pipeline} detalla el procesamiento de un turno de di{\'a}logo
 \State \Return $(t_t,\,a_t)$
 \end{algorithmic}
 \end{algorithm}
+\vspace{-4pt}
+\notaAPA{\obsdos{Elaboraci{\'o}n propia, basada en la arquitectura en cascada ASR$\to$MT$\to$TTS descrita en el Cap{\'i}tulo~II.}}
 
 \begin{bloqueNuevo}
 \noindent Las funciones $\textsc{STT}$, $\textsc{MT}$ y $\textsc{TTS}$ no son cajas negras: internamente
@@ -751,6 +895,22 @@ aplican la autoatenci{\'o}n del Transformer (ecuaci{\'o}n~\ref{eq:atencion}) sob
 (ecuaci{\'o}n~\ref{eq:perdida}). As{\'i}, el paso~2 (MT con NLLB) es el que concentra la
 adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}, aporte central de la tesis.
 \end{bloqueNuevo}
+
+\subsection{\obsdos{Hip{\'o}tesis}}
+\begin{bloqueObsDos}
+\noindent\textbf{Hip{\'o}tesis general:} Un sistema bidireccional de traducci{\'o}n de voz
+Quechua--Espa{\~n}ol, basado en aprendizaje profundo (modelos preentrenados basados en
+Transformer), mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas
+m{\'e}dicas en Cusco frente a la ausencia de apoyo tecnol{\'o}gico.
+\begin{itemize}
+  \item \textbf{H1 (Diagn{\'o}stico):} La comunicaci{\'o}n m{\'e}dico-paciente con pacientes quechuahablantes presenta barreras ling{\"u}{\'i}sticas que hacen necesario y viable un corpus cl{\'i}nico Quechua--Espa{\~n}ol para el ajuste de los modelos.
+  \item \textbf{H2 (Construcci{\'o}n):} El ajuste (\emph{fine-tuning}) de los modelos preentrenados integrados en el \emph{pipeline} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar.
+  \item \textbf{H3 (Validaci{\'o}n):} El uso del sistema mejora significativamente la precisi{\'o}n, la calidad de la voz y la comprensi{\'o}n mutua en la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo tecnol{\'o}gico, sobre todo con baja alfabetizaci{\'o}n.
+\end{itemize}
+\noindent Estas hip{\'o}tesis se contrastan con las variables y el m{\'e}todo de an{\'a}lisis
+definidos en las secciones siguientes, y se articulan de forma integral en la matriz de
+consistencia (Tabla~\ref{tab:matriz-consist}).
+\end{bloqueObsDos}
 
 \subsection{Variables y operacionalizaci{\'o}n}
 
@@ -811,7 +971,7 @@ adem{\'a}s en equipo de gama media, compatible con un piloto en el punto de aten
 \caption{\nuevo{Entorno de hardware y software del experimento.}}
 \label{tab:setup}
 \small
-{\color{verdeOK}
+{
 \begin{tabularx}{\linewidth}{@{}l X@{}}
 \toprule
 \rowcolor{g5}
@@ -949,6 +1109,7 @@ Nivel explicativo; experimental; estad{\'i}stica inferencial. \\
 % ##################################################################
 % CAPÍTULO IV: ESTUDIO DE FACTIBILIDAD
 % ##################################################################
+\clearpage
 \section{Estudio de factibilidad}
 
 \subsection{Enfoque adoptado}
@@ -992,6 +1153,7 @@ de la tecnolog{\'i}a.
 % ##################################################################
 % CAPÍTULO V: ASPECTOS ADMINISTRATIVOS
 % ##################################################################
+\clearpage
 \section{Aspectos administrativos}
 
 \subsection{Cronograma de actividades}
@@ -1106,7 +1268,16 @@ Colaboradores & Personal de salud biling{\"u}e (validaci{\'o}n del corpus) y par
 
 % ================= BIBLIOGRAFÍA =================
 \newpage
-\printbibliography[heading=bibintoc,title={Referencias}]
+\defbibnote{vigencia}{\color{verdeOK}\footnotesize\textit{Nota sobre la vigencia de las fuentes.}
+Se priorizaron publicaciones de los {\'u}ltimos cinco a{\~n}os (2021--2026). Las referencias
+anteriores se conservan por ser (a)~obras \emph{seminales} que definen los m{\'e}todos empleados
+---el \emph{Transformer} \parencite{vaswani2017attention}, BLEU \parencite{papineni2002bleu} y chrF
+\parencite{popovic2015chrf}---; (b)~\emph{libros} de metodolog{\'i}a en su edici{\'o}n vigente
+\parencite{hernandez2018metodologia}; y (c)~\emph{fuentes primarias oficiales} o trabajos
+fundacionales del PLN para el quechua ---los Censos Nacionales \parencite{inei2017} y los primeros
+sistemas de traducci{\'o}n \parencite{ortega2020quechua} y reconocimiento de voz
+\parencite{Zevallos202061} para esta lengua---.\par\vspace{4pt}}
+\printbibliography[heading=bibintoc,title={Referencias},prenote=vigencia]
 
 % ================= ANEXOS =================
 \newpage
