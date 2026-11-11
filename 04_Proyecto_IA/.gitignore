@@ -1,0 +1,7 @@
+# El reglamento PROHIBE incluir los datos en la entrega.
+# Estas carpetas se generan al ejecutar los scripts; nunca se versionan ni se empaquetan.
+data/
+outputs/
+venv/
+__pycache__/
+*.pyc

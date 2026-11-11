@@ -1,0 +1,18 @@
+# Dependencias del Proyecto IA — ASR quechua con Whisper-tiny.
+# IMPORTANTE: este es un punto de partida. El reglamento exige entregar el
+# resultado EXACTO de "pip freeze" desde tu entorno virtual. Flujo correcto:
+#   1) python3 -m venv venv && source venv/bin/activate
+#   2) pip install -r requirements.txt
+#   3) pip freeze > requirements.txt   (regenera este archivo con versiones exactas)
+#
+# torch desde PyPI incluye runtime CUDA compatible con el driver 13.0 del profesor.
+torch
+transformers
+datasets
+evaluate
+jiwer
+accelerate
+librosa
+soundfile
+pandas
+gdown
