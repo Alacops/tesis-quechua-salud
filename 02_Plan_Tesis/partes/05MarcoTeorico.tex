@@ -154,6 +154,12 @@ informaci{\'o}n relevante del contexto mediante
 donde $d_k$ es la dimensi{\'o}n de las claves y el factor $1/\sqrt{d_k}$ estabiliza los gradientes.
 Este mecanismo modela dependencias de largo alcance, decisivo en una lengua polisint{\'e}tica como el
 quechua, donde una sola palabra concentra mucha informaci{\'o}n gramatical.
+
+\noindent Si bien comparten esta base, los modelos de la cascada operan sobre \emph{modalidades}
+distintas ---habla (audio) y texto---: el ASR y la TTS procesan la se{\~n}al de voz, mientras que la
+MT trabaja sobre texto. Por ello, su integraci{\'o}n constituye una \textbf{arquitectura de
+transformadores multimodales}, en la que un mismo principio de autoatenci{\'o}n se aplica a
+secuencias ac{\'u}sticas y textuales para lograr una traducci{\'o}n bidireccional por voz.
 \end{bloqueNuevo}
 
 \subsubsection{Modelos multiling{\"u}es preentrenados (MMS, NLLB, Whisper)}

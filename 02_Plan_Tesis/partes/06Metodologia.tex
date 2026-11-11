@@ -88,8 +88,8 @@ adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}, aporte central de la tesis.
 \subsection{\obsdos{Hip{\'o}tesis}}
 \begin{bloqueObsDos}
 \noindent\textbf{Hip{\'o}tesis general:} Un sistema bidireccional de traducci{\'o}n de voz
-Quechua--Espa{\~n}ol, basado en aprendizaje profundo (modelos preentrenados basados en
-Transformer), mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas
+Quechua--Espa{\~n}ol, basado en arquitecturas de transformadores multimodales (modelos preentrenados
+MMS y NLLB ajustados por \emph{fine-tuning}), mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas
 m{\'e}dicas en Cusco frente a la ausencia de apoyo tecnol{\'o}gico.
 \begin{itemize}
   \item \textbf{H1 (Diagn{\'o}stico} ---\obscuatro{proposici{\'o}n descriptiva}\textbf{):} \obscuatro{La
@@ -168,7 +168,8 @@ cruzada} $k$-\emph{fold} ($k=5$), reportando la media y la desviaci{\'o}n de cad
 constituyen, ante todo, un \emph{banco de evaluaci{\'o}n} (\emph{benchmark}) de dominio cl{\'i}nico;
 por s{\'i} solas son insuficientes como {\'u}nico material de entrenamiento para el \emph{fine-tuning}
 de NLLB. Por ello el conjunto de ajuste se amplifica con \emph{aumento de datos} ---retrotraducci{\'o}n
-(\emph{back-translation}) y generaci{\'o}n de variantes sint{\'e}ticas--- y se complementa con recursos
+(\emph{back-translation}) y generaci{\'o}n de variantes sint{\'e}ticas
+\parencite{Gow-Smith2023192,Ahmed2023156}--- y se complementa con recursos
 existentes para el quechua (\emph{Huqariq}, QuBERT), reservando el \emph{benchmark} cl{\'i}nico para la
 medici{\'o}n final.}
 
@@ -188,7 +189,8 @@ ciencias de la salud o personal asistencial--- que act{\'u}an los roles en las c
 {\'e}ticos del estudio.
 
 \noindent\obscuatro{\textbf{Justificaci{\'o}n del tama{\~n}o.} El n{\'u}mero de jueces (10--15)
-satisface el m{\'i}nimo habitual para estimar el MOS de forma estable ($\ge 10$ evaluadores); el
+satisface el m{\'i}nimo habitual para estimar el MOS de forma estable ($\ge 10$ evaluadores)
+\parencite{itu1996p800}; el
 n{\'u}mero de turnos (90--150) responde a la disponibilidad real de hablantes nativos de la variante
 de Cusco y a la naturaleza acotada del dominio. Al tratarse de una muestra peque{\~n}a, los resultados
 se acompa{\~n}an de intervalos de confianza y del tama{\~n}o del efecto (\emph{d} de Cohen), y el
@@ -208,7 +210,7 @@ adem{\'a}s en equipo de gama media, compatible con un piloto en el punto de aten
 nube} (Google Colab Pro, Kaggle o cr{\'e}ditos de nube institucional), ya que el equipo local de
 desarrollo (Windows\,11 con WSL2, sin GPU dedicada) solo soporta con holgura la \emph{inferencia} del
 \emph{pipeline} integrado. Para acotar el costo, el ajuste emplea t{\'e}cnicas de bajo consumo de
-memoria (\emph{LoRA}/\emph{PEFT} y precisi{\'o}n reducida), de modo que cada modelo se afina dentro de
+memoria (\emph{LoRA}/\emph{PEFT} \parencite{hu2021lora} y precisi{\'o}n reducida), de modo que cada modelo se afina dentro de
 los l{\'i}mites de VRAM de una GPU de nivel medio (p.\,ej.\ T4 de 16\,GB); el presupuesto de
 horas-GPU se detalla en el Cap{\'i}tulo~V.
 \end{bloqueObsCuatro}
@@ -352,7 +354,7 @@ derecho de retiro sin perjuicio y la anonimizaci{\'o}n de las grabaciones consti
 % ----- barra de Tema (APA: sin relleno de color, solo borde) -----
 \setlength{\fboxsep}{6pt}%
 \noindent\fcolorbox{black}{white}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\centering
-  \footnotesize\textbf{Tema:} Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol mediante aprendizaje profundo para consultas m{\'e}dicas en Cusco}}
+  \footnotesize\textbf{Tema:} Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol mediante arquitecturas de transformadores multimodales para consultas m{\'e}dicas en Cusco}}
 \vspace{2pt}
 
 \fontsize{7}{8.3}\selectfont
@@ -367,7 +369,7 @@ derecho de retiro sin perjuicio y la anonimizaci{\'o}n de las grabaciones consti
 \hdr{Nivel} & \hdr{Problema} & \hdr{Objetivo} & \hdr{Hip{\'o}tesis} & \hdr{Variables} & \hdr{Dimensiones / indicadores} & \hdr{Metodolog{\'i}a} \\
 \midrule
 \celnivel{General} &
-{\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n de voz QU--ES para la comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo, en Cusco? &
+{\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n de voz QU--ES para la comunicaci{\'o}n m{\'e}dico-paciente, mediante arquitecturas de transformadores multimodales, en Cusco? &
 Desarrollar el sistema mediante el ajuste de modelos preentrenados (MMS, NLLB) para la comunicaci{\'o}n m{\'e}dico-paciente en Cusco. &
 Mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo. &
 \textbf{VI:} Uso y modalidad (texto / texto+voz). \textbf{VD:} Precisi{\'o}n, voz, comprensi{\'o}n. &

@@ -33,15 +33,16 @@ combina hoy con una oportunidad tecnol{\'o}gica inexistente hace pocos a{\~n}os.
 \noindent De las miles de lenguas que se hablan en el mundo, solo una peque{\~n}a fracci{\'o}n cuenta
 con recursos digitales suficientes para sostener tecnolog{\'i}as del lenguaje; la gran mayor{\'i}a
 son \emph{lenguas de bajo recurso}, con escasa o nula presencia en los sistemas de voz y
-traducci{\'o}n autom{\'a}tica. Esta asimetr{\'i}a digital reproduce, en el plano tecnol{\'o}gico, las
-desigualdades que ya enfrentan sus hablantes en el acceso a servicios b{\'a}sicos.
+traducci{\'o}n autom{\'a}tica \parencite{joshi2020diversity}. Esta asimetr{\'i}a digital reproduce, en
+el plano tecnol{\'o}gico, las desigualdades que ya enfrentan sus hablantes en el acceso a servicios
+b{\'a}sicos.
 
 \noindent En el {\'a}mbito
 sanitario, la comunicaci{\'o}n entre un profesional de salud y un paciente que no comparten la misma
 lengua es un problema reconocido a escala global: la barrera idiom{\'a}tica compromete la
-anamnesis, el diagn{\'o}stico, el consentimiento informado y la adherencia al tratamiento, y por
-ello el derecho de la persona a ser atendida en su lengua materna se considera un componente de la
-calidad y la seguridad del acto m{\'e}dico.
+anamnesis, el diagn{\'o}stico, el consentimiento informado y la adherencia al tratamiento
+\parencite{alshamsi2020barreras}, y por ello el derecho de la persona a ser atendida en su lengua
+materna se considera un componente de la calidad y la seguridad del acto m{\'e}dico.
 
 \noindent En paralelo, el procesamiento del lenguaje natural ha experimentado un cambio de
 paradigma que abre una ventana de oportunidad para estas lenguas. La estrategia dominante ya no es
@@ -59,8 +60,9 @@ aunque todav{\'i}a de manera fragmentaria y por componentes aislados.
 
 \noindent En el terreno sanitario, la pr{\'a}ctica internacional recomendada frente a la barrera
 idiom{\'a}tica es la mediaci{\'o}n ling{\"u}{\'i}stica ---int{\'e}rpretes presenciales o
-telef{\'o}nicos---; sin embargo, su disponibilidad es limitada y pr{\'a}cticamente nula en entornos
-rurales y de atenci{\'o}n primaria, donde ocurre el primer contacto con el sistema de salud.
+telef{\'o}nicos--- \parencite{alshamsi2020barreras}; sin embargo, su disponibilidad es limitada y
+pr{\'a}cticamente nula en entornos rurales y de atenci{\'o}n primaria, donde ocurre el primer
+contacto con el sistema de salud.
 
 \noindent Por eso
 las tecnolog{\'i}as del habla ---reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz--- se perfilan
@@ -99,7 +101,8 @@ peruana ha producido recursos y modelos iniciales para el quechua en reconocimie
 y s{\'i}ntesis de voz, aunque ninguno orientado a la consulta m{\'e}dica.
 
 \noindent El sistema de salud peruano incorpora, al menos en el plano normativo, un enfoque
-intercultural que reconoce la pertinencia ling{\"u}{\'i}stica de la atenci{\'o}n; no obstante, su
+intercultural que reconoce la pertinencia ling{\"u}{\'i}stica de la atenci{\'o}n
+\parencite{minsa2016intercultural}; no obstante, su
 traducci{\'o}n en herramientas operativas dentro del consultorio sigue siendo escasa. La atenci{\'o}n
 primaria se presta en una red amplia y dispersa de establecimientos ---postas y centros de salud---
 situados en zonas andinas donde la poblaci{\'o}n usuaria es mayoritariamente quechuahablante, lo que
@@ -114,7 +117,7 @@ un sistema completo ni abordar el vocabulario propio de la atenci{\'o}n en salud
 
 \subsubsection{\obsdos{Contexto regional (Cusco)}}
 En la regi{\'o}n Cusco la presencia del quechua es particularmente intensa: m{\'a}s del
-55\,\% de la poblaci{\'o}n tiene el quechua como lengua materna \parencite{essalud2023}. Esta
+55\,\% de la poblaci{\'o}n tiene el quechua como lengua materna \parencite{inei2017}. Esta
 realidad ling{\"u}{\'i}stica condiciona el acceso efectivo a los servicios p{\'u}blicos
 esenciales ---la atenci{\'o}n en salud entre ellos--- cuando operan de manera predominante en
 espa{\~n}ol.
@@ -196,7 +199,7 @@ bidireccional, para asistir esa interacci{\'o}n cl{\'i}nica.
 \addplot[fill=g12, draw=g11, bar shift=0pt] coordinates {(Analfab. mujer rural,22.8)};
 \end{axis}
 \end{tikzpicture}
-\notaAPA{Elaboraci{\'o}n propia con datos de \textcite{essalud2023} e \textcite{inei2023}.}
+\notaAPA{Elaboraci{\'o}n propia con datos de \textcite{inei2017}, \textcite{essalud2023} e \textcite{inei2023}.}
 \end{figure}
 
 \subsection{Tecnolog{\'i}a o m{\'e}todo}
@@ -232,8 +235,8 @@ precisi{\'o}n y la comprensi{\'o}n frente a la ausencia de apoyo tecnol{\'o}gico
 
 \subsubsection{Problema general}
 {\textquestiondown}\obsdos{C{\'o}mo \emph{desarrollar un sistema bidireccional de traducci{\'o}n de voz
-Quechua--Espa{\~n}ol} \emph{mediante aprendizaje profundo} (ajuste de modelos preentrenados basados en
-Transformer) \emph{para la comunicaci{\'o}n m{\'e}dico-paciente en las consultas m{\'e}dicas en Cusco}?}
+Quechua--Espa{\~n}ol} \emph{mediante arquitecturas de transformadores multimodales} (ajuste fino de los
+modelos preentrenados MMS y NLLB) \emph{para la comunicaci{\'o}n m{\'e}dico-paciente en las consultas m{\'e}dicas en Cusco}?}
 
 \subsubsection{Problemas espec{\'i}ficos}
 \begin{enumerate}
@@ -253,8 +256,8 @@ ambos sentidos del di{\'a}logo.
 
 \subsubsection{Objetivo general}
 \nuevo{Desarrollar un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol para la
-comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo (ajuste de modelos preentrenados
-basados en Transformer: MMS y NLLB), en las consultas m{\'e}dicas en Cusco.}
+comunicaci{\'o}n m{\'e}dico-paciente, mediante arquitecturas de transformadores multimodales (ajuste fino
+de los modelos preentrenados MMS y NLLB), en las consultas m{\'e}dicas en Cusco.}
 
 \subsubsection{Objetivos espec{\'i}ficos}
 \begin{enumerate}
