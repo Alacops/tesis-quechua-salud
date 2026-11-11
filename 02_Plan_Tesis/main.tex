@@ -1,0 +1,40 @@
+% ============================================================
+%  PLAN DE TESIS  -  Documento maestro (estructura modular)
+%
+%  Escuela Profesional de Ingenieria Informatica y de Sistemas - UNSAAC
+%  Titulo: Desarrollo de un sistema bidireccional de traduccion de voz
+%          Quechua-Espanol mediante aprendizaje profundo para consultas
+%          medicas en Cusco.
+%
+%  Estructura por capitulos (plantilla UNSAAC):
+%    I.   Introduccion (sistema de 6 bloques)   -> 04AspectosGenerales
+%    II.  Marco teorico y estado del arte        -> 05MarcoTeorico
+%    III. Metodologia de la investigacion        -> 06Metodologia
+%    IV.  Estudio de factibilidad                -> 07Factibilidad
+%    V.   Aspectos administrativos               -> 08Administrativos
+%    + Bibliografia y Anexos                      -> 09, 10
+%
+%  Compilar:  pdflatex main -> biber main -> pdflatex main -> pdflatex main
+% ============================================================
+\documentclass[12pt,a4paper]{article}
+\input{partes/00preambulo.tex}
+
+\begin{document}
+
+% ---- Preliminares ----
+\input{partes/01caratula.tex}        % Caratula
+\input{partes/02resumen.tex}         % Resumen y Abstract
+\input{partes/03indices.tex}         % Indices, glosario, abreviaturas
+
+% ---- Cuerpo ----
+\input{partes/04AspectosGenerales.tex}  % Cap. I  - Introduccion
+\input{partes/05MarcoTeorico.tex}       % Cap. II - Marco teorico
+\input{partes/06Metodologia.tex}        % Cap. III- Metodologia
+\input{partes/07Factibilidad.tex}       % Cap. IV - Factibilidad
+\input{partes/08Administrativos.tex}    % Cap. V  - Aspectos administrativos
+
+% ---- Cierre ----
+\input{partes/09Bibliografia.tex}    % Referencias (APA7)
+\input{partes/10Anexos.tex}          % Anexos
+
+\end{document}

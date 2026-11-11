@@ -1,0 +1,54 @@
+
+% Preliminares en n{\'u}meros romanos (Resumen = p{\'a}gina I); la car{\'a}tula no se numera.
+\pagenumbering{Roman}
+\hypersetup{pageanchor=true}
+
+% ================= RESUMEN =================
+\section*{Resumen}
+\addcontentsline{toc}{section}{Resumen}
+\singlespacing\noindent
+En la regi{\'o}n Cusco, m{\'a}s del 55\,\% de la poblaci{\'o}n tiene el quechua como lengua
+materna y cerca de 70\,000 asegurados de EsSalud son quechuahablantes \parencite{essalud2023};
+esta barrera idiom{\'a}tica afecta la calidad de la atenci{\'o}n en salud \parencite{begazo2026}.
+
+El presente trabajo propone desarrollar y evaluar un sistema bidireccional de traducci{\'o}n de
+voz Quechua--Espa{\~n}ol para consultas m{\'e}dicas, que encadena reconocimiento de voz (MMS),
+traducci{\'o}n autom{\'a}tica (NLLB adaptado al quechua de Cusco, \sig{quz}) y s{\'i}ntesis de
+voz (MMS-TTS) mediante el ajuste (\emph{fine-tuning}) de modelos preentrenados de c{\'o}digo
+abierto.
+
+La salida por voz en ambos sentidos busca incluir a la poblaci{\'o}n quechuahablante con
+baja o nula alfabetizaci{\'o}n. La validaci{\'o}n se realizar{\'a} con consultas simuladas, sin datos
+reales de pacientes, midiendo precisi{\'o}n (WER, BLEU, chrF), calidad de voz (MOS) y percepci{\'o}n
+de utilidad. Se espera aportar el primer corpus cl{\'i}nico Quechua--Espa{\~n}ol y evidencia
+emp{\'i}rica sobre la viabilidad de estas tecnolog{\'i}as en el dominio sanitario andino.
+
+\vspace{0.3cm}
+\textit{Palabras clave:} \nuevo{Traducci{\'o}n autom{\'a}tica, Quechua, Procesamiento del
+lenguaje natural, Comunicaci{\'o}n m{\'e}dico-paciente, Inclusi{\'o}n digital.}
+\onehalfspacing
+
+\newpage
+\section*{Abstract}
+\addcontentsline{toc}{section}{Abstract}
+\singlespacing\noindent
+In the Cusco region, more than 55\% of the population has Quechua as their mother tongue and
+nearly 70{,}000 EsSalud insured members are Quechua speakers \parencite{essalud2023}; this language
+barrier affects the quality of health care \parencite{begazo2026}.
+
+This work proposes to develop and
+evaluate a bidirectional Quechua--Spanish speech translation \emph{system} for medical consultations,
+chaining speech recognition (MMS), machine translation (NLLB adapted to Cusco Quechua, \sig{quz}) and
+speech synthesis (MMS-TTS) through the \emph{fine-tuning} of open-source pretrained models.
+
+The
+two-way voice output aims to include Quechua-speaking people with low or no literacy. Validation will
+be carried out with simulated consultations, without real patient data, measuring accuracy (WER,
+BLEU, chrF), voice quality (MOS) and perceived usefulness. The study is expected to contribute the
+first clinical Quechua--Spanish corpus and empirical evidence on the feasibility of these
+technologies in the Andean health domain.
+
+\vspace{0.3cm}
+\noindent\obsdos{\textit{Keywords:} Machine translation, Quechua, Natural language processing,
+Doctor--patient communication, Digital inclusion.}
+\onehalfspacing

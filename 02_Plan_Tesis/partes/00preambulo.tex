@@ -1,0 +1,186 @@
+% ============================================================
+%  00preambulo.tex  -  Preambulo consolidado del Plan de Tesis
+%  (APA7 + espanol + graficos + matematica + matriz apaisada)
+%  Compilar desde main.tex:  pdflatex -> biber -> pdflatex -> pdflatex
+% ============================================================
+
+% ---- Codificacion e idioma ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-tabla]{babel}
+\usepackage{csquotes}
+
+% ---- Geometria (margenes tipo tesis) ----
+\usepackage[a4paper,left=3cm,right=2.5cm,top=2.5cm,bottom=2.5cm]{geometry}
+
+% ---- Interlineado 1.5 ----
+\usepackage{setspace}
+\onehalfspacing
+
+% ---- Tipografia de titulos (se re-define mas abajo para APA7) ----
+\usepackage{titlesec}
+
+% ---- Tablas y figuras ----
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{float}
+\usepackage[font=small,labelfont=bf]{caption}
+
+% ---- Matematica (atencion, perdida, flujo de datos de la cascada) ----
+\usepackage{amsmath}
+
+% ---- Pagina apaisada para la matriz de consistencia ----
+\usepackage{pdflscape}
+
+% ---- Color de celdas / rampas ----
+\usepackage{colortbl}
+
+% ---- Graficos vectoriales (pgfplots / tikz) ----
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric,arrows.meta,positioning,calc}
+
+% ---- Colores base ----
+\usepackage{xcolor}
+\definecolor{azulUNSAAC}{RGB}{0,71,133}
+\definecolor{grisSuave}{RGB}{240,240,240}
+
+% ---- Rutas de imagenes (logo, figuras) ----
+\graphicspath{{imagenes/}{./}{../}}
+
+% ---- Bibliografia APA7 (biblatex + biber) ----
+\usepackage[
+  backend=biber,
+  style=apa,
+  sortcites=true,
+  sorting=nyt,
+  language=spanish
+]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+% Fuentes: referencias generales (raiz del repo) y antecedentes de la revision.
+\addbibresource{../referencias.bib}
+\addbibresource{antecedentes.bib}
+
+% ---- Listas e indices (tocloft ANTES de hyperref) ----
+\usepackage{longtable}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{tocloft}
+
+% ---- Hipervinculos ----
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=azulUNSAAC,
+  urlcolor=azulUNSAAC
+}
+
+% ---- Icono ORCID ----
+\usepackage{orcidlink}
+
+% ---- Sangria de primer parrafo ----
+\usepackage{indentfirst}
+
+% ============================================================
+%  Colores de la "ecuacion universal" del titulo (cafe/rojo/verde)
+%  Esquema estandarizado (marco del docente): el titulo se descompone en tres
+%  componentes, cada uno con un color fijo reutilizable en todo el proyecto.
+% ============================================================
+\definecolor{colProceso}{RGB}{122,66,20}   % cafe  -> Proceso / Accion
+\definecolor{colMetodo}{RGB}{176,42,42}     % rojo  -> Tecnologia / Metodo
+\definecolor{colContexto}{RGB}{31,110,54}   % verde -> Contexto / Aplicacion
+
+% ============================================================
+%  CORRECCIONES A OBSERVACIONES (revision del asesor)
+% ============================================================
+\definecolor{verdeOK}{RGB}{13,124,51}
+% R1 consolidado: correcciones de la 1a ronda en NEGRO (texto normal).
+\newcommand{\nuevo}[1]{#1}
+\newenvironment{bloqueNuevo}{\par}{\par}
+% R2 (2a ronda): aceptada; en NEGRO (texto normal).
+\newcommand{\obsdos}[1]{#1}
+\newenvironment{bloqueObsDos}{\par}{\par}
+% R3: integrada al texto en NEGRO (versi{\'o}n para el jurado, sin resaltar correcciones).
+\newcommand{\obstres}[1]{#1}
+\newenvironment{bloqueObsTres}{\par}{\par}
+% Mejoras propias de rigor (NO son una ronda del asesor): quedan en NEGRO (texto normal),
+% integradas al documento como el resto. El macro se conserva por si luego se desea resaltar.
+\newcommand{\obscuatro}[1]{#1}
+\newenvironment{bloqueObsCuatro}{\par}{\par}
+
+% ---- APA 7: numero y titulo ENCIMA de tablas y figuras; Nota al pie ----
+\captionsetup{labelsep=newline,labelfont=bf,textfont=it,
+              justification=raggedright,singlelinecheck=false}
+\captionsetup[table]{position=above,skip=4pt}
+\captionsetup[figure]{position=above,skip=6pt}
+\newcommand{\notaAPA}[1]{\par\vspace{2pt}%
+  \begin{minipage}{\linewidth}\footnotesize\textit{Nota.} #1\end{minipage}\par}
+
+% ---- Estilo de tabla del proyecto (APA: cabecera negra sin relleno) ----
+\newcommand{\hdr}[1]{\textbf{#1}}
+\newcommand{\celnivel}[1]{\textbf{#1}}
+
+% ---- Enlaces internos: siglas (quz/quy) y terminos del glosario ----
+\DeclareRobustCommand{\sig}[1]{\hyperlink{sig:#1}{\texttt{#1}}}
+\DeclareRobustCommand{\glo}[2]{\hyperlink{glo:#1}{#2}}
+\newcommand{\destino}[1]{\hypertarget{#1}{}}
+
+% ---- APA 7: encabezados ----
+\titleformat{\section}[display]{\normalfont\Large\bfseries\filcenter}{Cap{\'i}tulo~\thesection}{0.3em}{}
+\titleformat{name=\section,numberless}{\normalfont\Large\bfseries\filcenter}{}{0pt}{}
+\titleformat{\subsection}{\normalfont\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries\itshape}{\thesubsubsection}{1em}{}
+
+% ---- Rampa estandar de los graficos: azul claro -> navy -> turquesa -> verde ----
+\definecolor{g1}{HTML}{8AC4E6}
+\definecolor{g2}{HTML}{66AEDA}
+\definecolor{g3}{HTML}{4294CC}
+\definecolor{g4}{HTML}{2E6DA0}
+\definecolor{g5}{HTML}{1E4870}
+\definecolor{g6}{HTML}{1F6476}
+\definecolor{g7}{HTML}{229184}
+\definecolor{g8}{HTML}{27A597}
+\definecolor{g9}{HTML}{40B183}
+\definecolor{g10}{HTML}{59BD6F}
+\definecolor{g11}{HTML}{6AC362}
+\definecolor{g12}{HTML}{7BC95A}
+
+% ---- Numeracion por capitulos (I, II, ...) y subsecciones (2.1, 2.1.1) ----
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+
+% ---- Nombres en espanol de los indices ----
+\addto\captionsspanish{\renewcommand{\contentsname}{\'Indice general}}
+\floatname{algorithm}{Algoritmo}
+\renewcommand{\listalgorithmname}{\'Indice de algoritmos}
+
+% ---- Indice de ecuaciones (lista propia via tocloft) ----
+\newlistof{ecuaciones}{loe}{\'Indice de ecuaciones}
+\newcommand{\regecuacion}[1]{%
+  \addcontentsline{loe}{ecuaciones}{\protect\numberline{\theequation}#1}}
+\let\cftecuacionesfont\cfttabfont
+\let\cftecuacionespagefont\cfttabpagefont
+\setlength{\cftecuacionesindent}{\cfttabindent}
+\setlength{\cftecuacionesnumwidth}{\cfttabnumwidth}
+
+% ---- Paginacion APA 7: numero en la esquina SUPERIOR DERECHA ----
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\setlength{\headheight}{14.5pt}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[R]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}

@@ -1,0 +1,76 @@
+% ##################################################################
+% CAPÍTULO IV: ESTUDIO DE FACTIBILIDAD
+% ##################################################################
+\clearpage
+\section{Estudio de factibilidad}
+
+\subsection{Enfoque adoptado}
+El proyecto es viable porque reutiliza modelos preentrenados de c{\'o}digo abierto (MMS, NLLB,
+Whisper) mediante ajuste fino, lo que reduce dr{\'a}sticamente los requisitos de datos y c{\'o}mputo
+frente a entrenar desde cero. La factibilidad se analiza en sus dimensiones t{\'e}cnica,
+econ{\'o}mica y operativa.
+
+\subsection{Factibilidad t{\'e}cnica}
+
+\subsubsection{Hardware, c{\'o}mputo e inferencia}
+El ajuste de modelos preentrenados puede realizarse en una estaci{\'o}n con GPU y complementarse con
+cr{\'e}ditos de GPU en la nube para las fases intensivas. La inferencia del \emph{pipeline} integrado
+es ejecutable en equipo de gama media, compatible con un piloto en el punto de atenci{\'o}n.
+\obscuatro{En concreto, el \emph{fine-tuning} se realiza en \textbf{GPU en la nube} (Colab Pro,
+Kaggle o nube institucional) con t{\'e}cnicas de bajo consumo de memoria (\emph{LoRA}/\emph{PEFT}),
+dado que el equipo local (WSL2 sin GPU dedicada) se reserva para la inferencia; el presupuesto de
+horas-GPU se refleja en la factibilidad econ{\'o}mica.}
+
+\subsubsection{Estrategia de datos}
+El cuello de botella es el corpus cl{\'i}nico Quechua--Espa{\~n}ol, que se construir{\'a} de forma
+acotada (vocabulario y frases de triaje, s{\'i}ntomas e indicaciones) y se complementar{\'a} con
+recursos existentes (\emph{Huqariq}, QuBERT) y datos sint{\'e}ticos cuando sea pertinente.
+
+\subsubsection{Herramientas y software}
+Se emplear{\'a}n bibliotecas de c{\'o}digo abierto para habla y traducci{\'o}n (modelos MMS, NLLB y
+Whisper de Meta/OpenAI y sus ecosistemas), herramientas de evaluaci{\'o}n (c{\'a}lculo de WER, BLEU y
+chrF) y entornos reproducibles de \emph{fine-tuning}.
+
+\subsection{Factibilidad econ{\'o}mica}
+El presupuesto estimado (Tabla~\ref{tab:presupuesto}) asciende a \textbf{S/ 7\,350.00}, dominado por
+hardware con GPU y cr{\'e}ditos de c{\'o}mputo; es asumible en el marco de un trabajo de tesis y
+puede financiarse con recursos propios y/o apoyo institucional.
+
+\subsection{Factibilidad operativa}
+La validaci{\'o}n con consultas simuladas y participantes voluntarios evita la dependencia de
+aprobaciones cl{\'i}nicas complejas y permite ejecutar los experimentos \obscuatro{dentro del
+cronograma anual (12 meses)}, en un centro de salud de referencia en Cusco.
+
+\subsection{\obscuatro{An{\'a}lisis de riesgos y mitigaci{\'o}n}}
+\begin{bloqueObsCuatro}
+\noindent Los principales riesgos del proyecto y sus medidas de mitigaci{\'o}n se resumen en la
+Tabla~\ref{tab:riesgos}; se priorizan por su impacto sobre los objetivos espec{\'i}ficos.
+\end{bloqueObsCuatro}
+
+\begin{table}[H]
+\centering
+\caption{\obscuatro{Matriz de riesgos y mitigaci{\'o}n.}}
+\label{tab:riesgos}
+\small
+\begin{tabularx}{\linewidth}{@{}p{3.5cm} c X@{}}
+\toprule\hdr{Riesgo} & \hdr{Prob./Imp.} & \hdr{Mitigaci{\'o}n} \\
+\midrule
+Corpus cl{\'i}nico insuficiente para el ajuste & Alta / Alto &
+Aumento de datos (retrotraducci{\'o}n, sint{\'e}ticos) y reuso de \emph{Huqariq}/QuBERT; el corpus se usa sobre todo como \emph{benchmark}. \\
+Escasa disponibilidad de hablantes nativos \sig{quz} & Media / Alto &
+Convocatoria temprana de voluntarios biling{\"u}es; validaci{\'o}n por paneles reducidos ($\ge$ 3 revisores). \\
+Latencia del \emph{pipeline} superior a la meta & Media / Medio &
+Modelos ligeros, cuantizaci{\'o}n y evaluaci{\'o}n por etapas (presupuesto de la Tabla~\ref{tab:latencias}). \\
+Costo/acceso a GPU en la nube & Media / Medio &
+\emph{LoRA}/\emph{PEFT} y precisi{\'o}n reducida; cr{\'e}ditos gratuitos (Colab/Kaggle) y nube institucional. \\
+Baja ganancia dialectal \sig{quy}$\to$\sig{quz} & Media / Alto &
+Segmentaci{\'o}n morfol{\'o}gica, validaci{\'o}n con nativos y l{\'i}neas base de comparaci{\'o}n. \\
+\bottomrule
+\end{tabularx}
+\notaAPA{\obscuatro{Elaboraci{\'o}n propia. Prob./Imp.: probabilidad e impacto estimados.}}
+\end{table}
+
+\subsection{Viabilidad y sostenibilidad}
+El proceso (corpus + ajuste + evaluaci{\'o}n) es replicable en otras variantes del quechua o en otros
+dominios, y el uso de modelos de c{\'o}digo abierto favorece la continuidad y la apropiaci{\'o}n local
+de la tecnolog{\'i}a.

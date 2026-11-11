@@ -1,0 +1,95 @@
+% ================= ANEXOS =================
+\newpage
+\section*{Anexos}
+\addcontentsline{toc}{section}{Anexos}
+
+% ----- Anexo 1 -----
+\subsection*{Anexo 1: Ficha t{\'e}cnica de registro experimental}
+\addcontentsline{toc}{subsection}{Anexo 1: Ficha t{\'e}cnica de registro experimental}
+Plantilla para registrar cada \emph{turno de traducci{\'o}n} durante las consultas simuladas.
+
+\begin{table}[H]
+\centering
+\caption{Ficha t{\'e}cnica de registro por turno (plantilla).}
+\label{tab:ficha}
+\small
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule\hdr{Campo} & \hdr{Valor registrado} \\
+\midrule
+ID de turno / sesi{\'o}n            & \rule{5cm}{0.3pt} \\
+Escenario (triaje/s{\'i}ntomas/indicaciones) & \rule{5cm}{0.3pt} \\
+Direcci{\'o}n (\sig{quz}$\to$es / es$\to$\sig{quz}) & \rule{5cm}{0.3pt} \\
+Transcripci{\'o}n ASR / WER         & \rule{5cm}{0.3pt} \\
+Traducci{\'o}n MT / BLEU / chrF     & \rule{5cm}{0.3pt} \\
+Calidad de voz (MOS)               & \rule{5cm}{0.3pt} \\
+Latencia por turno (s)             & \rule{5cm}{0.3pt} \\
+Observaciones                      & \rule{5cm}{0.3pt} \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. Se completa una ficha por cada turno de traducci{\'o}n registrado.}
+\end{table}
+
+% ----- Anexo 2 -----
+\subsection*{Anexo 2: Plantilla del banco de frases de consulta (evaluaci{\'o}n)}
+\addcontentsline{toc}{subsection}{Anexo 2: Plantilla del banco de frases de consulta (evaluaci{\'o}n)}
+Gui{\'o}n base de frases por escenario; el equivalente en quechua de Cusco se valida con hablantes
+nativos antes de su uso.
+
+\begin{table}[H]
+\centering
+\caption{Banco de frases de consulta simulada (ejemplos; \sig{quz} por validar).}
+\label{tab:banco}
+\small
+\begin{tabularx}{\linewidth}{@{}l X l@{}}
+\toprule\hdr{Categor{\'i}a} & \hdr{Enunciado (espa{\~n}ol)} & \hdr{Equivalente (\sig{quz})} \\
+\midrule
+Triaje       & {\textquestiondown}Qu{\'e} lo trae a la consulta?          & [por validar] \\
+Triaje       & {\textquestiondown}Hace cu{\'a}nto tiempo se siente mal?    & [por validar] \\
+S{\'i}ntomas & {\textquestiondown}D{\'o}nde le duele?                      & [por validar] \\
+S{\'i}ntomas & {\textquestiondown}Tiene fiebre o escalofr{\'i}os?          & [por validar] \\
+Indicaciones & Tome esta pastilla cada 8 horas.                          & [por validar] \\
+Indicaciones & Regrese en 3 d{\'i}as si no mejora.                        & [por validar] \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. El equivalente en quechua de Cusco (\sig{quz}) se valida con hablantes nativos antes de su uso.}
+\end{table}
+
+% ----- Anexo 3 -----
+\subsection*{Anexo 3: Cuestionario de percepci{\'o}n (escala Likert)}
+\addcontentsline{toc}{subsection}{Anexo 3: Cuestionario de percepci{\'o}n (escala Likert)}
+Escala de 1 (\emph{totalmente en desacuerdo}) a 5 (\emph{totalmente de acuerdo}); se aplica al
+personal y a los pacientes-actores.
+
+\begin{table}[H]
+\centering
+\caption{{\'I}tems del cuestionario de percepci{\'o}n.}
+\label{tab:likert}
+\small
+\begin{tabularx}{\linewidth}{@{}c X c@{}}
+\toprule\hdr{N.\textordmasculine} & \hdr{{\'I}tem} & \hdr{1--5} \\
+\midrule
+1 & El sistema facilit{\'o} la comunicaci{\'o}n durante la consulta.     & \rule{1.6cm}{0.3pt} \\
+2 & Conf{\'i}o en la traducci{\'o}n que entreg{\'o} el sistema.          & \rule{1.6cm}{0.3pt} \\
+3 & Comprend{\'i} con claridad las indicaciones m{\'e}dicas.            & \rule{1.6cm}{0.3pt} \\
+4 & La voz sintetizada fue clara y natural.                             & \rule{1.6cm}{0.3pt} \\
+5 & El tiempo de respuesta del sistema fue adecuado.                    & \rule{1.6cm}{0.3pt} \\
+6 & Usar{\'i}a el sistema en una consulta real.                         & \rule{1.6cm}{0.3pt} \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. Escala Likert de 1 (totalmente en desacuerdo) a 5 (totalmente de acuerdo).}
+\end{table}
+
+% ----- Anexo 4 -----
+\subsection*{Anexo 4: Modelo de consentimiento informado}
+\addcontentsline{toc}{subsection}{Anexo 4: Modelo de consentimiento informado}
+\noindent\textit{Yo, \rule{5cm}{0.3pt}, declaro haber sido informado(a) sobre los objetivos del
+estudio ``\nuevo{Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol
+mediante aprendizaje profundo para consultas m{\'e}dicas en Cusco}''. Entiendo que participar{\'e} de forma voluntaria en consultas
+\textbf{simuladas} ---sin datos cl{\'i}nicos reales---, que las grabaciones ser{\'a}n anonimizadas y
+usadas solo con fines de investigaci{\'o}n, y que puedo retirarme en cualquier momento sin
+perjuicio.}
+
+\vspace{1.2cm}
+\noindent\rule{6cm}{0.3pt}\hfill\rule{4cm}{0.3pt}\\
+\noindent Firma del participante \hfill Fecha
+

@@ -1,0 +1,81 @@
+\newpage
+\tableofcontents                                   % Índice general
+
+\clearpage
+\addcontentsline{toc}{section}{\'Indice de figuras}
+\listoffigures                                     % Índice de figuras
+
+\clearpage
+\addcontentsline{toc}{section}{\'Indice de tablas}
+\listoftables                                      % Índice de tablas
+
+\clearpage
+\addcontentsline{toc}{section}{\'Indice de algoritmos}
+\listofalgorithms                                  % Índice de algoritmos
+
+\clearpage                                          % Índice de símbolos
+\section*{\'Indice de s{\'i}mbolos}
+\addcontentsline{toc}{section}{\'Indice de s{\'i}mbolos}
+\begin{longtable}{@{}p{2.6cm} p{9cm} p{2.4cm}@{}}
+\toprule\hdr{S{\'i}mbolo} & \hdr{Descripci{\'o}n} & \hdr{\obstres{P{\'a}gina}} \\
+\midrule \endhead
+$\alpha$ & Nivel de significancia estad{\'i}stica & \obstres{\pageref{sym:alpha}} \\
+$N$      & Tama{\~n}o de muestra / n.\ de palabras de referencia & \obstres{\pageref{eq:wer}} \\
+$\beta$  & Factor de ponderaci{\'o}n recall/precisi{\'o}n en chrF & \obstres{\pageref{eq:chrf}} \\
+$S,D,I$  & Sustituciones, eliminaciones e inserciones (c{\'a}lculo del WER) & \obstres{\pageref{eq:wer}} \\
+$\theta$ & Par{\'a}metros (pesos) del modelo ajustado por \emph{fine-tuning} & \obstres{\pageref{eq:perdida}} \\
+$\mathcal{L}$ & Funci{\'o}n de p{\'e}rdida (entrop{\'i}a cruzada) del entrenamiento & \obstres{\pageref{eq:perdida}} \\
+\bottomrule
+\end{longtable}
+
+\clearpage                                          % Índice de abreviaturas
+\section*{\'Indice de abreviaturas}
+\addcontentsline{toc}{section}{\'Indice de abreviaturas}
+\begin{longtable}{@{}p{3cm} p{12cm}@{}}
+\toprule\hdr{Sigla} & \hdr{Significado} \\
+\midrule \endhead
+IA      & Inteligencia artificial \\
+PLN     & Procesamiento del lenguaje natural \\
+ASR     & Reconocimiento autom{\'a}tico del habla (\emph{Automatic Speech Recognition}) \\
+STT     & Voz a texto (\emph{Speech-to-Text}) \\
+TTS     & S{\'i}ntesis de voz (\emph{Text-to-Speech}) \\
+MT      & Traducci{\'o}n autom{\'a}tica (\emph{Machine Translation}) \\
+MMS     & \emph{Massively Multilingual Speech} (Meta) \\
+NLLB    & \emph{No Language Left Behind} (Meta) \\
+WER     & Tasa de error de palabra (\emph{Word Error Rate}) \\
+BLEU    & \emph{Bilingual Evaluation Understudy} \\
+chrF    & \emph{Character n-gram F-score} \\
+MOS     & \emph{Mean Opinion Score} \\
+quz     & Quechua Collao / Cusco (c{\'o}digo ISO 639-3)\destino{sig:quz} \\
+quy     & Quechua Ayacucho (c{\'o}digo ISO 639-3)\destino{sig:quy} \\
+Transformer & \nuevo{Arquitectura de red neuronal basada en autoatenci{\'o}n (base de MMS/NLLB)} \\
+INEI    & Instituto Nacional de Estad{\'i}stica e Inform{\'a}tica \\
+EsSalud & Seguro Social de Salud del Per{\'u} \\
+UNSAAC  & Universidad Nacional de San Antonio Abad del Cusco \\
+\bottomrule
+\end{longtable}
+
+\clearpage                                          % Índice de ecuaciones
+\section*{\'Indice de ecuaciones}
+\addcontentsline{toc}{section}{\'Indice de ecuaciones}
+\makeatletter\@starttoc{loe}\makeatother
+
+\clearpage                                          % Glosario de términos
+\section*{Glosario de t{\'e}rminos}
+\addcontentsline{toc}{section}{Glosario de t{\'e}rminos}
+\begin{longtable}{@{}p{3.6cm} p{11.4cm}@{}}
+\toprule\hdr{T{\'e}rmino} & \hdr{Definici{\'o}n} \\
+\midrule \endhead
+Corpus                  & Conjunto estructurado de textos o grabaciones usado para entrenar o evaluar modelos.\destino{glo:corpus} \\
+Fine-tuning             & Ajuste de un modelo preentrenado con datos de un dominio espec{\'i}fico.\destino{glo:finetuning} \\
+Lengua de bajo recurso  & Idioma con escasez de datos digitales para entrenar modelos de PLN.\destino{glo:bajorecurso} \\
+Modelo preentrenado     & Modelo entrenado sobre grandes vol{\'u}menes de datos, reutilizable mediante ajuste.\destino{glo:preentrenado} \\
+Lengua polisint{\'e}tica & Lengua que concentra mucha informaci{\'o}n gramatical en una sola palabra, como el quechua.\destino{glo:polisintetica} \\
+Pipeline                & Secuencia encadenada de etapas (voz $\to$ texto $\to$ traducci{\'o}n $\to$ voz).\destino{glo:pipeline} \\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\setcounter{table}{0}\setcounter{figure}{0}
+% Inicio del cuerpo: paginaci{\'o}n normal en ar{\'a}bigos desde 1 (APA).
+\pagenumbering{arabic}

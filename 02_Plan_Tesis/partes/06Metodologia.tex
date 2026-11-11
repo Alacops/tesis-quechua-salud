@@ -1,0 +1,401 @@
+% ##################################################################
+% CAPÍTULO III: METODOLOGÍA DE LA INVESTIGACIÓN
+% ##################################################################
+\clearpage
+\section{Metodolog{\'i}a de la investigaci{\'o}n}
+
+\subsection{Enfoque, tipo y dise{\~n}o de investigaci{\'o}n}
+
+\subsubsection{Enfoque de investigaci{\'o}n}
+La investigaci{\'o}n adopta un enfoque \textbf{\nuevo{cuantitativo}} \nuevo{\parencite{hernandez2018metodologia}:
+todas las variables ---tanto las de desempe{\~n}o (WER, BLEU, chrF, MOS, latencia) como las de
+percepci{\'o}n (escalas Likert y MOS)--- se miden con instrumentos num{\'e}ricos y se analizan con
+estad{\'i}stica descriptiva e inferencial, sin recurrir a categor{\'i}as cualitativas.}
+
+\subsubsection{Tipo y nivel de investigaci{\'o}n}
+Siguiendo a \textcite{hernandez2018metodologia}, es de tipo \textbf{aplicado} ---resuelve un
+problema concreto mediante el desarrollo de un prototipo, sin buscar teor{\'i}a nueva--- y de nivel
+\textbf{aplicativo}, con alcance \emph{descriptivo} en la fase de diagn{\'o}stico (caracterizaci{\'o}n
+de barreras y requerimientos) y \emph{explicativo} en la validaci{\'o}n, al contrastar el efecto del
+sistema frente a la ausencia de apoyo tecnol{\'o}gico.
+
+La investigaci{\'o}n se organiza en las tres
+fases del modelo de ingenier{\'i}a ---\textbf{diagn{\'o}stico}, \textbf{construcci{\'o}n} y
+\textbf{validaci{\'o}n}---, en correspondencia con los tres objetivos espec{\'i}ficos.
+
+\subsubsection{Dise{\~n}o de investigaci{\'o}n}
+El dise{\~n}o es \textbf{\obscuatro{experimental, de tipo cuasi-experimental con medidas repetidas
+(intra-sujeto)}}: \obscuatro{se manipula la variable independiente ---uso del sistema y modalidad de
+salida--- y cada unidad se mide en dos condiciones (con sistema \emph{vs.}\ sin sistema; texto
+\emph{vs.}\ texto+voz), actuando como su propio control. Esta estructura de medidas pareadas
+fortalece la comparaci{\'o}n causal frente a un dise{\~n}o pre-experimental de un solo grupo, sin
+requerir la aleatorizaci{\'o}n de grupos ---inviable con una poblaci{\'o}n ling{\"u}{\'i}stica
+acotada---}; la unidad de an{\'a}lisis es el \emph{turno de traducci{\'o}n} dentro de una
+consulta simulada. La Figura~\ref{fig:arq} muestra el flujo del sistema y el
+Algoritmo~\ref{alg:pipeline} detalla el procesamiento de un turno de di{\'a}logo.
+
+\begin{figure}[H]
+\centering
+\caption{Pipeline modular \textbf{bidireccional} por voz; la traducci{\'o}n NLLB adaptada al quechua de Cusco (\sig{quz}) es el n{\'u}cleo del aporte.}
+\label{fig:arq}
+\begin{tikzpicture}[
+    node distance=0.6cm and 0.7cm,
+    boxA/.style={rectangle, rounded corners, draw=g4, thick, fill=g3!18, text width=2.0cm, align=center, minimum height=1.2cm, font=\scriptsize},
+    core/.style={rectangle, rounded corners, draw=g8, very thick, fill=g8!22, text width=2.0cm, align=center, minimum height=1.2cm, font=\scriptsize},
+    boxB/.style={rectangle, rounded corners, draw=g11, thick, fill=g12!22, text width=2.0cm, align=center, minimum height=1.2cm, font=\scriptsize},
+    io/.style={ellipse, draw=g5, thick, fill=white, text width=1.8cm, align=center, font=\scriptsize},
+    bi/.style={{Stealth[length=2.5mm]}-{Stealth[length=2.5mm]}, thick, draw=g5}
+]
+\node[io] (pac) {Paciente\\(voz quechua)};
+\node[boxA, right=of pac] (v1) {MMS\\STT / TTS\\(\sig{quz})};
+\node[core, right=of v1] (mt) {Traducci{\'o}n\\NLLB\\\sig{quz}$\leftrightarrow$es};
+\node[boxB, right=of mt] (v2) {MMS\\STT / TTS\\(es)};
+\node[io, right=of v2] (med) {M{\'e}dico\\(voz espa{\~n}ol)};
+\draw[bi] (pac) -- (v1);
+\draw[bi] (v1) -- (mt);
+\draw[bi] (mt) -- (v2);
+\draw[bi] (v2) -- (med);
+\end{tikzpicture}
+\notaAPA{Elaboraci{\'o}n propia. El bloque central (traducci{\'o}n NLLB \sig{quz}$\leftrightarrow$es) concentra la adaptaci{\'o}n dialectal, n{\'u}cleo del aporte de la tesis.}
+\end{figure}
+
+\begin{algorithm}[H]
+\caption{Traducci{\'o}n bidireccional por voz de un turno de di{\'a}logo}
+\label{alg:pipeline}
+\begin{algorithmic}[1]
+\Require Audio de entrada $a$; idioma origen $L_s$; idioma destino $L_t$
+\Ensure Texto traducido $t_t$ y audio sintetizado $a_t$
+\State $t_s \gets \textsc{STT}_{\mathrm{MMS}}(a,\,L_s)$
+\State $t_t \gets \textsc{MT}_{\mathrm{NLLB}}(t_s,\,L_s \rightarrow L_t)$
+\State Mostrar $t_t$ en pantalla
+\State $a_t \gets \textsc{TTS}_{\mathrm{MMS}}(t_t,\,L_t)$
+\State Reproducir $a_t$
+\State \Return $(t_t,\,a_t)$
+\end{algorithmic}
+\end{algorithm}
+\vspace{-9pt}
+{\setlength{\parindent}{0pt}\notaAPA{Elaboraci{\'o}n propia, basada en la arquitectura en cascada ASR$\to$MT$\to$TTS descrita en el Cap{\'i}tulo~II.}}
+\par\vspace{\baselineskip}
+
+\begin{bloqueNuevo}
+\noindent Las funciones $\textsc{STT}$, $\textsc{MT}$ y $\textsc{TTS}$ no son cajas negras: internamente
+aplican la autoatenci{\'o}n del Transformer (ecuaci{\'o}n~\ref{eq:atencion}) sobre secuencias de
+\emph{tokens}, con los pesos $\theta$ previamente especializados por \emph{fine-tuning}
+(ecuaci{\'o}n~\ref{eq:perdida}). As{\'i}, el paso~2 (MT con NLLB) es el que concentra la
+adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}, aporte central de la tesis.
+\end{bloqueNuevo}
+
+\subsection{\obsdos{Hip{\'o}tesis}}
+\begin{bloqueObsDos}
+\noindent\textbf{Hip{\'o}tesis general:} Un sistema bidireccional de traducci{\'o}n de voz
+Quechua--Espa{\~n}ol, basado en aprendizaje profundo (modelos preentrenados basados en
+Transformer), mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas
+m{\'e}dicas en Cusco frente a la ausencia de apoyo tecnol{\'o}gico.
+\begin{itemize}
+  \item \textbf{H1 (Diagn{\'o}stico} ---\obscuatro{proposici{\'o}n descriptiva}\textbf{):} \obscuatro{La
+  comunicaci{\'o}n m{\'e}dico-paciente con pacientes quechuahablantes presenta barreras
+  ling{\"u}{\'i}sticas \emph{caracterizables}, cuya identificaci{\'o}n define los requisitos ---l{\'e}xico
+  cl{\'i}nico y escenarios de triaje, s{\'i}ntomas e indicaciones--- del corpus Quechua--Espa{\~n}ol.
+  Al ser diagn{\'o}stica, H1 se verifica por caracterizaci{\'o}n (cobertura l{\'e}xica y concordancia
+  entre expertos), no por un contraste estad{\'i}stico de medias.}
+  \item \textbf{H2 (Construcci{\'o}n):} El ajuste (\emph{fine-tuning}) de los modelos preentrenados integrados en el \emph{pipeline} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar.
+  \item \textbf{H3 (Validaci{\'o}n):} El uso del sistema mejora significativamente la precisi{\'o}n, la calidad de la voz y la comprensi{\'o}n mutua en la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo tecnol{\'o}gico, sobre todo con baja alfabetizaci{\'o}n.
+\end{itemize}
+\noindent \obscuatro{H2 y H3 son hip{\'o}tesis \emph{contrastables} ---se someten a prueba estad{\'i}stica
+(\emph{t} de Student o Wilcoxon, seg{\'u}n normalidad)---, mientras que H1 es una proposici{\'o}n
+diagn{\'o}stica que se valida por caracterizaci{\'o}n.} Todas se articulan de forma integral en la
+matriz de consistencia (Tabla~\ref{tab:matriz-consist}).
+\end{bloqueObsDos}
+
+\subsection{Variables y operacionalizaci{\'o}n}
+
+\subsubsection{Identificaci{\'o}n de variables}
+La \textbf{variable independiente} es \obsdos{el sistema de traducci{\'o}n (con o sin sistema)} y la
+modalidad de salida (texto / texto+voz). Las \textbf{variables dependientes} son la precisi{\'o}n de
+transcripci{\'o}n y traducci{\'o}n, la calidad de la voz y la comprensi{\'o}n/percepci{\'o}n. El
+nivel de alfabetizaci{\'o}n act{\'u}a como \textbf{variable interviniente}.
+
+\subsubsection{Matriz de operacionalizaci{\'o}n de variables}
+La Tabla~\ref{tab:variables} resume la operacionalizaci{\'o}n.
+
+\begin{table}[H]
+\centering
+\caption{Operacionalizaci{\'o}n de variables.}
+\label{tab:variables}
+\small
+\begin{tabularx}{\linewidth}{@{}l X l@{}}
+\toprule\hdr{Variable} & \hdr{Definici{\'o}n / dimensi{\'o}n} & \hdr{Indicador} \\
+\midrule
+\multirow{2}{*}{Independiente} & Uso del sistema de traducci{\'o}n & Con / sin sistema \\
+                               & Modalidad de salida & Texto / texto+voz \\
+\multirow{3}{*}{Dependiente}   & Precisi{\'o}n de transcripci{\'o}n & WER \\
+                               & Precisi{\'o}n de traducci{\'o}n & BLEU / chrF \\
+                               & Comprensi{\'o}n y percepci{\'o}n & \% aciertos, Likert, MOS \\
+Interviniente                  & Nivel de alfabetizaci{\'o}n & Alto / bajo \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. WER: tasa de error de palabra; BLEU/chrF: m{\'e}tricas de traducci{\'o}n; MOS: \emph{Mean Opinion Score} (ecuaciones del Cap{\'i}tulo~II).}
+\end{table}
+
+\subsection{Unidades de an{\'a}lisis y selecci{\'o}n de consultas}
+
+\subsubsection{Unidad de an{\'a}lisis}
+La unidad de an{\'a}lisis es el \emph{turno de traducci{\'o}n} dentro de una consulta simulada
+(una intervenci{\'o}n hablada que el sistema reconoce, traduce y reproduce). Los escenarios cubren
+triaje, s{\'i}ntomas e indicaciones.
+
+\subsubsection{Poblaci{\'o}n y muestra}
+\begin{bloqueObsDos}
+\noindent\textbf{Poblaci{\'o}n.} Es el universo de enunciados o \emph{turnos} de habla propios de la
+comunicaci{\'o}n m{\'e}dico-paciente en consultas generales ---triaje, s{\'i}ntomas e
+indicaciones--- en el par quechua de Cusco (\sig{quz})--espa{\~n}ol. Al tratarse de un universo
+\emph{ling{\"u}{\'i}stico} y no de un conjunto de personas, se cuantifica en unidades de di{\'a}logo
+(turnos), no en individuos.
+
+\noindent\textbf{Muestra.} Es el \emph{corpus cl{\'i}nico} construido \emph{ad hoc} para el estudio:
+un banco de frases-gui{\'o}n por escenario con sus grabaciones de audio, del orden de 30--50
+frases-gui{\'o}n por escenario (triaje, s{\'i}ntomas e indicaciones) ---aproximadamente 90--150 en
+total---, revisadas y validadas con hablantes nativos de la variante de Cusco.
+
+\noindent\obscuatro{\textbf{Partici{\'o}n y control de fuga de datos.} El corpus se divide en los
+subconjuntos de \emph{entrenamiento} (70\,\%), \emph{validaci{\'o}n} (15\,\%) y \emph{prueba}
+(15\,\%), con separaci{\'o}n estricta: el conjunto de prueba \emph{no} participa en el ajuste, de modo
+que las m{\'e}tricas (WER, BLEU, chrF) se reportan siempre sobre datos no vistos y no quedan infladas
+por sobreajuste. Dado el tama{\~n}o reducido, la estimaci{\'o}n se robustece con \emph{validaci{\'o}n
+cruzada} $k$-\emph{fold} ($k=5$), reportando la media y la desviaci{\'o}n de cada m{\'e}trica.}
+
+\noindent\obscuatro{\textbf{Rol del corpus y aumento de datos.} Las 90--150 frases-gui{\'o}n
+constituyen, ante todo, un \emph{banco de evaluaci{\'o}n} (\emph{benchmark}) de dominio cl{\'i}nico;
+por s{\'i} solas son insuficientes como {\'u}nico material de entrenamiento para el \emph{fine-tuning}
+de NLLB. Por ello el conjunto de ajuste se amplifica con \emph{aumento de datos} ---retrotraducci{\'o}n
+(\emph{back-translation}) y generaci{\'o}n de variantes sint{\'e}ticas--- y se complementa con recursos
+existentes para el quechua (\emph{Huqariq}, QuBERT), reservando el \emph{benchmark} cl{\'i}nico para la
+medici{\'o}n final.}
+
+\noindent\textbf{Unidad muestral (registro).} Cada \emph{turno} de traducci{\'o}n constituye una fila
+del conjunto de datos, con sus campos de evaluaci{\'o}n: direcci{\'o}n \sig{quz}$\leftrightarrow$es,
+transcripci{\'o}n, traducci{\'o}n de referencia, WER, BLEU, chrF, MOS y latencia (v{\'e}ase el
+Anexo~1).
+
+\noindent\textbf{Tipo de muestreo.} No probabil{\'i}stico por conveniencia, apropiado para una lengua
+de bajo recurso sin corpus cl{\'i}nico preexistente: las frases se seleccionan por su pertinencia al
+dominio y por su cobertura de los escenarios de consulta, no al azar.
+
+\noindent\textbf{Participantes.} Para la validaci{\'o}n de percepci{\'o}n (comprensi{\'o}n y calidad
+de voz) se convoca a 10--15 voluntarios biling{\"u}es \sig{quz}--espa{\~n}ol ---estudiantes de
+ciencias de la salud o personal asistencial--- que act{\'u}an los roles en las consultas simuladas.
+\emph{No} se emplean pacientes ni datos cl{\'i}nicos reales, en concordancia con los aspectos
+{\'e}ticos del estudio.
+
+\noindent\obscuatro{\textbf{Justificaci{\'o}n del tama{\~n}o.} El n{\'u}mero de jueces (10--15)
+satisface el m{\'i}nimo habitual para estimar el MOS de forma estable ($\ge 10$ evaluadores); el
+n{\'u}mero de turnos (90--150) responde a la disponibilidad real de hablantes nativos de la variante
+de Cusco y a la naturaleza acotada del dominio. Al tratarse de una muestra peque{\~n}a, los resultados
+se acompa{\~n}an de intervalos de confianza y del tama{\~n}o del efecto (\emph{d} de Cohen), y el
+dise{\~n}o de medidas repetidas ---cada unidad como su propio control--- incrementa la potencia
+estad{\'i}stica frente a un contraste entre grupos independientes.}
+\end{bloqueObsDos}
+
+\subsubsection{\nuevo{Entorno tecnol{\'o}gico (\emph{setup} experimental)}}
+\begin{bloqueNuevo}
+El ajuste y la evaluaci{\'o}n se ejecutan en el entorno de la Tabla~\ref{tab:setup}. El
+\emph{fine-tuning} de MMS y NLLB requiere GPU; la inferencia del \emph{pipeline} integrado se valida
+adem{\'a}s en equipo de gama media, compatible con un piloto en el punto de atenci{\'o}n.
+\end{bloqueNuevo}
+
+\begin{bloqueObsCuatro}
+\noindent El \emph{fine-tuning} ---fase intensiva en c{\'o}mputo--- se ejecuta en \textbf{GPU en la
+nube} (Google Colab Pro, Kaggle o cr{\'e}ditos de nube institucional), ya que el equipo local de
+desarrollo (Windows\,11 con WSL2, sin GPU dedicada) solo soporta con holgura la \emph{inferencia} del
+\emph{pipeline} integrado. Para acotar el costo, el ajuste emplea t{\'e}cnicas de bajo consumo de
+memoria (\emph{LoRA}/\emph{PEFT} y precisi{\'o}n reducida), de modo que cada modelo se afina dentro de
+los l{\'i}mites de VRAM de una GPU de nivel medio (p.\,ej.\ T4 de 16\,GB); el presupuesto de
+horas-GPU se detalla en el Cap{\'i}tulo~V.
+\end{bloqueObsCuatro}
+
+\begin{table}[H]
+\centering
+\caption{\nuevo{Entorno de hardware y software del experimento.}}
+\label{tab:setup}
+\small
+{
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule\hdr{Componente} & \hdr{Especificaci{\'o}n prevista} \\
+\midrule
+GPU            & NVIDIA con $\ge 12$\,GB VRAM (p.\,ej.\ RTX 3060/T4); cr{\'e}ditos en la nube para fases intensivas \\
+CPU / RAM      & 8 n{\'u}cleos / $\ge 16$\,GB \\
+Almacenamiento & $\ge 256$\,GB SSD \\
+Sistema        & Linux (Ubuntu 22.04) o Windows 11 con WSL2 \\
+Lenguaje       & Python 3.11 \\
+\emph{Frameworks} & PyTorch 2.x, Hugging Face \texttt{transformers}, \texttt{datasets}, \texttt{peft} (LoRA) \\
+Evaluaci{\'o}n & \texttt{jiwer} (WER), \texttt{sacrebleu} (BLEU/chrF); MOS por panel \\
+\bottomrule
+\end{tabularx}}
+\notaAPA{Las herramientas corresponden a los modelos justificados en el Cap{\'i}tulo~II (MMS, NLLB, Whisper) y a sus ecosistemas de c{\'o}digo abierto.}
+\end{table}
+
+\subsection{T{\'e}cnicas e instrumentos de recolecci{\'o}n}
+\begin{itemize}
+  \item \textbf{Corpus:} Lista de vocabulario y frases de triaje/s{\'i}ntomas/indicaciones, construida y revisada con personal de salud (fichas de validaci{\'o}n de contenido).
+  \item \textbf{Registro de desempe{\~n}o:} \emph{Logs} autom{\'a}ticos del sistema (WER, BLEU, latencia por turno).
+  \item \textbf{Encuesta de percepci{\'o}n:} Cuestionario tipo Likert (utilidad, confianza, comprensi{\'o}n) al personal y a los pacientes-actores.
+  \item \textbf{Prueba de comprensi{\'o}n:} Tarea de recuperaci{\'o}n de la indicaci{\'o}n (\% de aciertos) para contrastar H2 y H3.
+\end{itemize}
+
+\subsection{Procedimiento metodol{\'o}gico}
+\begin{enumerate}
+  \item Construcci{\'o}n y validaci{\'o}n del corpus m{\'e}dico Quechua--Espa{\~n}ol.
+  \item Ajuste (\emph{fine-tuning}) de MMS (reconocimiento y s{\'i}ntesis) y, como aporte central, de NLLB para el par quechua de Cusco (\sig{quz})--Espa{\~n}ol.
+  \item Integraci{\'o}n del \emph{pipeline} y de la salida diferenciada por voz y texto.
+  \item Ejecuci{\'o}n de consultas simuladas bajo las condiciones experimentales.
+  \item Registro de m{\'e}tricas y aplicaci{\'o}n de instrumentos de percepci{\'o}n.
+\end{enumerate}
+
+\subsection{Protocolo de evaluaci{\'o}n}
+
+\subsubsection{M{\'e}tricas de reconocimiento y traducci{\'o}n}
+La precisi{\'o}n del reconocimiento se mide con la \textbf{tasa de error de palabra (WER)} y la de la
+traducci{\'o}n con \textbf{BLEU} \parencite{papineni2002bleu} y \textbf{chrF} \parencite{popovic2015chrf},
+adecuada para lenguas morfol{\'o}gicamente ricas. \nuevo{Sus formulaciones se definieron en el
+Cap{\'i}tulo~II (ecuaciones~\ref{eq:wer}, \ref{eq:bleu} y~\ref{eq:chrf}).} Operativamente, el WER se
+calcula por turno sobre la transcripci{\'o}n del ASR y BLEU/chrF sobre la traducci{\'o}n del MT, en
+ambos sentidos \sig{quz}$\leftrightarrow$es, comparando contra referencias validadas por hablantes
+nativos.
+
+\subsubsection{M{\'e}tricas de calidad de voz y comprensi{\'o}n}
+La calidad de la voz sintetizada se valora con el \emph{Mean Opinion Score} (MOS). La comprensi{\'o}n
+se mide con el porcentaje de aciertos en la recuperaci{\'o}n de la indicaci{\'o}n y con escalas Likert
+de utilidad y confianza.
+
+\subsubsection{M{\'e}tricas de eficiencia}
+La eficiencia se cuantifica con la \emph{latencia por turno} (tiempo entre el fin de la voz de
+entrada y el inicio de la voz de salida) y el consumo de recursos de c{\'o}mputo.
+
+\subsubsection{\obscuatro{L{\'i}neas base (\emph{baselines}) de comparaci{\'o}n}}
+\begin{bloqueObsCuatro}
+\noindent El desempe{\~n}o del sistema ajustado se interpreta siempre contra referencias expl{\'i}citas,
+no en abstracto. Se contrastan tres condiciones: (i)~\textbf{modelos preentrenados sin ajuste}
+---NLLB con el quechua de Ayacucho (\sig{quy}) y MMS base---, que fijan el punto de partida t{\'e}cnico;
+(ii)~el \textbf{sistema ajustado} a la variante de Cusco (\sig{quz}) y al dominio cl{\'i}nico, que es
+la propuesta; y (iii)~la \textbf{ausencia de apoyo tecnol{\'o}gico}, como referencia de la
+comprensi{\'o}n m{\'e}dico-paciente. La mejora de (ii) sobre (i) contrasta H2 y la de (ii) sobre (iii)
+contrasta H3.
+\end{bloqueObsCuatro}
+
+\subsubsection{\obscuatro{Criterios de {\'e}xito (metas cuantitativas)}}
+\begin{bloqueObsCuatro}
+\noindent El {\'e}xito del prototipo se declara verificable mediante umbrales objetivo, fijados a
+partir de los resultados reportados en los antecedentes (Cap{\'i}tulo~II) y ajustados al dominio
+cl{\'i}nico y a la variante de Cusco (Tabla~\ref{tab:metas}).
+\end{bloqueObsCuatro}
+
+\begin{table}[H]
+\centering
+\caption{\obscuatro{Metas de desempe{\~n}o del prototipo (criterios de {\'e}xito).}}
+\label{tab:metas}
+\small
+\begin{tabularx}{\linewidth}{@{}l X l@{}}
+\toprule\hdr{M{\'e}trica} & \hdr{Componente / sentido} & \hdr{Meta objetivo} \\
+\midrule
+WER            & Reconocimiento (ASR), menor es mejor      & $\le 25$\,\% \\
+BLEU           & Traducci{\'o}n (MT), mayor es mejor         & $\ge 20$ \\
+chrF           & Traducci{\'o}n (MT), morfolog{\'i}a rica    & $\ge 45$ \\
+MOS            & Calidad de voz (TTS), escala 1--5         & $\ge 3.5$ \\
+Comprensi{\'o}n & \% de aciertos en la indicaci{\'o}n        & $\ge 80$\,\% \\
+Latencia       & Tiempo por turno (cascada completa)       & $\le 4.0$\,s \\
+\bottomrule
+\end{tabularx}
+\notaAPA{\obscuatro{Elaboraci{\'o}n propia. Umbrales de referencia para declarar viable el prototipo;
+se contrastan con las l{\'i}neas base y pueden reajustarse tras la fase de diagn{\'o}stico. Valores
+anclados en los antecedentes del Cap{\'i}tulo~II (p.\,ej.\ 26.7 BLEU en QUESPA\,2025; MOS hasta 4.9 en
+s{\'i}ntesis quechua).}}
+\end{table}
+
+\subsection{M{\'e}todos de an{\'a}lisis de datos}
+Estad{\'i}stica descriptiva para WER/BLEU/MOS/latencia y pruebas de comparaci{\'o}n de
+medias/proporciones (t de Student o Wilcoxon seg{\'u}n normalidad), con un nivel de significancia
+$\alpha = 0{,}05$\label{sym:alpha}, para contrastar las hip{\'o}tesis (modelo ajustado vs. sin ajustar; texto vs.
+texto+voz).
+
+\nuevo{La elecci{\'o}n entre ambas pruebas se decide con un contraste previo de
+normalidad (Shapiro--Wilk): si los datos son normales se aplica la \emph{t} de Student
+(param{\'e}trica); si no, la prueba de Wilcoxon (no param{\'e}trica, basada en rangos), adecuada para
+muestras peque{\~n}as como la de este estudio.}
+
+\subsection{Aspectos {\'e}ticos y de gesti{\'o}n de datos}
+El estudio usa {\'u}nicamente di{\'a}logos \textbf{simulados/actuados}, sin informaci{\'o}n cl{\'i}nica
+real, evitando la necesidad de aprobaci{\'o}n de un comit{\'e} de {\'e}tica hospitalario para datos de
+pacientes. Se obtiene consentimiento informado de los participantes voluntarios y se anonimizan las
+grabaciones, en cumplimiento de los principios {\'e}ticos de la investigaci{\'o}n. Los datos se
+almacenan de forma segura y se usan solo con fines de investigaci{\'o}n.
+
+\begin{bloqueObsCuatro}
+\noindent Aunque no se manejan datos de pacientes, el proyecto se acoge a la categor{\'i}a de
+\textbf{riesgo m{\'i}nimo} y tramita la conformidad de la instancia correspondiente de la UNSAAC
+---la Escuela Profesional de Ingenier{\'i}a Inform{\'a}tica y de Sistemas y, de requerirse, el
+comit{\'e} institucional de {\'e}tica de la investigaci{\'o}n--- conforme al reglamento de grados y
+t{\'i}tulos vigente. El consentimiento informado (Anexo~4), la participaci{\'o}n voluntaria con
+derecho de retiro sin perjuicio y la anonimizaci{\'o}n de las grabaciones constituyen las garant{\'i}as
+{\'e}ticas del estudio.
+\end{bloqueObsCuatro}
+
+\begin{landscape}
+\subsection{\nuevo{Matriz de consistencia}}
+\begin{bloqueNuevo}
+\noindent Cada fila articula, en horizontal, problema, objetivo, hip{\'o}tesis, variables, indicadores y m{\'e}todo de an{\'a}lisis (Tabla~\ref{tab:matriz-consist}).
+\end{bloqueNuevo}
+\vspace{1pt}
+
+\captionof{table}{\nuevo{Matriz de consistencia del proyecto.}}
+\label{tab:matriz-consist}
+
+% ----- barra de Tema (APA: sin relleno de color, solo borde) -----
+\setlength{\fboxsep}{6pt}%
+\noindent\fcolorbox{black}{white}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\centering
+  \footnotesize\textbf{Tema:} Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol mediante aprendizaje profundo para consultas m{\'e}dicas en Cusco}}
+\vspace{2pt}
+
+\fontsize{7}{8.3}\selectfont
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{3.5pt}
+\arrayrulecolor{black}
+\noindent
+\begin{tabularx}{\linewidth}{@{}
+  >{\centering\arraybackslash}m{2.1cm}
+  *{6}{>{\raggedright\arraybackslash}X}@{}}
+\toprule
+\hdr{Nivel} & \hdr{Problema} & \hdr{Objetivo} & \hdr{Hip{\'o}tesis} & \hdr{Variables} & \hdr{Dimensiones / indicadores} & \hdr{Metodolog{\'i}a} \\
+\midrule
+\celnivel{General} &
+{\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n de voz QU--ES para la comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo, en Cusco? &
+Desarrollar el sistema mediante el ajuste de modelos preentrenados (MMS, NLLB) para la comunicaci{\'o}n m{\'e}dico-paciente en Cusco. &
+Mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo. &
+\textbf{VI:} Uso y modalidad (texto / texto+voz). \textbf{VD:} Precisi{\'o}n, voz, comprensi{\'o}n. &
+WER, BLEU, chrF, MOS; \% comprensi{\'o}n; latencia (s). &
+Aplicada; cuantitativo; \obscuatro{cuasi-exp.\ (medidas repetidas)}; t / Wilcoxon ($\alpha=0{,}05$). \\
+\celnivel{Espec{\'i}fico 1 (Diagn{\'o}stico)} &
+{\textquestiondown}Cu{\'a}les son las barreras de comunicaci{\'o}n y los requisitos del corpus cl{\'i}nico QU--ES? &
+Caracterizar las barreras y los requerimientos del corpus cl{\'i}nico QU--ES. &
+\obscuatro{(Descriptiva)} Las barreras definen los requisitos del corpus cl{\'i}nico para el ajuste. &
+Barreras; corpus (calidad y cobertura). &
+Cobertura l{\'e}xica; \% de concordancia. &
+Nivel descriptivo; juicio de expertos; fichas de validaci{\'o}n. \\
+\celnivel{Espec{\'i}fico 2 (Construcci{\'o}n)} &
+{\textquestiondown}C{\'o}mo desarrollar el sistema (corpus + \emph{fine-tuning} de MMS y NLLB \sig{quy}$\to$\sig{quz} + \emph{pipeline})? &
+Desarrollar el sistema: corpus + \emph{fine-tuning} de MMS y NLLB (\sig{quy}$\to$\sig{quz}), integrados en el \emph{pipeline}. &
+El \emph{fine-tuning} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar. &
+Modelo (base vs.\ ajustado); \emph{pipeline}. &
+WER; BLEU; chrF; latencia (s). &
+Nivel aplicativo; \emph{logs} autom{\'a}ticos; t / Wilcoxon (ajustado vs.\ base). \\
+\celnivel{Espec{\'i}fico 3 (Validaci{\'o}n)} &
+{\textquestiondown}En qu{\'e} medida el sistema mejora la precisi{\'o}n, la voz y la comprensi{\'o}n frente a la ausencia de apoyo? &
+Evaluar la mejora en precisi{\'o}n, voz y comprensi{\'o}n en consultas simuladas. &
+Mejora significativamente la precisi{\'o}n, la voz y la comprensi{\'o}n mutua. &
+Precisi{\'o}n; voz; comprensi{\'o}n; percepci{\'o}n. &
+WER/BLEU/chrF; MOS; \% de aciertos; Likert. &
+Nivel explicativo; experimental; estad{\'i}stica inferencial. \\
+\bottomrule
+\end{tabularx}
+\arrayrulecolor{black}
+\notaAPA{Elaboraci{\'o}n propia. Las tres filas espec{\'i}ficas siguen el modelo de ingenier{\'i}a de tres fases (diagn{\'o}stico, construcci{\'o}n y validaci{\'o}n), en correspondencia 1 a 1 con los objetivos. VI/VD: variable independiente/dependiente. Las f{\'o}rmulas de WER, BLEU, chrF y MOS se definen en el Cap{\'i}tulo~II.}
+\end{landscape}

@@ -1,0 +1,321 @@
+% ##################################################################
+% CAPÍTULO I: INTRODUCCIÓN
+% ##################################################################
+\section{Introducci{\'o}n}
+En la regi{\'o}n Cusco, donde m{\'a}s de la mitad de la poblaci{\'o}n tiene el quechua como lengua
+materna, la atenci{\'o}n en salud opera de manera predominante en espa{\~n}ol. Esta asimetr{\'i}a
+levanta una barrera comunicativa entre un personal de salud mayoritariamente castellanohablante y una
+poblaci{\'o}n usuaria quechuahablante, barrera que ---agravada por la baja alfabetizaci{\'o}n en las
+zonas rurales andinas--- compromete aspectos sensibles del acto m{\'e}dico, desde la recogida de los
+s{\'i}ntomas hasta la correcta comprensi{\'o}n de las indicaciones.
+
+En paralelo, el procesamiento del lenguaje natural ha alcanzado un punto en el que es posible
+\emph{adaptar} grandes modelos multiling{\"u}es preentrenados a lenguas de bajo recurso como el
+quechua, sin necesidad de entrenarlos desde cero. Sobre esa base, el presente plan propone desarrollar
+y evaluar un sistema \textbf{bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol} para
+consultas m{\'e}dicas, que encadena reconocimiento de voz, traducci{\'o}n autom{\'a}tica y s{\'i}ntesis
+de voz, con salida hablada en ambos sentidos del di{\'a}logo para incluir tambi{\'e}n a los usuarios
+con baja o nula alfabetizaci{\'o}n.
+
+Este primer cap{\'i}tulo sit{\'u}a el problema en sus niveles internacional, nacional y regional,
+delimita el vac{\'i}o de investigaci{\'o}n y el problema espec{\'i}fico, y formula la propuesta con sus
+objetivos, su justificaci{\'o}n y sus alcances. Las hip{\'o}tesis, por su car{\'a}cter contrastable, se
+enuncian en el Cap{\'i}tulo~III junto con el dise{\~n}o metodol{\'o}gico que permite someterlas a
+prueba.
+
+\subsection{Contexto y problema general}
+\obsdos{El contexto de esta investigaci{\'o}n se aborda en tres niveles ---internacional, nacional y
+regional--- que, en conjunto, muestran c{\'o}mo una barrera ling{\"u}{\'i}stica hist{\'o}rica se
+combina hoy con una oportunidad tecnol{\'o}gica inexistente hace pocos a{\~n}os.}
+
+\subsubsection{\obsdos{Contexto internacional}}
+\begin{bloqueObsDos}
+\noindent De las miles de lenguas que se hablan en el mundo, solo una peque{\~n}a fracci{\'o}n cuenta
+con recursos digitales suficientes para sostener tecnolog{\'i}as del lenguaje; la gran mayor{\'i}a
+son \emph{lenguas de bajo recurso}, con escasa o nula presencia en los sistemas de voz y
+traducci{\'o}n autom{\'a}tica. Esta asimetr{\'i}a digital reproduce, en el plano tecnol{\'o}gico, las
+desigualdades que ya enfrentan sus hablantes en el acceso a servicios b{\'a}sicos.
+
+\noindent En el {\'a}mbito
+sanitario, la comunicaci{\'o}n entre un profesional de salud y un paciente que no comparten la misma
+lengua es un problema reconocido a escala global: la barrera idiom{\'a}tica compromete la
+anamnesis, el diagn{\'o}stico, el consentimiento informado y la adherencia al tratamiento, y por
+ello el derecho de la persona a ser atendida en su lengua materna se considera un componente de la
+calidad y la seguridad del acto m{\'e}dico.
+
+\noindent En paralelo, el procesamiento del lenguaje natural ha experimentado un cambio de
+paradigma que abre una ventana de oportunidad para estas lenguas. La estrategia dominante ya no es
+entrenar modelos desde cero ---inviable con pocos datos---, sino adaptar (\emph{fine-tuning})
+grandes modelos multiling{\"u}es preentrenados que incorporan cientos de idiomas: en la voz, MMS
+\parencite{pratap2024mms} y Whisper \parencite{radford2023whisper}; en la traducci{\'o}n, NLLB
+\parencite{costajussa2022nllb}.
+
+\noindent Competencias internacionales como AmericasNLP
+\parencite{mager2021americasnlp} y las tareas de traducci{\'o}n de voz de IWSLT
+\parencite{Ortega2025260} han impulsado de forma sostenida el trabajo sobre lenguas ind{\'i}genas
+americanas. En este panorama, el quechua ---la lengua originaria con mayor n{\'u}mero de hablantes
+de Am{\'e}rica, extendida por varios pa{\'i}ses andinos--- concentra buena parte de ese esfuerzo,
+aunque todav{\'i}a de manera fragmentaria y por componentes aislados.
+
+\noindent En el terreno sanitario, la pr{\'a}ctica internacional recomendada frente a la barrera
+idiom{\'a}tica es la mediaci{\'o}n ling{\"u}{\'i}stica ---int{\'e}rpretes presenciales o
+telef{\'o}nicos---; sin embargo, su disponibilidad es limitada y pr{\'a}cticamente nula en entornos
+rurales y de atenci{\'o}n primaria, donde ocurre el primer contacto con el sistema de salud.
+
+\noindent Por eso
+las tecnolog{\'i}as del habla ---reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz--- se perfilan
+a escala global como un apoyo emergente a la comunicaci{\'o}n cl{\'i}nica, con la ventaja decisiva de
+operar por \emph{voz}: a diferencia de las soluciones basadas en texto, no exigen alfabetizaci{\'o}n
+y resultan utilizables por poblaciones con baja escolaridad.
+
+\noindent Esta orientaci{\'o}n se inscribe en un
+esfuerzo m{\'a}s amplio de \emph{inclusi{\'o}n digital} y de preservaci{\'o}n de las lenguas
+originarias, hoy reconocido como un objetivo de equidad tecnol{\'o}gica: dotar de presencia digital a
+una lengua es tambi{\'e}n una forma de sostener los derechos de sus hablantes.
+\end{bloqueObsDos}
+
+\subsubsection{\obsdos{Contexto nacional}}
+El Per{\'u} es un pa{\'i}s plurilingüe en el que el quechua es la lengua originaria con mayor
+n{\'u}mero de hablantes. Los Censos Nacionales 2017 registran a millones de peruanos que declaran
+el quechua como lengua materna, con una marcada concentraci{\'o}n en la sierra sur
+\parencite{inei2017}.
+\begin{bloqueObsDos}
+\noindent El Estado reconoce el car{\'a}cter multiling{\"u}e del pa{\'i}s y el derecho de los
+ciudadanos a relacionarse con las instituciones p{\'u}blicas en su lengua materna; sin embargo, en
+la pr{\'a}ctica los servicios esenciales ---la salud entre ellos--- operan de manera predominante en
+espa{\~n}ol, lo que condiciona su acceso efectivo para la poblaci{\'o}n quechuahablante.
+
+\noindent A esta
+brecha ling{\"u}{\'i}stica se suma una brecha educativa: cerca del 22.8\,\% de las mujeres rurales no
+sabe leer ni escribir \parencite{inei2023}, con programas de alfabetizaci{\'o}n a{\'u}n limitados en
+las zonas andinas \parencite{dispurse2023}.
+
+\noindent Esta doble barrera ---de idioma y de
+alfabetizaci{\'o}n--- implica que una soluci{\'o}n tecnol{\'o}gica pertinente para el pa{\'i}s no
+puede basarse solo en texto, sino que debe operar principalmente por \emph{voz}. En el plano
+institucional ya existen se{\~n}ales de respuesta: EsSalud reactiv{\'o} en 2023 una central
+telef{\'o}nica de atenci{\'o}n en quechua \parencite{essalud2023}, y la comunidad acad{\'e}mica
+peruana ha producido recursos y modelos iniciales para el quechua en reconocimiento, traducci{\'o}n
+y s{\'i}ntesis de voz, aunque ninguno orientado a la consulta m{\'e}dica.
+
+\noindent El sistema de salud peruano incorpora, al menos en el plano normativo, un enfoque
+intercultural que reconoce la pertinencia ling{\"u}{\'i}stica de la atenci{\'o}n; no obstante, su
+traducci{\'o}n en herramientas operativas dentro del consultorio sigue siendo escasa. La atenci{\'o}n
+primaria se presta en una red amplia y dispersa de establecimientos ---postas y centros de salud---
+situados en zonas andinas donde la poblaci{\'o}n usuaria es mayoritariamente quechuahablante, lo que
+convierte la distancia idiom{\'a}tica en un problema cotidiano y estructural, no excepcional.
+
+\noindent En ese
+contexto, la investigaci{\'o}n nacional en procesamiento del lenguaje para el quechua ha crecido de
+forma sostenida en la {\'u}ltima d{\'e}cada, pero se ha concentrado en resolver cada componente por
+separado ---reconocimiento, traducci{\'o}n o s{\'i}ntesis--- y sobre dominios generales, sin integrar
+un sistema completo ni abordar el vocabulario propio de la atenci{\'o}n en salud.
+\end{bloqueObsDos}
+
+\subsubsection{\obsdos{Contexto regional (Cusco)}}
+En la regi{\'o}n Cusco la presencia del quechua es particularmente intensa: m{\'a}s del
+55\,\% de la poblaci{\'o}n tiene el quechua como lengua materna \parencite{essalud2023}. Esta
+realidad ling{\"u}{\'i}stica condiciona el acceso efectivo a los servicios p{\'u}blicos
+esenciales ---la atenci{\'o}n en salud entre ellos--- cuando operan de manera predominante en
+espa{\~n}ol.
+
+\begin{bloqueObsDos}
+\noindent La red de salud de Cusco atiende a una poblaci{\'o}n extensa y geogr{\'a}ficamente
+dispersa, con numerosas comunidades rurales y altoandinas donde el quechua es la lengua de uso
+cotidiano y el espa{\~n}ol tiene presencia limitada.
+
+\noindent A esta realidad se suma una particularidad
+ling{\"u}{\'i}stica decisiva para la propuesta: el quechua de Cusco corresponde a la variante Collao
+(\sig{quz}), distinta de la de Ayacucho (\sig{quy}) tanto en l{\'e}xico como en rasgos
+fonol{\'o}gicos; esta diferencia dialectal ---no menor para un sistema autom{\'a}tico--- es
+justamente la que los modelos de traducci{\'o}n disponibles a{\'u}n no cubren para Cusco.
+
+\noindent Por
+a{\~n}adidura, la consulta m{\'e}dica no es solo un intercambio de informaci{\'o}n, sino un encuentro
+cultural en el que la confianza y la comprensi{\'o}n mutua condicionan la adherencia al tratamiento;
+cuando esa comunicaci{\'o}n falla, el riesgo cl{\'i}nico recae sobre la poblaci{\'o}n m{\'a}s
+vulnerable.
+\end{bloqueObsDos}
+
+\subsubsection{\obsdos{Planteamiento del problema}}
+\obsdos{Los tres niveles de contexto ---internacional, nacional y regional--- convergen en un
+problema concreto y localizado: la comunicaci{\'o}n cl{\'i}nica en la consulta cara a cara de los
+establecimientos de salud de Cusco, donde el idioma se vuelve un determinante directo de la
+calidad y la seguridad de la atenci{\'o}n.}
+
+En el {\'a}mbito sanitario, la distancia idiom{\'a}tica entre un personal de salud mayoritariamente
+castellanohablante y una poblaci{\'o}n usuaria quechuahablante origina una barrera comunicativa con
+consecuencias cl{\'i}nicas directas.
+
+EsSalud reconoce que cerca de 70\,000 de sus asegurados en
+Cusco son quechuahablantes y reactiv{\'o} en 2023 la central telef{\'o}nica en quechua
+\parencite{essalud2023}; sin embargo, \obsdos{esa medida ---de alcance telef{\'o}nico y
+unidireccional--- no alcanza} la interacci{\'o}n cara a cara del
+consultorio, donde se recogen s{\'i}ntomas, se formula el diagn{\'o}stico y se entregan las
+indicaciones.
+
+La evidencia confirma la gravedad del problema: \textcite{begazo2026} documenta
+c{\'o}mo la desconexi{\'o}n idiom{\'a}tica vulnera la relaci{\'o}n terap{\'e}utica en hospitales de
+Cusco, y \textcite{cuaila2022} halla una relaci{\'o}n entre el conocimiento del quechua del personal
+y la calidad de atenci{\'o}n percibida. A ello se suma una barrera de alfabetizaci{\'o}n: cerca del
+22.8\,\% de las mujeres rurales no sabe leer ni escribir \parencite{inei2023}, lo que obliga a una
+soluci{\'o}n basada en \emph{voz} y no solo en texto (Figura~\ref{fig:barreras}).
+
+\obsdos{\noindent Las consecuencias de esta barrera no son menores: una anamnesis incompleta, un
+diagn{\'o}stico tard{\'i}o o una indicaci{\'o}n mal comprendida comprometen la seguridad del acto
+m{\'e}dico y la adherencia al tratamiento, y recaen sobre la poblaci{\'o}n m{\'a}s vulnerable. Pese a
+ello, las respuestas institucionales vigentes son parciales ---telef{\'o}nicas, unidireccionales o
+dependientes de la disponibilidad de personal biling{\"u}e--- y no existe una herramienta que asista
+la traducci{\'o}n por voz, en ambos sentidos, durante la propia consulta.}
+
+\begin{bloqueObsDos}
+\noindent En s{\'i}ntesis, el problema general que motiva este plan es la \textbf{barrera
+comunicativa entre el personal de salud castellanohablante y los pacientes quechuahablantes de
+Cusco} durante la consulta cara a cara, agravada por la baja alfabetizaci{\'o}n y no resuelta por
+las medidas vigentes. Existiendo hoy modelos multiling{\"u}es preentrenados que cubren parcialmente
+el quechua, la pregunta es si pueden adaptarse e integrarse en un sistema de traducci{\'o}n por voz,
+bidireccional, para asistir esa interacci{\'o}n cl{\'i}nica.
+\end{bloqueObsDos}
+
+\begin{figure}[H]
+\centering
+\caption{Magnitud de la problem{\'a}tica en Cusco.}
+\label{fig:barreras}
+\begin{tikzpicture}
+\begin{axis}[
+    ybar, width=12cm, height=6cm, bar width=28pt,
+    ymin=0, ymax=100, ylabel={Porcentaje (\%)},
+    symbolic x coords={Lengua materna,Asegurados EsSalud,Analfab. mujer rural},
+    xtick={Lengua materna,Asegurados EsSalud,Analfab. mujer rural},
+    nodes near coords, nodes near coords style={font=\small},
+    x tick label style={align=center,font=\small,text width=2.5cm},
+    enlarge x limits=0.25, ymajorgrids=true, grid style=dashed,
+]
+\addplot[fill=g4, draw=g5, bar shift=0pt] coordinates {(Lengua materna,55)};
+\addplot[fill=g8, draw=g7, bar shift=0pt] coordinates {(Asegurados EsSalud,15)};
+\addplot[fill=g12, draw=g11, bar shift=0pt] coordinates {(Analfab. mujer rural,22.8)};
+\end{axis}
+\end{tikzpicture}
+\notaAPA{Elaboraci{\'o}n propia con datos de \textcite{essalud2023} e \textcite{inei2023}.}
+\end{figure}
+
+\subsection{Tecnolog{\'i}a o m{\'e}todo}
+El estado del arte en procesamiento del lenguaje natural ofrece hoy una oportunidad que no
+exist{\'i}a hace pocos a{\~n}os. La estrategia dominante para lenguas de bajo recurso ya no consiste
+en entrenar modelos desde cero, sino en adaptar (\emph{fine-tuning}) grandes modelos multiling{\"u}es
+preentrenados.
+
+En la voz, el proyecto MMS \parencite{pratap2024mms} cubre el quechua de Cusco
+(\sig{quz}) en reconocimiento y s{\'i}ntesis; Whisper \parencite{radford2023whisper} declara una
+cobertura marginal del quechua y se reserva como l{\'i}nea base. En traducci{\'o}n, NLLB
+\parencite{costajussa2022nllb} incluye el quechua de Ayacucho (\sig{quy}) y no el de Cusco, por lo
+que el par debe adaptarse a \sig{quz} ---esa brecha dialectal es el n{\'u}cleo del aporte
+t{\'e}cnico---.
+
+Existen adem{\'a}s antecedentes de traducci{\'o}n neural para esta lengua
+polisint{\'e}tica \parencite{ortega2020quechua,mager2021americasnlp} y recursos como el corpus
+\emph{Huqariq} \parencite{zevallos2022huqariq}.
+
+\subsection{Vac{\'i}o de investigaci{\'o}n}
+Persiste una desconexi{\'o}n entre ambos mundos: el problema social est{\'a} bien documentado y la
+tecnolog{\'i}a base existe, pero nadie ha unido los dos extremos. No se dispone de un corpus
+cl{\'i}nico Quechua--Espa{\~n}ol ni de una evaluaci{\'o}n emp{\'i}rica del desempe{\~n}o de estos
+modelos sobre el vocabulario propio de la consulta m{\'e}dica (triaje, s{\'i}ntomas e indicaciones),
+y NLLB a{\'u}n no cubre la variante de Cusco (\sig{quz}). Cerrar esa intersecci{\'o}n es el aporte
+de este proyecto.
+
+\subsection{Formulaci{\'o}n del problema}
+La formulaci{\'o}n del problema de esta investigaci{\'o}n se concentra en la comunicaci{\'o}n
+m{\'e}dico-paciente mediada por un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol
+basado en modelos preentrenados, y en la medida en que su ajuste al dominio cl{\'i}nico mejora la
+precisi{\'o}n y la comprensi{\'o}n frente a la ausencia de apoyo tecnol{\'o}gico.
+
+\subsubsection{Problema general}
+{\textquestiondown}\obsdos{C{\'o}mo \emph{desarrollar un sistema bidireccional de traducci{\'o}n de voz
+Quechua--Espa{\~n}ol} \emph{mediante aprendizaje profundo} (ajuste de modelos preentrenados basados en
+Transformer) \emph{para la comunicaci{\'o}n m{\'e}dico-paciente en las consultas m{\'e}dicas en Cusco}?}
+
+\subsubsection{Problemas espec{\'i}ficos}
+\begin{enumerate}
+  \item \obsdos{\textbf{(PE1 --- Diagn{\'o}stico).} {\textquestiondown}Cu{\'a}les son las barreras de comunicaci{\'o}n entre el personal de salud y los pacientes quechuahablantes, y qu{\'e} debe contener el corpus cl{\'i}nico Quechua--Espa{\~n}ol (triaje, s{\'i}ntomas e indicaciones) para poder ajustar los modelos? \textbf{Aporte:} Permite construir el corpus cl{\'i}nico etiquetado; sin esos datos no es posible ajustar los modelos.}
+  \item \obsdos{\textbf{(PE2 --- Construcci{\'o}n).} {\textquestiondown}C{\'o}mo construir el sistema de traducci{\'o}n por voz, ajustando (\emph{fine-tuning}) los modelos preentrenados MMS y NLLB ---del quechua de Ayacucho (\sig{quy}) al de Cusco (\sig{quz})--- e integr{\'a}ndolos en un \emph{pipeline} ASR+MT+TTS? \textbf{Aporte:} Es el n{\'u}cleo de la soluci{\'o}n: el sistema con el modelo de traducci{\'o}n adaptado al dominio cl{\'i}nico y a la variante de Cusco.}
+  \item \obsdos{\textbf{(PE3 --- Validaci{\'o}n).} {\textquestiondown}En qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n (WER, BLEU, chrF), la calidad de la voz (MOS) y la comprensi{\'o}n entre el m{\'e}dico y el paciente, frente a no contar con apoyo tecnol{\'o}gico? \textbf{Aporte:} Demuestra si el sistema resuelve el problema general.}
+\end{enumerate}
+
+\subsection{Propuesta de soluci{\'o}n}
+Se propone desarrollar y evaluar un sistema bidireccional de traducci{\'o}n de voz
+Quechua--Espa{\~n}ol para consultas m{\'e}dicas, que encadena reconocimiento de voz (MMS),
+traducci{\'o}n autom{\'a}tica (NLLB adaptado de \sig{quy} a \sig{quz}) y s{\'i}ntesis de voz
+(MMS-TTS) mediante el ajuste de modelos preentrenados de c{\'o}digo abierto, con salida por voz en
+ambos sentidos del di{\'a}logo.
+
+\subsection{Objetivos}
+
+\subsubsection{Objetivo general}
+\nuevo{Desarrollar un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol para la
+comunicaci{\'o}n m{\'e}dico-paciente, mediante aprendizaje profundo (ajuste de modelos preentrenados
+basados en Transformer: MMS y NLLB), en las consultas m{\'e}dicas en Cusco.}
+
+\subsubsection{Objetivos espec{\'i}ficos}
+\begin{enumerate}
+  \item \obsdos{\textbf{(OE1 --- Diagn{\'o}stico).} Caracterizar las barreras de comunicaci{\'o}n entre el personal de salud y los pacientes quechuahablantes y determinar qu{\'e} debe contener el corpus cl{\'i}nico Quechua--Espa{\~n}ol (triaje, s{\'i}ntomas e indicaciones) para poder ajustar los modelos.}
+  \item \obsdos{\textbf{(OE2 --- Construcci{\'o}n).} Construir el sistema de traducci{\'o}n por voz, ajustando (\emph{fine-tuning}) los modelos preentrenados MMS y NLLB ---del quechua de Ayacucho (\sig{quy}) al de Cusco (\sig{quz})--- e integr{\'a}ndolos en un \emph{pipeline} ASR+MT+TTS con salida por voz y texto.}
+  \item \obsdos{\textbf{(OE3 --- Validaci{\'o}n).} Evaluar en qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n (WER, BLEU, chrF), la calidad de la voz (MOS) y la comprensi{\'o}n entre el m{\'e}dico y el paciente, frente a no contar con apoyo tecnol{\'o}gico.}
+\end{enumerate}
+
+\subsection{Justificaci{\'o}n}
+\noindent La investigaci{\'o}n se justifica en cuatro dimensiones:
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Te{\'o}rica:} Aporta evidencia emp{\'i}rica del desempe{\~n}o de modelos
+  preentrenados en una lengua de bajo recurso y morfolog{\'i}a compleja.
+  \item \textbf{Pr{\'a}ctica:} Entrega un prototipo piloteable en un centro de salud.
+  \item \textbf{Social:} Ataca una inequidad documentada en el acceso a la salud
+  \parencite{begazo2026}, en l{\'i}nea con el derecho de los pacientes a ser atendidos en su
+  lengua materna \parencite{essalud2023}.
+  \item \textbf{Metodol{\'o}gica:} Establece un proceso replicable (corpus + ajuste + evaluaci{\'o}n)
+  aplicable a otras variantes del quechua o a otros dominios.
+\end{itemize}
+\noindent Entre las \textbf{contribuciones originales esperadas} destacan:
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item El \textbf{primer corpus de dominio m{\'e}dico} Quechua--Espa{\~n}ol para tecnolog{\'i}as del habla.
+  \item La \textbf{adaptaci{\'o}n de NLLB de \sig{quy} a \sig{quz}} en el dominio cl{\'i}nico
+  (aporte t{\'e}cnico central).
+  \item Un \textbf{sistema integrado ASR+MT+TTS} con salida por voz para usuarios con baja alfabetizaci{\'o}n.
+\end{itemize}
+\noindent En conjunto, el proyecto contribuye a la equidad en el acceso a la salud de la
+poblaci{\'o}n quechuahablante de Cusco, a la seguridad del acto m{\'e}dico y a la revitalizaci{\'o}n
+y el prestigio digital del quechua.
+
+\subsubsection{Alcances y limitaciones}
+\noindent\textbf{Alcances.}
+\begin{itemize}
+  \item Par ling{\"u}{\'i}stico Quechua de Cusco (\sig{quz}) -- Espa{\~n}ol, en ambos sentidos.
+  \item Vocabulario acotado de consulta general (triaje, s{\'i}ntomas, indicaciones).
+  \item Prototipo integrado ASR+MT+TTS con salida por voz y texto.
+  \item Validaci{\'o}n con consultas simuladas en un centro de salud de referencia en Cusco.
+\end{itemize}
+\noindent\textbf{Limitaciones.}
+\begin{itemize}
+  \item \textbf{Temporal:} Ejecuci{\'o}n entre octubre 2026 y septiembre 2027 (12 meses).
+  \item \textbf{{\'E}tica:} Se emplean di{\'a}logos simulados/actuados, sin datos reales de pacientes.
+  \item Desempe{\~n}o condicionado por la escasez de datos de dominio cl{\'i}nico en quechua.
+  \item Resultados circunscritos a la variante de Cusco; no generalizables sin ajuste a otras variantes.
+\end{itemize}
+
+\subsection{Organizaci{\'o}n de la tesis}
+El documento se organiza en cinco cap{\'i}tulos:
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cap{\'i}tulo~I --- Introducci{\'o}n:} contexto, tecnolog{\'i}a, vac{\'i}o de
+  investigaci{\'o}n, problema, propuesta, objetivos y justificaci{\'o}n.
+  \item \textbf{Cap{\'i}tulo~II --- Marco te{\'o}rico:} fundamentos te{\'o}ricos y estado del arte
+  derivado de la revisi{\'o}n sistem{\'a}tica.
+  \item \textbf{Cap{\'i}tulo~III --- Metodolog{\'i}a:} enfoque, dise{\~n}o, \obsdos{hip{\'o}tesis},
+  variables, unidades de an{\'a}lisis, t{\'e}cnicas, procedimiento, protocolo de evaluaci{\'o}n y
+  aspectos {\'e}ticos.
+  \item \textbf{Cap{\'i}tulo~IV --- Factibilidad:} an{\'a}lisis de la factibilidad t{\'e}cnica,
+  econ{\'o}mica y operativa.
+  \item \textbf{Cap{\'i}tulo~V --- Aspectos administrativos:} cronograma, presupuesto y equipo.
+\end{itemize}
+\nuevo{\noindent La \textbf{matriz de consistencia}, incluida al cierre del Cap{\'i}tulo~III,
+articula de forma integral el problema, los objetivos, las hip{\'o}tesis, las variables y la
+metodolog{\'i}a.}

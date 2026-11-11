@@ -1,0 +1,48 @@
+% ================= CARÁTULA (plantilla UNSAAC) =================
+% Sin ancla de p{\'a}gina en la car{\'a}tula para evitar el choque de destino
+% "page.1" con la primera p{\'a}gina ar{\'a}biga del cuerpo.
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+\singlespacing
+
+{\large UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD\\ DEL CUSCO\par}
+\vspace{0.2cm}
+{FACULTAD DE INGENIER{\'I}A EL{\'E}CTRICA, ELECTR{\'O}NICA, INFORM{\'A}TICA Y
+M{\'E}CANICA\par}
+{ESCUELA PROFESIONAL DE INGENIER{\'I}A INFORM{\'A}TICA Y DE SISTEMAS\par}
+\vspace{0.6cm}
+
+\IfFileExists{imagenes/logo_unsaac.png}{\includegraphics[width=4.6cm]{imagenes/logo_unsaac.png}}{%
+  \IfFileExists{../logo_unsaac.png}{\includegraphics[width=4.6cm]{../logo_unsaac.png}}{}}
+\vspace{0.6cm}
+
+{\scshape Tesis\par}
+\vspace{0.5cm}
+\rule{\linewidth}{0.4pt}\par\vspace{0.3cm}
+{\large\bfseries%
+``\textcolor{colProceso}{DESARROLLO DE UN SISTEMA BIDIRECCIONAL DE TRADUCCI{\'O}N DE VOZ
+QUECHUA--ESPA{\~N}OL}
+\textcolor{colMetodo}{MEDIANTE APRENDIZAJE PROFUNDO}
+\textcolor{colContexto}{PARA CONSULTAS M{\'E}DICAS EN CUSCO}''\par}
+\vspace{0.3cm}\rule{\linewidth}{0.4pt}\par
+
+\vspace{1.1cm}
+\begin{flushleft}
+\hspace*{0.28\textwidth}%
+\begin{minipage}{0.66\textwidth}
+\raggedright
+{\small Para optar al t{\'i}tulo profesional de:}\\[3pt]
+\hspace*{1.4em}INGENIERO INFORM{\'A}TICO Y DE SISTEMAS\\[13pt]
+{\small Presentado por:}\\[3pt]
+\hspace*{1.4em}Alain Armando Condori Contreras\\[13pt]
+{\small C{\'o}digo de alumno:}\\[3pt]
+\hspace*{1.4em}021501\\[13pt]
+{\small Asesor:}\\[3pt]
+\hspace*{1.4em}Mtro. Ing. Ra{\'u}l Huillca Huallparimachi
+\end{minipage}
+\end{flushleft}
+
+\vfill
+{\bfseries Per{\'u}, Noviembre de 2026\par}
+\end{titlepage}

@@ -1,0 +1,268 @@
+% ##################################################################
+% CAPÍTULO II: MARCO TEÓRICO Y ESTADO DEL ARTE
+% ##################################################################
+\clearpage
+\section{Marco te{\'o}rico}
+
+\subsection{Antecedentes}
+Los trabajos previos sobre tecnolog{\'i}as del habla y traducci{\'o}n autom{\'a}tica para el quechua
+se organizan en tres niveles ---internacional, nacional y local---. En conjunto evidencian avances
+s{\'o}lidos por componente (ASR, MT y TTS), pero ninguno aborda su integraci{\'o}n en el dominio
+m{\'e}dico-paciente ni la variante de Cusco (\sig{quz}).
+
+\obsdos{A continuaci{\'o}n se desarrollan los antecedentes m{\'a}s relevantes siguiendo, en cada caso,
+cinco elementos: (i) la cita y el t{\'i}tulo del estudio, (ii) su dise{\~n}o metodol{\'o}gico, (iii)
+los instrumentos o modelos empleados, (iv) sus resultados y conclusi{\'o}n principal, y (v) su aporte
+a la presente tesis. Al final, la Tabla~\ref{tab:sintesis} sintetiza el conjunto por componente.}
+
+\subsubsection{Antecedentes internacionales}
+\begin{bloqueObsDos}
+\noindent\textbf{Antecedente 1.}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \textcite{ortega2020quechua}, \emph{Neural machine translation with a polysynthetic low resource language} (revista \emph{Machine Translation}); primer trabajo de traducci{\'o}n autom{\'a}tica neuronal Espa{\~n}ol--Quechua.
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} Enfoque cuantitativo, dise{\~n}o experimental, orientado a superar la escasez de datos de una lengua polisint{\'e}tica.
+  \item \textbf{Instrumentos:} Redes neuronales de traducci{\'o}n con segmentaci{\'o}n morfol{\'o}gica (subpalabras guiadas por la morfolog{\'i}a), evaluadas con la m{\'e}trica BLEU.
+  \item \textbf{Resultados y conclusi{\'o}n:} La segmentaci{\'o}n morfol{\'o}gica mejora la traducci{\'o}n frente a la l{\'i}nea base; concluyen que el tratamiento expl{\'i}cito de la morfolog{\'i}a es decisivo en lenguas aglutinantes.
+  \item \textbf{Aporte a la tesis:} Justifica ling{\"u}{\'i}sticamente el problema y fundamenta el tratamiento morfol{\'o}gico espec{\'i}fico del quechua al ajustar los modelos de traducci{\'o}n.
+\end{itemize}
+
+\noindent\textbf{Antecedente 2.}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \textcite{Ortega2023261,Ortega2025260}, serie \emph{QUESPA Submission for the IWSLT Dialectal and Low-resource Speech Translation Task} (IWSLT, 2023--2025); traducci{\'o}n de voz Quechua--Espa{\~n}ol.
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} Experimental y comparativo entre ediciones sucesivas.
+  \item \textbf{Instrumentos:} Arquitectura en cascada (reconocimiento de voz seguido de traducci{\'o}n) sobre modelos multiling{\"u}es preentrenados (MMS y NLLB) afinados por transferencia, evaluados con BLEU.
+  \item \textbf{Resultados y conclusi{\'o}n:} El desempe{\~n}o subi{\'o} de cerca de 16 a \textbf{26.7 BLEU} (2023--2025), incorporando en 2025 la variante Collao/Cusco (\sig{quz}); concluyen que el ajuste de modelos preentrenados es la v{\'i}a m{\'a}s eficaz para esta lengua.
+  \item \textbf{Aporte a la tesis:} Es el antecedente m{\'a}s cercano; aporta la arquitectura en cascada y el protocolo de evaluaci{\'o}n que se reutilizan, y revela la brecha a cerrar (la variante \sig{quz} y el dominio cl{\'i}nico, a{\'u}n no resueltos de extremo a extremo).
+\end{itemize}
+\end{bloqueObsDos}
+
+\subsubsection{Antecedentes nacionales}
+\begin{bloqueObsDos}
+\noindent\textbf{Antecedente 3.}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \textcite{Zevallos202061}, \emph{Automatic Speech Recognition of Quechua Language Using HMM Toolkit} (Springer, CCIS); reconocedor de voz para el quechua.
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} Cuantitativo-experimental.
+  \item \textbf{Instrumentos:} Modelos ocultos de Markov (HMM/HTK) entrenados sobre un corpus de voz quechua, evaluados con la tasa de error de palabra (WER).
+  \item \textbf{Resultados y conclusi{\'o}n:} \textbf{12.70\,\% de WER} y, con aumento de datos \parencite{Zevallos20223518}, 22.75\,\% de WER sobre datos m{\'a}s variados; concluyen que la escasez de datos es el principal limitante del ASR quechua.
+  \item \textbf{Aporte a la tesis:} Establece una l{\'i}nea base nacional de WER para el m{\'o}dulo de reconocimiento y respalda el aumento de datos ante la escasez de corpus cl{\'i}nico.
+\end{itemize}
+
+\noindent\textbf{Antecedente 4.}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \textcite{HuamanCuro2026}, \emph{Quechua Speech Synthesizers} (Springer, CCIS); s{\'i}ntesis de voz para el quechua.
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} Experimental y comparativo entre cuatro arquitecturas de TTS.
+  \item \textbf{Instrumentos:} Modelos neuronales de s{\'i}ntesis entrenados sobre quechua chanca, valorados con el \emph{Mean Opinion Score} (MOS) mediante juicios perceptuales.
+  \item \textbf{Resultados y conclusi{\'o}n:} MOS de hasta \textbf{4.9}, cercano a la voz humana; concluyen que es viable generar voz quechua de alta naturalidad con arquitecturas actuales.
+  \item \textbf{Aporte a la tesis:} Confirma la factibilidad del m{\'o}dulo de salida por voz (TTS) ---clave para usuarios con baja alfabetizaci{\'o}n--- y valida el MOS como instrumento de medici{\'o}n.
+\end{itemize}
+
+\noindent\textbf{Antecedente 5.}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \textcite{CuevaMedina2024}, \emph{Development of a Neural Machine Translation Model Optimized with BERT for Translation from Quechua to Spanish} (LACCEI); traducci{\'o}n neuronal Quechua--Espa{\~n}ol.
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} Aplicado, de dise{\~n}o experimental.
+  \item \textbf{Instrumentos:} Modelo de traducci{\'o}n neuronal optimizado con representaciones tipo BERT, evaluado con m{\'e}tricas de traducci{\'o}n (BLEU/chrF).
+  \item \textbf{Resultados y conclusi{\'o}n:} Mejoras al incorporar modelos preentrenados frente a enfoques previos; concluyen que la transferencia desde modelos de lenguaje mejora la traducci{\'o}n en contextos de bajo recurso.
+  \item \textbf{Aporte a la tesis:} Confirma, en el contexto peruano, la estrategia de \emph{fine-tuning} sobre modelos preentrenados que aqu{\'i} se adopta para la adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}.
+\end{itemize}
+\end{bloqueObsDos}
+
+\subsubsection{Antecedentes locales}
+\begin{bloqueObsDos}
+\noindent\textbf{Antecedente 6.}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \textcite{begazo2026}, \emph{Barreras ling{\"u}{\'i}sticas y culturales en la atenci{\'o}n hospitalaria: la experiencia de pacientes quechua-hablantes} (proyecto de investigaci{\'o}n); barrera idiom{\'a}tica en hospitales de referencia de Cusco.
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} Estudio de campo centrado en la experiencia de los pacientes.
+  \item \textbf{Instrumentos:} T{\'e}cnicas de recolecci{\'o}n sobre la interacci{\'o}n cl{\'i}nica real.
+  \item \textbf{Resultados y conclusi{\'o}n:} Documenta c{\'o}mo la desconexi{\'o}n idiom{\'a}tica vulnera la relaci{\'o}n terap{\'e}utica y concluye que la barrera compromete la calidad y la seguridad de la atenci{\'o}n; en una regi{\'o}n andina vecina, \textcite{cuaila2022} hall{\'o} una relaci{\'o}n directa entre el dominio del quechua del personal y la calidad de atenci{\'o}n percibida.
+  \item \textbf{Aporte a la tesis:} Aporta la evidencia local del problema que motiva la propuesta y respalda la pertinencia de una soluci{\'o}n por voz para el consultorio cusque{\~n}o.
+\end{itemize}
+\end{bloqueObsDos}
+
+\noindent En el plano tecnol{\'o}gico local, el primer sistema de traducci{\'o}n neural para el
+quechua se desarroll{\'o} con participaci{\'o}n de \emph{Hinantin Software} de Cusco
+\parencite{ortega2020quechua}, y la variante Collao/Cusco (\sig{quz}) fue incorporada reci{\'e}n en
+la campa{\~n}a QUESPA 2025 \parencite{Ortega2025260}. A ello se suma el reto de la alfabetizaci{\'o}n
+en zonas rurales andinas \parencite{inei2023,dispurse2023}.
+
+\obstres{Complementan este panorama otros
+antecedentes nacionales e internacionales: la traducci{\'o}n de voz en cascada
+Espa{\~n}ol$\to$Quechua \parencite{Alvarez-Crespo2023837}, los enfoques multiling{\"u}es para las lenguas
+del Per{\'u} \parencite{Veliz2021241,Oncevay2021194}, la segmentaci{\'o}n morfol{\'o}gica
+\parencite{Chen202120} y las representaciones autosupervisadas \parencite{Chen20246444}.}
+
+\obstres{\noindent A ello se suman el aumento de datos
+sint{\'e}ticos \parencite{Gow-Smith2023192,Ahmed2023156,Dhawan2026119,Ebrahimi2024236} y recursos
+como \emph{QuBERT} \parencite{Zevallos20221}, \emph{Huqariq} \parencite{zevallos2022huqariq} y la API
+\emph{Siminchikkunarayku} \parencite{9514251}, todos sintetizados en la Tabla~\ref{tab:sintesis}.}
+
+No se identific{\'o} ning{\'u}n antecedente
+local que integre reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz para la atenci{\'o}n en salud,
+lo que confirma la pertinencia de esta investigaci{\'o}n.
+
+\subsection{Estado del arte y brecha de investigaci{\'o}n}
+A partir de una \textbf{revisi{\'o}n sistem{\'a}tica} (Scopus, IEEE Xplore y ACM Digital Library;
+62 registros identificados, 58 tras depurar duplicados y 30 evaluados a texto completo), los
+antecedentes de la secci{\'o}n anterior se sintetizan por componente en la Tabla~\ref{tab:sintesis}
+---sin repetir las citas ya detalladas---, lo que permite ubicar con precisi{\'o}n qu{\'e} se ha
+resuelto y qu{\'e} sigue abierto.
+
+\begin{table}[H]
+\centering
+\caption{S{\'i}ntesis del estado del arte por componente de la cascada.}
+\label{tab:sintesis}
+\small
+\begin{tabularx}{\linewidth}{@{}l X l@{}}
+\toprule\hdr{Componente} & \hdr{Avance / mejor resultado reportado} & \hdr{{\textquestiondown}Salud?} \\
+\midrule
+ASR (quechua)                  & WER 12.70\,\% (HMM/HTK) y 22.75\,\% con aumento de datos & No \\
+MT (QU--ES)                    & Hasta $+$11\,\% chrF; BLEU 15.47 con modelos ajustados   & No \\
+TTS (quechua)                  & MOS de hasta 4.9 (XTTS\,v2)                              & No \\
+Traducci{\'o}n de voz (cascada) & 26.7 BLEU (QUESPA 2025, variante Collao)                & No \\
+Recursos / corpus              & QuBERT, \emph{Huqariq}, API \emph{Siminchikkunarayku}    & Habilitador \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia a partir de la revisi{\'o}n sistem{\'a}tica (Scopus, IEEE Xplore y ACM); s{\'i}ntesis por componente. La columna ``{\textquestiondown}Salud?'' indica si el trabajo abord{\'o} el dominio sanitario.}
+\end{table}
+
+La s{\'i}ntesis evidencia avances s{\'o}lidos por componente, pero ninguno en el \textbf{dominio
+cl{\'i}nico} ni con la variante de Cusco (\sig{quz}) integrada de extremo a extremo. La
+\textbf{brecha} es, por tanto, la intersecci{\'o}n ---hoy vac{\'i}a--- entre las tecnolog{\'i}as del
+habla para el quechua y la comunicaci{\'o}n m{\'e}dico-paciente: no existe un corpus cl{\'i}nico
+Quechua--Espa{\~n}ol ni una evaluaci{\'o}n emp{\'i}rica de estos modelos en salud, y NLLB a{\'u}n no
+cubre \sig{quz}. Cerrar esa intersecci{\'o}n es el aporte de este proyecto.
+
+\subsection{Fundamentos te{\'o}ricos}
+
+\subsubsection{Tecnolog{\'i}as del habla y traducci{\'o}n autom{\'a}tica neuronal}
+El \textbf{reconocimiento autom{\'a}tico de voz (ASR)} convierte una se{\~n}al de voz en texto; la
+\textbf{traducci{\'o}n autom{\'a}tica (MT)}, hoy mayoritariamente \emph{neuronal} con arquitecturas
+Transformer, traduce entre idiomas; y la \textbf{s{\'i}ntesis de voz (TTS)} genera voz a partir de
+texto. En \textbf{lenguas de bajo recurso} ---como el quechua, de morfolog{\'i}a \glo{polisintetica}{polisint{\'e}tica}---
+estas tareas se benefician de la transferencia desde modelos entrenados sobre grandes vol{\'u}menes de
+datos multiling{\"u}es.
+
+\begin{bloqueNuevo}
+\noindent La base com{\'u}n de estos modelos es la arquitectura \emph{Transformer}
+\parencite{vaswani2017attention}, cuyo n{\'u}cleo es el mecanismo de \emph{autoatenci{\'o}n}: cada
+token se proyecta en consultas $Q$, claves $K$ y valores $V$, y la atenci{\'o}n pondera la
+informaci{\'o}n relevante del contexto mediante
+\begin{equation}
+\mathrm{Attention}(Q,K,V) = \mathrm{softmax}\!\left(\frac{QK^{\top}}{\sqrt{d_k}}\right)V,
+\label{eq:atencion}
+\end{equation}
+\regecuacion{Mecanismo de autoatenci{\'o}n del Transformer}
+donde $d_k$ es la dimensi{\'o}n de las claves y el factor $1/\sqrt{d_k}$ estabiliza los gradientes.
+Este mecanismo modela dependencias de largo alcance, decisivo en una lengua polisint{\'e}tica como el
+quechua, donde una sola palabra concentra mucha informaci{\'o}n gramatical.
+\end{bloqueNuevo}
+
+\subsubsection{Modelos multiling{\"u}es preentrenados (MMS, NLLB, Whisper)}
+\textbf{MMS} \parencite{pratap2024mms} cubre el quechua de Cusco (\sig{quz}) en reconocimiento y
+s{\'i}ntesis; \textbf{NLLB} \parencite{costajussa2022nllb} ofrece traducci{\'o}n multiling{\"u}e que
+incluye el quechua de Ayacucho (\sig{quy}); y \textbf{Whisper} \parencite{radford2023whisper} se
+emplea como referencia de ASR con cobertura marginal del quechua. Estos modelos permiten reutilizar
+conocimiento ling{\"u}{\'i}stico general y especializarlo mediante ajuste.
+
+\nuevo{Conviene distinguir la \emph{teor{\'i}a} de la \emph{herramienta}: el Transformer
+(ecuaci{\'o}n~\ref{eq:atencion}) es el modelo abstracto, mientras que MMS, NLLB y Whisper son
+\emph{frameworks} preentrenados que lo implementan y que en esta tesis se reutilizan por ajuste
+fino.}
+
+\subsubsection{Ajuste fino y adaptaci{\'o}n dialectal (\texttt{quy}$\to$\texttt{quz})}
+El \emph{ajuste fino} (\emph{fine-tuning}) adapta un modelo preentrenado a un dominio o variante
+espec{\'i}ficos con relativamente pocos datos. El aporte t{\'e}cnico central de esta tesis es la
+adaptaci{\'o}n del par de traducci{\'o}n del quechua de Ayacucho (\sig{quy}) al de Cusco
+(\sig{quz}) sobre el vocabulario cl{\'i}nico, cerrando la brecha dialectal que hoy limita a NLLB.
+
+\begin{bloqueNuevo}
+\noindent Formalmente, partiendo de los pesos preentrenados $\theta_0$, el ajuste minimiza la
+\emph{entrop{\'i}a cruzada} sobre el corpus de dominio $\mathcal{D}$:
+\begin{equation}
+\mathcal{L}(\theta) = -\!\!\sum_{(x,y)\in\mathcal{D}}\;\sum_{t=1}^{|y|}
+\log P_{\theta}\!\left(y_t \mid y_{<t},\, x\right),
+\label{eq:perdida}
+\end{equation}
+\regecuacion{Funci{\'o}n de p{\'e}rdida (entrop{\'i}a cruzada) del ajuste fino}
+y los par{\'a}metros se actualizan por descenso de gradiente
+$\theta \leftarrow \theta - \eta\,\nabla_{\theta}\mathcal{L}(\theta)$, con tasa de aprendizaje $\eta$.
+De este modo, el ajuste reorienta la distribuci{\'o}n del modelo hacia el vocabulario cl{\'i}nico y la
+variante \sig{quz}; esta es la base te{\'o}rica que explica la reducci{\'o}n esperada del WER y la
+mejora de BLEU/chrF postuladas en la hip{\'o}tesis H2.
+\end{bloqueNuevo}
+
+\subsubsection{Arquitectura en cascada ASR$\to$MT$\to$TTS}
+El encadenamiento de los tres componentes en una \textbf{arquitectura en cascada} habilita un
+di{\'a}logo bidireccional por voz: la voz del hablante se transcribe (ASR), el texto se traduce (MT)
+y la traducci{\'o}n se reproduce en la lengua del interlocutor (TTS). La modularidad facilita ajustar
+y evaluar cada etapa por separado.
+
+\begin{bloqueNuevo}
+\noindent El flujo de datos es
+$a \xrightarrow{\text{ASR}} t_s \xrightarrow{\text{MT}} t_t \xrightarrow{\text{TTS}} a_t$:
+la se{\~n}al de audio $a$ se transcribe a texto origen $t_s$, se traduce a texto destino $t_t$ y se
+sintetiza como audio $a_t$ (v{\'e}ase el Algoritmo~\ref{alg:pipeline} del Cap{\'i}tulo~III). Al ser
+etapas secuenciales, la latencia por turno es aditiva,
+$T = T_{\mathrm{ASR}} + T_{\mathrm{MT}} + T_{\mathrm{TTS}}$; el presupuesto objetivo se resume en la
+Tabla~\ref{tab:latencias}, lo que justifica evaluar cada m{\'o}dulo por separado y su integraci{\'o}n.
+\end{bloqueNuevo}
+
+\begin{table}[H]
+\centering
+\caption{Presupuesto de latencia por etapa de la cascada (objetivo por turno).}
+\label{tab:latencias}
+\small
+{
+\begin{tabularx}{\linewidth}{@{}l X r@{}}
+\toprule\hdr{Etapa} & \hdr{Operaci{\'o}n} & \hdr{Latencia objetivo (s)} \\
+\midrule
+ASR (MMS) & Voz $\to$ texto origen ($t_s$)        & $\le 1.5$ \\
+MT (NLLB) & Texto origen $\to$ texto destino ($t_t$) & $\le 1.0$ \\
+TTS (MMS) & Texto destino $\to$ voz ($a_t$)       & $\le 1.5$ \\
+\multicolumn{2}{@{}l}{\textbf{Total por turno} ($T$)} & $\mathbf{\le 4.0}$ \\
+\bottomrule
+\end{tabularx}}
+\notaAPA{Valores objetivo para el prototipo en equipo de gama media; se verifican emp{\'i}ricamente en el Cap{\'i}tulo~III (m{\'e}tricas de eficiencia).}
+\end{table}
+
+\subsubsection{M{\'e}tricas de evaluaci{\'o}n}
+El desempe{\~n}o se mide con m{\'e}tricas estandarizadas: \textbf{WER} para el reconocimiento,
+\textbf{BLEU} \parencite{papineni2002bleu} y \textbf{chrF} \parencite{popovic2015chrf} para la
+traducci{\'o}n ---esta {\'u}ltima adecuada para lenguas morfol{\'o}gicamente ricas--- y \textbf{MOS}
+para la naturalidad de la voz sintetizada.
+
+\begin{bloqueNuevo}
+\noindent Se definen formalmente a continuaci{\'o}n. La \emph{tasa de error de palabra} compara la
+transcripci{\'o}n con la referencia:
+\begin{equation}
+\mathrm{WER} = \frac{S + D + I}{N},
+\label{eq:wer}
+\end{equation}
+\regecuacion{Tasa de error de palabra (WER)}
+con $S$, $D$ e $I$ sustituciones, eliminaciones e inserciones sobre $N$ palabras de referencia.
+\emph{BLEU} mide la precisi{\'o}n de $n$-gramas con penalizaci{\'o}n por brevedad (BP):
+\begin{equation}
+\mathrm{BLEU} = \mathrm{BP}\cdot\exp\!\left(\textstyle\sum_{n=1}^{4} w_n \log p_n\right),
+\label{eq:bleu}
+\end{equation}
+\regecuacion{Puntaje BLEU}
+donde $p_n$ es la precisi{\'o}n de $n$-gramas y $w_n$ su peso. \emph{chrF}, m{\'a}s robusta en
+morfolog{\'i}a rica, es la media arm{\'o}nica ponderada de precisi{\'o}n (chrP) y \emph{recall} (chrR)
+de $n$-gramas de \emph{caracteres}:
+\begin{equation}
+\mathrm{chrF}_{\beta} = (1 + \beta^{2})\,\frac{\mathrm{chrP}\cdot\mathrm{chrR}}{\beta^{2}\,\mathrm{chrP} + \mathrm{chrR}}.
+\label{eq:chrf}
+\end{equation}
+\regecuacion{Puntaje chrF ($F$-score de $n$-gramas de caracteres)}
+Por {\'u}ltimo, el \emph{Mean Opinion Score} es el promedio de $J$ juicios perceptuales
+$m_j \in [1,5]$, es decir $\mathrm{MOS} = \tfrac{1}{J}\sum_{j=1}^{J} m_j$. La aplicaci{\'o}n operativa
+de estas m{\'e}tricas se retoma en el Cap{\'i}tulo~III.
+\end{bloqueNuevo}
+
+\subsection{Definici{\'o}n de t{\'e}rminos b{\'a}sicos}
+\begin{itemize}
+  \item \textbf{Corpus:} Conjunto estructurado de textos o grabaciones para entrenar o evaluar modelos.
+  \item \textbf{Modelo preentrenado:} Modelo entrenado sobre grandes vol{\'u}menes de datos, reutilizable mediante ajuste.
+  \item \textbf{Lengua de bajo recurso:} Idioma con escasez de datos digitales para el PLN.
+  \item \textbf{Lengua polisint{\'e}tica:} Lengua que concentra mucha informaci{\'o}n gramatical en una sola palabra, como el quechua.
+  \item \textbf{Pipeline:} Secuencia encadenada de etapas (voz $\to$ texto $\to$ traducci{\'o}n $\to$ voz).
+\end{itemize}

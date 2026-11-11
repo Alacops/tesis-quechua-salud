@@ -1,0 +1,110 @@
+% ##################################################################
+% CAPÍTULO V: ASPECTOS ADMINISTRATIVOS
+% ##################################################################
+\clearpage
+\section{Aspectos administrativos}
+
+\subsection{Cronograma de actividades}
+El proyecto se ejecuta en \textbf{12 meses (octubre 2026 -- septiembre 2027)}, organizado por meses.
+La Tabla~\ref{tab:cronograma} presenta el diagrama de Gantt, con las actividades agrupadas en tres
+fases ---\emph{administrativa}, de \emph{desarrollo} (ASR, MT y TTS) e \emph{investigaci{\'o}n y
+cierre}---; los m{\'o}dulos ASR, MT y TTS se ejecutan de forma parcialmente paralela mediante el
+ajuste de modelos preentrenados.
+
+% ----- gris de la fase administrativa -----
+\definecolor{adminG}{HTML}{8A98A6}
+% \gbar{fila}{semana inicial}{semana final}{color}{etiqueta}
+\newcommand{\gbar}[5]{%
+  \fill[#4,rounded corners=2.2pt] ({#2-1},{-#1+1-0.20}) rectangle ({#3},{-#1+1+0.20});%
+  \node[anchor=west,align=left,text width=4.9cm,font=\scriptsize,text=black!80]
+       at (-8.2,{-#1+1}) {#5};}
+
+\begin{table}[H]
+\caption{Cronograma de actividades (octubre 2026 -- septiembre 2027), por meses.}
+\label{tab:cronograma}
+
+% ----- leyenda de fases (alineada a la izquierda) -----
+\noindent{\scriptsize
+\begin{tikzpicture}[baseline]
+  \fill[adminG,rounded corners=1.5pt](0,0) rectangle (0.32,0.26);
+  \node[anchor=west] at (0.4,0.13) {Administrativo};
+  \fill[g3,rounded corners=1.5pt](3.0,0) rectangle (3.32,0.26);
+  \node[anchor=west] at (3.4,0.13) {Desarrollo (ASR, MT, TTS)};
+  \fill[g10,rounded corners=1.5pt](7.6,0) rectangle (7.92,0.26);
+  \node[anchor=west] at (8.0,0.13) {Investigaci{\'o}n y cierre};
+\end{tikzpicture}}
+
+\smallskip
+\noindent\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[x=0.92cm,y=0.82cm,font=\scriptsize]
+  % --- banda de meses (navy): 12 meses, oct 2026 -> sep 2027 ---
+  \fill[g5,rounded corners=1.5pt] (0,0.74) rectangle (12,1.6);
+  \foreach \m/\pos in {Oct/0.5,Nov/1.5,Dic/2.5,Ene/3.5,Feb/4.5,Mar/5.5,Abr/6.5,May/7.5,Jun/8.5,Jul/9.5,Ago/10.5,Sep/11.5}
+     \node[white,font=\bfseries\scriptsize] at (\pos,1.17) {\m};
+  % --- numeros de mes (1..12) ---
+  \foreach \w in {1,...,12}
+     \node[font=\tiny,text=black!55] at ({\w-0.5},0.45) {\w};
+  % --- separadores de mes ---
+  \foreach \xg in {0,...,12}
+     \draw[black!18,very thin] (\xg,0.74) -- (\xg,-11.6);
+  % --- lineas horizontales entre filas ---
+  \foreach \r in {0,...,12}
+     \draw[black!10,very thin] (0,{-\r+0.5}) -- (12,{-\r+0.5});
+  % --- barras (fila, mes inicial, mes final, color, etiqueta) ---
+  \gbar{1}{1}{1}{adminG}{Aprobaci{\'o}n del plan de tesis}
+  \gbar{2}{1}{3}{g1}{Revisi{\'o}n del estado del arte}
+  \gbar{3}{2}{5}{g2}{Recolecci{\'o}n y preparaci{\'o}n del corpus (salud)}
+  \gbar{4}{4}{6}{g3}{M{\'o}dulo ASR (voz $\to$ texto)}
+  \gbar{5}{5}{7}{g4}{M{\'o}dulo MT (traducci{\'o}n)}
+  \gbar{6}{6}{8}{g5}{M{\'o}dulo TTS (texto $\to$ voz)}
+  \gbar{7}{8}{9}{g6}{Integraci{\'o}n del \emph{pipeline}}
+  \gbar{8}{9}{10}{g8}{Evaluaci{\'o}n experimental (WER, BLEU, MOS)}
+  \gbar{9}{10}{11}{g9}{Validaci{\'o}n m{\'e}dico-paciente (simulada)}
+  \gbar{10}{11}{11}{g10}{An{\'a}lisis de resultados}
+  \gbar{11}{10}{12}{g11}{Redacci{\'o}n del informe final}
+  \gbar{12}{12}{12}{g12}{Sustentaci{\'o}n}
+\end{tikzpicture}}
+\notaAPA{Elaboraci{\'o}n propia. Cada columna representa un mes (octubre 2026 -- septiembre 2027); el color identifica la fase y el solapamiento de las barras refleja el desarrollo parcialmente paralelo de los m{\'o}dulos ASR, MT y TTS.}
+\end{table}
+
+\subsection{Presupuesto y financiamiento}
+La Tabla~\ref{tab:presupuesto} resume los recursos estimados para el desarrollo del proyecto.
+
+\begin{table}[H]
+\centering
+\caption{Recursos para el desarrollo del proyecto de tesis (soles).}
+\label{tab:presupuesto}
+\small
+\begin{tabularx}{\linewidth}{@{}l X r@{}}
+\toprule\hdr{Tipo} & \hdr{Descripci{\'o}n} & \hdr{Costo (S/)} \\
+\midrule
+Hardware & Laptop/PC con GPU (entrenamiento y \emph{fine-tuning}) & 4\,500.00 \\
+C{\'o}mputo & Cr{\'e}ditos de GPU en la nube (horas de ajuste) & 900.00 \\
+Datos & Grabaci{\'o}n y validaci{\'o}n del corpus cl{\'i}nico (incentivos a hablantes) & 800.00 \\
+Administrativos & Impresiones, inscripci{\'o}n y tr{\'a}mites de tesis & 600.00 \\
+Movilidad & Traslados al centro de salud y a comunidades & 300.00 \\
+Otros & Gastos no previstos & 250.00 \\
+\multicolumn{2}{@{}l}{\textbf{Total}} & \textbf{7\,350.00} \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Montos estimados en soles (S/). Elaboraci{\'o}n propia.}
+\end{table}
+
+\subsection{Equipo de investigaci{\'o}n}
+La Tabla~\ref{tab:equipo} detalla el equipo responsable del proyecto.
+
+\begin{table}[H]
+\centering
+\caption{Equipo de investigaci{\'o}n.}
+\label{tab:equipo}
+\small
+\begin{tabularx}{\linewidth}{@{}l X@{}}
+\toprule\hdr{Rol} & \hdr{Responsable / funci{\'o}n} \\
+\midrule
+Tesista   & Alain Armando Condori Contreras ---dise{\~n}o, desarrollo y evaluaci{\'o}n del sistema---. \\
+Asesor    & Mtro. Ing. Ra{\'u}l Huillca Huallparimachi ---orientaci{\'o}n metodol{\'o}gica y t{\'e}cnica---. \\
+Colaboradores & Personal de salud biling{\"u}e (validaci{\'o}n del corpus) y participantes voluntarios (consultas simuladas). \\
+\bottomrule
+\end{tabularx}
+\notaAPA{Elaboraci{\'o}n propia. Los colaboradores intervienen en la validaci{\'o}n del corpus y en la actuaci{\'o}n de las consultas simuladas.}
+\end{table}

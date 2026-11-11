@@ -12,7 +12,6 @@ validado con consultas simuladas. Documentos en LaTeX con citas **APA7**.
 
 ```
 SEMINARIO_2/
-├── preambulo.tex            # Configuración compartida (APA7, márgenes, gráficos)
 ├── referencias.bib          # Bibliografía núcleo (APA7)
 ├── logo_unsaac.png          # Logo institucional usado en las carátulas
 ├── 01_RSL/                  # Revisión sistemática: entrega + evidencia (PRISMA)
@@ -22,17 +21,19 @@ SEMINARIO_2/
 │   ├── cribado.md              # Cribado de estudios (inclusión/exclusión)
 │   └── extraccion_datos.md     # Tabla de extracción de datos
 └── 02_Plan_Tesis/
-    ├── plan_tesis_expo.tex  # Plan de tesis (versión exposición, por capítulos) ← PRINCIPAL
-    ├── plan_tesis_expo.pdf  # PDF compilado (documento de entrega)
+    ├── main.tex/.pdf        # Plan de tesis (documento maestro modular) ← PRINCIPAL
+    ├── partes/             # Capítulos del plan (preámbulo + 10 secciones)
+    ├── imagenes/           # Logo y figuras del plan
     └── antecedentes.bib     # Fuentes de la revisión usadas en antecedentes
 ```
 
 > Material de apoyo (exportaciones `.bib` de las bases, captura de Parsifal, PDFs de
 > referencia y `Estructuracion_Tesis/`) se mantiene **local**, fuera del control de versiones.
 
-El documento principal de entrega es **`02_Plan_Tesis/plan_tesis_expo.pdf`** (carátula UNSAAC,
+El documento principal de entrega es **`02_Plan_Tesis/main.pdf`** (carátula UNSAAC,
 5 capítulos: I Introducción en 6 bloques · II Marco teórico y estado del arte · III Metodología ·
 IV Estudio de factibilidad · V Aspectos administrativos · anexos con matrices de consistencia).
+Se compila desde `main.tex`, que integra los capítulos de `partes/` vía `\input`.
 
 ## Compilación
 
@@ -40,10 +41,10 @@ Toolchain: **MiKTeX** (Windows). Como el `.bib` usa biblatex-apa, hay que correr
 
 ```bash
 cd 02_Plan_Tesis
-pdflatex plan_tesis_expo
-biber   plan_tesis_expo
-pdflatex plan_tesis_expo
-pdflatex plan_tesis_expo
+pdflatex main
+biber   main
+pdflatex main
+pdflatex main
 ```
 
 > En VS Code con la extensión **LaTeX Workshop** la receta `pdflatex → biber → pdflatex → pdflatex`
