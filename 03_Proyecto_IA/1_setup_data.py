@@ -32,7 +32,7 @@ from pathlib import Path
 # El enlace se ve asi:  https://drive.google.com/file/d/<ESTE_ES_EL_ID>/view
 # Compartido como "Cualquier persona con el enlace puede verlo" (solo lector).
 # Tambien se puede pasar por variable de entorno: DRIVE_FILE_ID=xxxx python3 1_setup_data.py
-DRIVE_FILE_ID = os.environ.get("DRIVE_FILE_ID", "PEGA_AQUI_EL_ID_DE_DRIVE")
+DRIVE_FILE_ID = os.environ.get("DRIVE_FILE_ID", "1aKD1U0qUllvAXQZyDN72YjvUNMOc-URo")
 
 # Rutas relativas (NUNCA absolutas).
 PROJECT_DIR = Path(__file__).resolve().parent
@@ -51,7 +51,7 @@ def descargar_desde_drive(file_id: str, destino: Path) -> Path:
     url = f"https://drive.google.com/uc?id={file_id}"
     print(f"[1/3] Descargando dataset desde Google Drive (id={file_id})...")
     # gdown detecta la extension real del archivo y la anade al nombre de salida.
-    ruta_descargada = gdown.download(url, str(destino), quiet=False, fuzzy=True)
+    ruta_descargada = gdown.download(url, str(destino), quiet=False)
     if ruta_descargada is None or not Path(ruta_descargada).exists():
         sys.exit(
             "ERROR: la descarga fallo. Verifica que:\n"
@@ -62,18 +62,20 @@ def descargar_desde_drive(file_id: str, destino: Path) -> Path:
 
 
 def descomprimir(archivo: Path, destino: Path) -> None:
-    """Descomprime .zip o .tar.gz dentro de ./data/."""
+    """Descomprime .zip o .tar.gz dentro de ./data/.
+
+    Detecta el formato por CONTENIDO (no por extension), porque Google Drive/gdown
+    pueden guardar el archivo sin extension.
+    """
     print(f"[2/3] Descomprimiendo {archivo.name} en {destino}/ ...")
-    nombre = archivo.name.lower()
-    if nombre.endswith(".zip"):
+    if zipfile.is_zipfile(archivo):
         with zipfile.ZipFile(archivo, "r") as z:
             z.extractall(destino)
-    elif nombre.endswith((".tar.gz", ".tgz", ".tar")):
-        modo = "r:gz" if nombre.endswith((".tar.gz", ".tgz")) else "r:"
-        with tarfile.open(archivo, modo) as t:
+    elif tarfile.is_tarfile(archivo):
+        with tarfile.open(archivo, "r:*") as t:
             t.extractall(destino)
     else:
-        print(f"  AVISO: '{archivo.name}' no parece comprimido; se deja tal cual.")
+        print(f"  AVISO: '{archivo.name}' no parece un comprimido valido; se deja tal cual.")
 
 
 def verificar(destino: Path) -> None:

@@ -3,5 +3,15 @@
 data/
 outputs/
 venv/
+venv*/
 __pycache__/
 *.pyc
+
+# Corpus Common Voice descargado y archivos de construccion del dataset (pesados).
+# Se usan solo localmente para generar el zip que se sube a Drive.
+*cv-corpus*/
+_build_dataset/
+dataset_quechua_asr.zip
+# Corpus comprimido (722 MB) y empaquetados de entrega: nunca se versionan.
+*.tar.gz
+*.zip

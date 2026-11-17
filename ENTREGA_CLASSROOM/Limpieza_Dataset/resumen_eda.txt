@@ -1,0 +1,120 @@
+Reproducibilidad: python=3.13.3  pandas=2.3.3  numpy=2.3.2  SEED=42
+
+======================================================================
+PASO 0 — EL PRIMER VISTAZO (head / info / describe)
+======================================================================
+Forma del dataset: 22727 filas x 19 columnas
+
+-- df.info() (tipos y no-nulos) --
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 22727 entries, 0 to 22726
+Data columns (total 19 columns):
+ #   Column           Non-Null Count  Dtype  
+---  ------           --------------  -----  
+ 0   client_id        22727 non-null  object 
+ 1   path             22727 non-null  object 
+ 2   sentence_id      22727 non-null  object 
+ 3   sentence         22727 non-null  object 
+ 4   sentence_domain  22705 non-null  object 
+ 5   up_votes         22727 non-null  int64  
+ 6   down_votes       22727 non-null  int64  
+ 7   age              22494 non-null  object 
+ 8   gender           16387 non-null  object 
+ 9   accents          8371 non-null   object 
+ 10  variant          0 non-null      float64
+ 11  locale           22727 non-null  object 
+ 12  segment          0 non-null      float64
+ 13  dur_ms           22727 non-null  int64  
+ 14  dur_s            22727 non-null  float64
+ 15  n_chars          22727 non-null  int64  
+ 16  n_words          22727 non-null  int64  
+ 17  cps              22727 non-null  float64
+ 18  net_votes        22727 non-null  int64  
+dtypes: float64(4), int64(6), object(9)
+memory usage: 3.3+ MB
+
+
+-- df.describe() numéricas --
+          dur_s   n_chars   n_words       cps  up_votes  down_votes  net_votes
+count  22727.00  22727.00  22727.00  22727.00  22727.00    22727.00   22727.00
+mean       4.83     34.58      3.99      7.27      2.76        0.15       2.61
+std        1.37     10.30      1.21      1.51      0.98        0.45       1.05
+min        1.80     11.00      1.00      1.93      2.00        0.00       1.00
+25%        3.89     28.00      3.00      6.28      2.00        0.00       2.00
+50%        4.61     33.00      4.00      7.22      2.00        0.00       2.00
+75%        5.51     40.00      5.00      8.20      4.00        0.00       4.00
+max       14.94     83.00     10.00     15.65      8.00        6.00       6.00
+
+======================================================================
+PASO 1 — LA ESCENA DEL CRIMEN (calidad: nulos, duplicados, errores)
+======================================================================
+
+-- Nulos por columna --
+                 nulos    pct
+client_id            0    0.0
+path                 0    0.0
+sentence_id          0    0.0
+sentence             0    0.0
+sentence_domain     22    0.1
+up_votes             0    0.0
+down_votes           0    0.0
+age                233    1.0
+gender            6340   27.9
+accents          14356   63.2
+variant          22727  100.0
+locale               0    0.0
+segment          22727  100.0
+dur_ms               0    0.0
+dur_s                0    0.0
+n_chars              0    0.0
+n_words              0    0.0
+cps                  0    0.0
+net_votes            0    0.0
+
+-- Duplicados --
+Filas idénticas completas : 0
+Rutas de audio repetidas  : 0
+Frases únicas / total     : 2067 / 22727 (cada frase se grabó ~11 veces)
+  -> Repetir una frase NO es un error (es multi-hablante), pero obliga a
+     particionar por frase/hablante para evitar fuga de datos en train/test.
+
+-- Errores obvios --
+Filas con 'sentence_domain' malformado (tokens repetidos): 76
+Clips con net_votes <= 0 (rechazos >= aceptaciones)      : 0
+
+-- LIMPIEZA aplicada --
+1) Columnas eliminadas (vacías/constantes/redundantes): ['_dom_malformado', 'locale', 'segment', 'sentence_id', 'variant']
+2) 'sentence_domain' normalizado -> domains / n_domains / is_healthcare (76 filas con tokens duplicados corregidas).
+3) Nulos en age/gender/accents -> 'unknown' (metadato demográfico no invalida el clip; borrar perdería hasta 63% del corpus).
+4) Outliers marcados por IQR en dur_s [1.46,7.94] y cps [3.41,11.07]: 1074 filas (4.7%).
+
+Forma antes=(22727, 20) -> después=(22727, 20) (columnas depuradas; filas conservadas, outliers marcados).
+
+======================================================================
+PASO 2 — ANATOMÍA NUMÉRICA (una variable a la vez)
+======================================================================
+Figuras 2-4 generadas (histogramas, box plots, barras categóricas).
+  gender: {'female_feminine': np.int64(16079), 'unknown': np.int64(6340), 'male_masculine': np.int64(308)}
+  concentración hablantes: 1 hablante aporta 2013 clips (8.9% del total).
+
+======================================================================
+PASO 3 — CONEXIONES OCULTAS (dos variables: correlación)
+======================================================================
+n_chars~dur_s  Pearson=0.71  Spearman=0.71
+dur_s~cps      Pearson=-0.25  Spearman=-0.20
+Figura 6 (heatmaps Pearson/Spearman) generada.
+
+======================================================================
+PASO 4 — LA VARIABLE OBJETIVO (is_healthcare: foco de la tesis)
+======================================================================
+dur_s    salud(med=4.54) vs otros(med=4.79) Mann-Whitney p=1.09e-33
+n_chars  salud(med=32.00) vs otros(med=36.00) Mann-Whitney p=1.85e-85
+cps      salud(med=7.15) vs otros(med=7.44) Mann-Whitney p=2.55e-35
+Clips de salud: 17671 (77.8% del corpus limpio).
+
+======================================================================
+DATASET LIMPIO (apto para entrenar el ASR)
+======================================================================
+Criterio de inclusión: sin outlier IQR (dur_s, cps) y net_votes>0.
+Filas: 22727 (crudo validado) -> 21653 (limpio) [-1074 filas, 4.7%].
+Escrito: dataset_limpio.csv  (21653 filas x 16 col.)

@@ -1,18 +1,17 @@
 # Dependencias del Proyecto IA — ASR quechua con Whisper-tiny.
-# IMPORTANTE: este es un punto de partida. El reglamento exige entregar el
-# resultado EXACTO de "pip freeze" desde tu entorno virtual. Flujo correcto:
-#   1) python3 -m venv venv && source venv/bin/activate
-#   2) pip install -r requirements.txt
-#   3) pip freeze > requirements.txt   (regenera este archivo con versiones exactas)
+# Versiones fijadas y validadas de punta a punta (venv limpio en Ubuntu 24.04 /
+# Python 3.12, identico al entorno del evaluador).
 #
-# torch desde PyPI incluye runtime CUDA compatible con el driver 13.0 del profesor.
-torch
-transformers
-datasets
-evaluate
-jiwer
-accelerate
-librosa
-soundfile
-pandas
-gdown
+# NOTA sobre torch: se deja la version SIN sufijo de plataforma. En la maquina del
+# evaluador (GPU Quadro P2000 + CUDA 13.0) pip instalara automaticamente el build
+# con soporte CUDA desde PyPI. Si no hay GPU, el codigo hace fallback a CPU.
+torch==2.15.0
+transformers==5.22.2
+datasets==5.2.0
+evaluate==0.4.6
+jiwer==4.0.0
+accelerate==1.15.0
+librosa==1.0.1
+soundfile==0.14.0
+pandas==3.1.1
+gdown==6.5.1

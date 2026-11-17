@@ -33,7 +33,11 @@ DATA_DIR = PROJECT_DIR / "data"
 OUTPUT_DIR = PROJECT_DIR / "outputs"
 
 MODEL_NAME = "openai/whisper-tiny"
-LANGUAGE = "quechua"          # idioma objetivo (Whisper lo mapea internamente)
+# Whisper NO incluye el quechua entre sus idiomas nativos. Usamos el token de
+# espanol como idioma base (comparte ortografia con el quechua sureno) y afinamos
+# el modelo sobre transcripciones en quechua. Es el proxy estandar para lenguas
+# de bajos recursos no soportadas por Whisper.
+LANGUAGE = "spanish"
 TASK = "transcribe"
 SAMPLING_RATE = 16000
 
@@ -63,9 +67,14 @@ def configurar_dispositivo():
 
 
 def cargar_dataset():
-    """Carga ./data/metadata.csv como un Dataset de audio de Hugging Face."""
+    """Carga ./data/metadata.csv como un Dataset de Hugging Face.
+
+    La columna 'audio' guarda la RUTA absoluta al .wav; el audio se decodifica mas
+    tarde con librosa dentro de 'preparar'. Evitamos cast_column(Audio) porque las
+    versiones nuevas de datasets/pyarrow no castean string->Audio de forma fiable.
+    """
     import pandas as pd
-    from datasets import Audio, Dataset
+    from datasets import Dataset
 
     # Localiza metadata.csv (puede venir dentro de una subcarpeta del comprimido).
     candidatos = list(DATA_DIR.rglob("metadata.csv"))
@@ -80,12 +89,11 @@ def cargar_dataset():
     if not {"audio_path", "text"}.issubset(df.columns):
         raise ValueError("metadata.csv debe tener las columnas: audio_path,text")
 
-    # Convierte audio_path (relativa) en ruta absoluta en disco para que datasets la lea.
+    # Convierte audio_path (relativa) en ruta absoluta en disco.
     df["audio"] = df["audio_path"].apply(lambda p: str((base / p).resolve()))
     df = df[["audio", "text"]].head(MAX_TRAIN_SAMPLES)
 
     ds = Dataset.from_pandas(df, preserve_index=False)
-    ds = ds.cast_column("audio", Audio(sampling_rate=SAMPLING_RATE))
     print(f"Dataset cargado: {len(ds)} ejemplos (tope MAX_TRAIN_SAMPLES={MAX_TRAIN_SAMPLES}).")
     return ds
 
@@ -116,10 +124,13 @@ def main():
     # ----- Dataset -----
     ds = cargar_dataset()
 
+    import librosa
+
     def preparar(batch):
-        audio = batch["audio"]
+        # Decodifica el .wav y lo remuestrea a 16 kHz mono.
+        array, _ = librosa.load(batch["audio"], sr=SAMPLING_RATE, mono=True)
         batch["input_features"] = processor.feature_extractor(
-            audio["array"], sampling_rate=audio["sampling_rate"]
+            array, sampling_rate=SAMPLING_RATE
         ).input_features[0]
         batch["labels"] = processor.tokenizer(batch["text"]).input_ids
         return batch
@@ -181,7 +192,7 @@ def main():
         train_dataset=ds,
         data_collator=collator,
         compute_metrics=compute_metrics,
-        tokenizer=processor.feature_extractor,
+        processing_class=processor.feature_extractor,
     )
 
     print("Iniciando entrenamiento...")

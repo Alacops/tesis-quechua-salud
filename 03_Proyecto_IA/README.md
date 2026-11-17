@@ -19,9 +19,18 @@ hace *fallback* automático a CPU.
 ```
 1_setup_data.py     # Descarga el dataset desde Google Drive y lo deja en ./data/
 2_train.py          # Entrena el modelo leyendo ./data/ y exporta a ./outputs/
-requirements.txt    # Dependencias exactas (pip freeze)
+requirements.txt    # Dependencias con versiones exactas validadas
 README.md           # Este archivo
 ```
+
+> **Dataset**: ~400 clips de voz en **quechua de Puno** (variedad Collao, hermana del
+> cusqueño) del corpus **Mozilla Common Voice** (licencia CC0), filtrados al dominio
+> **salud** por relevancia para la tesis. Audio en `.wav` 16 kHz mono + `metadata.csv`
+> (`audio_path,text`).
+>
+> **Nota sobre el idioma**: Whisper no incluye el quechua entre sus idiomas nativos,
+> por lo que se usa el token de **español** como idioma base (comparte ortografía con
+> el quechua sureño) y el modelo se afina sobre transcripciones en quechua.
 
 > El dataset **no** se incluye en el `.zip`. Se descarga automáticamente desde
 > Google Drive al ejecutar `1_setup_data.py`.

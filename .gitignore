@@ -22,7 +22,12 @@
 
 # ---- Empaquetado para Classroom (artefactos generados) ----
 tesis_latex_classroom.zip
-ENTREGA_CLASSROOM/
+# Entregas Classroom: locales por defecto, salvo la de limpieza de dataset (se versiona).
+ENTREGA_CLASSROOM/*
+!ENTREGA_CLASSROOM/Limpieza_Dataset/
+# ...excepto el PDF pesado del material del docente (ajeno, 14 MB).
+ENTREGA_CLASSROOM/Limpieza_Dataset/*.pdf
+!ENTREGA_CLASSROOM/Limpieza_Dataset/informe_eda.pdf
 
 # ---- Material de apoyo / evidencia (local, no versionado) ----
 Estructuracion_Tesis/
