@@ -208,6 +208,15 @@ exist{\'i}a hace pocos a{\~n}os. La estrategia dominante para lenguas de bajo re
 en entrenar modelos desde cero, sino en adaptar (\emph{fine-tuning}) grandes modelos multiling{\"u}es
 preentrenados.
 
+\obstitulo{\noindent Todos estos modelos comparten una misma base: la \textbf{arquitectura
+Transformer}, hoy el est{\'a}ndar de vanguardia para procesar voz y texto ---la misma tecnolog{\'i}a
+que sostiene a sistemas como Whisper, los traductores neuronales modernos y los grandes modelos de
+lenguaje---. Su mecanismo de \emph{autoatenci{\'o}n} pondera el contexto completo de la secuencia, lo
+que la hace especialmente apta para una lengua aglutinante y polisint{\'e}tica
+como el quechua, donde una sola palabra concentra gran parte de la informaci{\'o}n gramatical. Por
+operar de forma nativa sobre dos modalidades ---audio y texto---, se habla de \textbf{arquitecturas
+de transformadores multimodales}.}
+
 En la voz, el proyecto MMS \parencite{pratap2024mms} cubre el quechua de Cusco
 (\sig{quz}) en reconocimiento y s{\'i}ntesis; Whisper \parencite{radford2023whisper} declara una
 cobertura marginal del quechua y se reserva como l{\'i}nea base. En traducci{\'o}n, NLLB
@@ -235,7 +244,7 @@ precisi{\'o}n y la comprensi{\'o}n frente a la ausencia de apoyo tecnol{\'o}gico
 
 \subsubsection{Problema general}
 {\textquestiondown}\obsdos{C{\'o}mo \emph{desarrollar un sistema bidireccional de traducci{\'o}n de voz
-Quechua--Espa{\~n}ol} \emph{mediante arquitecturas de transformadores multimodales} (ajuste fino de los
+Quechua--Espa{\~n}ol} \emph{mediante \obstitulo{arquitecturas de transformadores multimodales}} (ajuste fino de los
 modelos preentrenados MMS y NLLB) \emph{para la comunicaci{\'o}n m{\'e}dico-paciente en las consultas m{\'e}dicas en Cusco}?}
 
 \subsubsection{Problemas espec{\'i}ficos}
@@ -252,25 +261,34 @@ traducci{\'o}n autom{\'a}tica (NLLB adaptado de \sig{quy} a \sig{quz}) y s{\'i}n
 (MMS-TTS) mediante el ajuste de modelos preentrenados de c{\'o}digo abierto, con salida por voz en
 ambos sentidos del di{\'a}logo.
 
+\obscuatro{\noindent El \textbf{aporte t{\'e}cnico central} y la evaluaci{\'o}n comparativa se
+concentran en el \textbf{m{\'o}dulo de traducci{\'o}n} ---la adaptaci{\'o}n dialectal
+\sig{quy}$\to$\sig{quz} al dominio cl{\'i}nico, se{\~n}alada como principal cuello de botella por el
+antecedente m{\'a}s cercano \parencite{QuispePalomino2026}---, mientras que el reconocimiento (MMS) y
+la s{\'i}ntesis (MMS-TTS) se integran como componentes del \emph{prototipo demostrador} que habilita
+el di{\'a}logo por voz. As{\'i}, el {\'e}xito se mide por la mejora del componente donde la evidencia
+previa se estanc{\'o}, y no por la mera integraci{\'o}n de los m{\'o}dulos.}
+
 \subsection{Objetivos}
 
 \subsubsection{Objetivo general}
 \nuevo{Desarrollar un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol para la
-comunicaci{\'o}n m{\'e}dico-paciente, mediante arquitecturas de transformadores multimodales (ajuste fino
+comunicaci{\'o}n m{\'e}dico-paciente, mediante \obstitulo{arquitecturas de transformadores multimodales} (ajuste fino
 de los modelos preentrenados MMS y NLLB), en las consultas m{\'e}dicas en Cusco.}
 
 \subsubsection{Objetivos espec{\'i}ficos}
 \begin{enumerate}
   \item \obsdos{\textbf{(OE1 --- Diagn{\'o}stico).} Caracterizar las barreras de comunicaci{\'o}n entre el personal de salud y los pacientes quechuahablantes y determinar qu{\'e} debe contener el corpus cl{\'i}nico Quechua--Espa{\~n}ol (triaje, s{\'i}ntomas e indicaciones) para poder ajustar los modelos.}
-  \item \obsdos{\textbf{(OE2 --- Construcci{\'o}n).} Construir el sistema de traducci{\'o}n por voz, ajustando (\emph{fine-tuning}) los modelos preentrenados MMS y NLLB ---del quechua de Ayacucho (\sig{quy}) al de Cusco (\sig{quz})--- e integr{\'a}ndolos en un \emph{pipeline} ASR+MT+TTS con salida por voz y texto.}
-  \item \obsdos{\textbf{(OE3 --- Validaci{\'o}n).} Evaluar en qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n (WER, BLEU, chrF), la calidad de la voz (MOS) y la comprensi{\'o}n entre el m{\'e}dico y el paciente, frente a no contar con apoyo tecnol{\'o}gico.}
+  \item \obsdos{\textbf{(OE2 --- Construcci{\'o}n).} Construir el sistema de traducci{\'o}n por voz, ajustando (\emph{fine-tuning}) los modelos preentrenados MMS y NLLB ---del quechua de Ayacucho (\sig{quy}) al de Cusco (\sig{quz})--- e integr{\'a}ndolos en un \emph{pipeline} ASR+MT+TTS con salida por voz y texto.} \obscuatro{La adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz} del m{\'o}dulo de traducci{\'o}n al dominio cl{\'i}nico constituye el \textbf{aporte t{\'e}cnico central sometido a evaluaci{\'o}n}; el reconocimiento (MMS) y la s{\'i}ntesis (MMS-TTS) se integran como componentes del \emph{prototipo demostrador}.}
+  \item \obsdos{\textbf{(OE3 --- Validaci{\'o}n).} Evaluar en qu{\'e} medida el sistema mejora la precisi{\'o}n de la traducci{\'o}n (WER, BLEU, chrF), la calidad de la voz (MOS) y la comprensi{\'o}n entre el m{\'e}dico y el paciente, frente a no contar con apoyo tecnol{\'o}gico.} \obscuatro{La evaluaci{\'o}n prioriza la \textbf{mejora relativa} del m{\'o}dulo de traducci{\'o}n adaptado sobre el \emph{baseline} sin ajustar y la \textbf{preservaci{\'o}n del contenido cl{\'i}nico}, e incluye un experimento de \emph{ablaci{\'o}n de la calidad del corpus} (referencias validadas por expertos \emph{vs.}\ traducci{\'o}n autom{\'a}tica gen{\'e}rica).}
 \end{enumerate}
 
 \subsection{Justificaci{\'o}n}
 \noindent La investigaci{\'o}n se justifica en cuatro dimensiones:
 \begin{itemize}\setlength{\itemsep}{1pt}
   \item \textbf{Te{\'o}rica:} Aporta evidencia emp{\'i}rica del desempe{\~n}o de modelos
-  preentrenados en una lengua de bajo recurso y morfolog{\'i}a compleja.
+  preentrenados \obstitulo{basados en arquitecturas de transformadores multimodales} en una lengua
+  de bajo recurso y morfolog{\'i}a aglutinante compleja.
   \item \textbf{Pr{\'a}ctica:} Entrega un prototipo piloteable en un centro de salud.
   \item \textbf{Social:} Ataca una inequidad documentada en el acceso a la salud
   \parencite{begazo2026}, en l{\'i}nea con el derecho de los pacientes a ser atendidos en su

@@ -1,0 +1,382 @@
+<title>Pipeline de tesis — Traductor de voz quechua–español para salud</title>
+<style>
+  :root {
+    --bg: #f6f9fb;
+    --surface: #ffffff;
+    --surface-2: #eef3f7;
+    --ink: #15222e;
+    --muted: #566676;
+    --line: #d9e2ea;
+    --asr: #1c63a6;
+    --mt: #0f8f8b;
+    --tts: #3a9d4e;
+    --asr-soft: #e7f0fa;
+    --mt-soft: #e1f4f3;
+    --tts-soft: #e7f5ea;
+    --accent: #0f8f8b;
+    --good: #2f9e52;
+    --warn: #c98a1a;
+    --plan: #6b7a8a;
+    --shadow: 0 1px 2px rgba(21,34,46,.06), 0 8px 24px rgba(21,34,46,.06);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1620;
+      --surface: #16212e;
+      --surface-2: #1d2b3a;
+      --ink: #e8eef4;
+      --muted: #94a5b6;
+      --line: #27384a;
+      --asr: #559ce0;
+      --mt: #2bb7b2;
+      --tts: #5bc072;
+      --asr-soft: #15283b;
+      --mt-soft: #10322f;
+      --tts-soft: #122d1c;
+      --accent: #2bb7b2;
+      --good: #5bc072;
+      --warn: #e0b150;
+      --plan: #8495a6;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f6f9fb; --surface: #ffffff; --surface-2: #eef3f7; --ink: #15222e;
+    --muted: #566676; --line: #d9e2ea; --asr: #1c63a6; --mt: #0f8f8b; --tts: #3a9d4e;
+    --asr-soft: #e7f0fa; --mt-soft: #e1f4f3; --tts-soft: #e7f5ea; --accent: #0f8f8b;
+    --good: #2f9e52; --warn: #c98a1a; --plan: #6b7a8a;
+    --shadow: 0 1px 2px rgba(21,34,46,.06), 0 8px 24px rgba(21,34,46,.06);
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1620; --surface: #16212e; --surface-2: #1d2b3a; --ink: #e8eef4;
+    --muted: #94a5b6; --line: #27384a; --asr: #559ce0; --mt: #2bb7b2; --tts: #5bc072;
+    --asr-soft: #15283b; --mt-soft: #10322f; --tts-soft: #122d1c; --accent: #2bb7b2;
+    --good: #5bc072; --warn: #e0b150; --plan: #8495a6;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: clamp(1.5rem, 4vw, 3.5rem) clamp(1rem, 3vw, 2rem); }
+
+  .eyebrow {
+    font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 650; margin: 0 0 .6rem;
+  }
+  h1 {
+    font-family: var(--serif); font-weight: 600; text-wrap: balance;
+    font-size: clamp(1.7rem, 4.2vw, 2.7rem); line-height: 1.12; letter-spacing: -.01em;
+    margin: 0 0 .7rem;
+  }
+  .lede {
+    font-size: clamp(1rem, 1.6vw, 1.12rem); color: var(--muted);
+    max-width: 62ch; margin: 0 0 1.4rem;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .5rem; }
+  .chip {
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-size: .78rem; font-weight: 550; padding: .3rem .7rem;
+    border: 1px solid var(--line); border-radius: 999px; background: var(--surface);
+    color: var(--muted);
+  }
+  .dot { width: .55rem; height: .55rem; border-radius: 50%; display: inline-block; }
+  .dot.good { background: var(--good); }
+  .dot.warn { background: var(--warn); }
+  .dot.plan { background: var(--plan); }
+
+  section { margin-top: clamp(2.2rem, 5vw, 3.4rem); }
+  .sec-head { display: flex; align-items: baseline; gap: .6rem; margin-bottom: 1.1rem; flex-wrap: wrap; }
+  .sec-head h2 {
+    font-family: var(--serif); font-weight: 600; font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+    margin: 0; letter-spacing: -.01em;
+  }
+  .sec-head .num {
+    font-family: var(--mono); font-size: .82rem; color: var(--accent);
+    border: 1px solid var(--line); border-radius: 6px; padding: .1rem .45rem; background: var(--surface);
+  }
+  .sec-sub { color: var(--muted); font-size: .95rem; margin: -.4rem 0 1.2rem; max-width: 64ch; }
+
+  /* ---- Diagrama ---- */
+  .diagram {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 16px;
+    box-shadow: var(--shadow); padding: clamp(1rem, 2.5vw, 1.6rem);
+  }
+  .lane { margin-bottom: 1.3rem; }
+  .lane:last-child { margin-bottom: 0; }
+  .lane-title {
+    font-size: .8rem; font-weight: 650; letter-spacing: .04em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 .7rem; display: flex; align-items: center; gap: .5rem;
+  }
+  .lane-title .arrow-ico { color: var(--accent); font-weight: 700; }
+  .flow {
+    display: flex; align-items: stretch; gap: .35rem; overflow-x: auto;
+    padding-bottom: .4rem;
+  }
+  .flow::-webkit-scrollbar { height: 7px; }
+  .flow::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  .node {
+    flex: 1 1 0; min-width: 118px;
+    border-radius: 12px; padding: .7rem .7rem; text-align: center;
+    border: 1px solid var(--line); background: var(--surface-2);
+    display: flex; flex-direction: column; gap: .28rem; justify-content: center;
+  }
+  .node .emoji { font-size: 1.4rem; line-height: 1; }
+  .node .n-title { font-weight: 650; font-size: .92rem; }
+  .node .n-sub { font-size: .72rem; color: var(--muted); font-family: var(--mono); }
+  .node.person { background: var(--surface); border-style: dashed; }
+  .node.asr { background: var(--asr-soft); border-color: color-mix(in srgb, var(--asr) 35%, var(--line)); }
+  .node.mt  { background: var(--mt-soft);  border-color: color-mix(in srgb, var(--mt) 35%, var(--line)); }
+  .node.tts { background: var(--tts-soft); border-color: color-mix(in srgb, var(--tts) 35%, var(--line)); }
+  .node.asr .n-title { color: var(--asr); }
+  .node.mt  .n-title { color: var(--mt); }
+  .node.tts .n-title { color: var(--tts); }
+  .conn {
+    flex: 0 0 auto; align-self: center; color: var(--muted);
+    font-size: 1.1rem; padding: 0 .1rem; user-select: none;
+  }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1.1rem; font-size: .8rem; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: .4rem; }
+  .sw { width: .8rem; height: .8rem; border-radius: 4px; display: inline-block; }
+  .sw.asr { background: var(--asr); } .sw.mt { background: var(--mt); } .sw.tts { background: var(--tts); }
+  .sw.person { background: var(--surface-2); border: 1px dashed var(--muted); }
+
+  /* ---- Tarjetas de módulo ---- */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    padding: 1.1rem 1.15rem; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+  .card.asr::before { background: var(--asr); }
+  .card.mt::before  { background: var(--mt); }
+  .card.tts::before { background: var(--tts); }
+  .card h3 { margin: 0 0 .1rem; font-size: 1.05rem; font-family: var(--serif); font-weight: 600; }
+  .card .role { font-size: .74rem; font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; margin-bottom: .7rem; }
+  .card.asr .role { color: var(--asr); } .card.mt .role { color: var(--mt); } .card.tts .role { color: var(--tts); }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: .25rem .7rem; font-size: .85rem; margin-top: .5rem; }
+  .kv dt { color: var(--muted); font-weight: 550; }
+  .kv dd { margin: 0; }
+  .kv code { font-family: var(--mono); font-size: .8rem; background: var(--surface-2); padding: .05rem .3rem; border-radius: 5px; }
+  .status { display: inline-flex; align-items: center; gap: .4rem; font-size: .76rem; font-weight: 600; margin-top: .9rem; padding: .25rem .6rem; border-radius: 999px; }
+  .status.good { background: var(--tts-soft); color: var(--tts); }
+  .status.warn { background: color-mix(in srgb, var(--warn) 16%, transparent); color: var(--warn); }
+  .status.plan { background: var(--surface-2); color: var(--plan); }
+
+  /* ---- Tabla ---- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; min-width: 540px; }
+  th, td { text-align: left; padding: .7rem .9rem; border-bottom: 1px solid var(--line); }
+  thead th { font-size: .74rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 650; }
+  tbody tr:last-child td { border-bottom: none; }
+  td code { font-family: var(--mono); font-size: .82rem; }
+  .metric { font-family: var(--mono); font-weight: 600; }
+
+  /* ---- Retroalimentación ---- */
+  .feedback {
+    background: linear-gradient(180deg, var(--surface), var(--surface-2));
+    border: 1px solid var(--line); border-radius: 16px; padding: clamp(1.2rem, 3vw, 1.8rem);
+    box-shadow: var(--shadow);
+  }
+  .q-list { display: grid; gap: .8rem; margin: 0; padding: 0; list-style: none; }
+  .q-list li { display: flex; gap: .75rem; align-items: flex-start; }
+  .q-list .q-num { font-family: var(--mono); font-weight: 700; color: var(--accent); flex: 0 0 auto; font-size: .95rem; margin-top: .05rem; }
+  .q-list p { margin: 0; font-size: .95rem; }
+  .q-list .q-why { color: var(--muted); font-size: .83rem; }
+
+  footer { margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .82rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: .6rem; }
+
+  @media (max-width: 560px) {
+    .node { min-width: 104px; }
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Plan de tesis · Seminario de Tesis II · UNSAAC</p>
+    <h1>Traductor de voz quechua–español para la comunicación médico–paciente</h1>
+    <p class="lede">
+      Sistema de voz a voz, en dos sentidos, basado en <strong>arquitecturas de
+      transformadores multimodales</strong> (audio + texto). Permite que un médico
+      hispanohablante y un paciente quechuahablante <strong>(variedad cusqueña,
+      Cusco-Collao)</strong> se entiendan en tiempo real.
+    </p>
+    <div class="chips">
+      <span class="chip"><span class="dot good"></span>Módulo ASR: prototipo entregado</span>
+      <span class="chip"><span class="dot warn"></span>Módulo Traducción: en diseño</span>
+      <span class="chip"><span class="dot plan"></span>Módulo Voz (TTS): planeado</span>
+    </div>
+  </header>
+
+  <section>
+    <div class="sec-head"><span class="num">01</span><h2>El pipeline completo, en dos sentidos</h2></div>
+    <p class="sec-sub">
+      Cada caja de color es un modelo de transformers independiente. El sistema es
+      <strong>bidireccional</strong>: traduce del paciente al médico y del médico al paciente.
+    </p>
+
+    <div class="diagram">
+      <div class="lane">
+        <p class="lane-title"><span class="arrow-ico">▸</span> Sentido 1 — del paciente al médico</p>
+        <div class="flow">
+          <div class="node person"><span class="emoji">🧑🏽</span><span class="n-title">Paciente</span><span class="n-sub">habla quechua</span></div>
+          <span class="conn">→</span>
+          <div class="node asr"><span class="emoji">🎤</span><span class="n-title">ASR</span><span class="n-sub">voz qu → texto qu</span></div>
+          <span class="conn">→</span>
+          <div class="node mt"><span class="emoji">🔁</span><span class="n-title">Traducción</span><span class="n-sub">texto qu → texto es</span></div>
+          <span class="conn">→</span>
+          <div class="node tts"><span class="emoji">🔊</span><span class="n-title">Síntesis</span><span class="n-sub">texto es → voz es</span></div>
+          <span class="conn">→</span>
+          <div class="node person"><span class="emoji">🩺</span><span class="n-title">Médico</span><span class="n-sub">escucha español</span></div>
+        </div>
+      </div>
+
+      <div class="lane">
+        <p class="lane-title"><span class="arrow-ico">▸</span> Sentido 2 — del médico al paciente</p>
+        <div class="flow">
+          <div class="node person"><span class="emoji">🩺</span><span class="n-title">Médico</span><span class="n-sub">habla español</span></div>
+          <span class="conn">→</span>
+          <div class="node asr"><span class="emoji">🎤</span><span class="n-title">ASR</span><span class="n-sub">voz es → texto es</span></div>
+          <span class="conn">→</span>
+          <div class="node mt"><span class="emoji">🔁</span><span class="n-title">Traducción</span><span class="n-sub">texto es → texto qu</span></div>
+          <span class="conn">→</span>
+          <div class="node tts"><span class="emoji">🔊</span><span class="n-title">Síntesis</span><span class="n-sub">texto qu → voz qu</span></div>
+          <span class="conn">→</span>
+          <div class="node person"><span class="emoji">🧑🏽</span><span class="n-title">Paciente</span><span class="n-sub">escucha quechua</span></div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><span class="sw asr"></span>ASR — Reconocimiento de voz</span>
+        <span><span class="sw mt"></span>Traducción automática (MT)</span>
+        <span><span class="sw tts"></span>Síntesis de voz (TTS)</span>
+        <span><span class="sw person"></span>Persona (entrada/salida)</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">02</span><h2>Los tres módulos</h2></div>
+    <p class="sec-sub">
+      Cada módulo se entrena y se evalúa por separado (diseño modular), y luego se
+      encadenan. Así cada componente es verificable de forma independiente.
+    </p>
+    <div class="cards">
+      <article class="card asr">
+        <h3>Reconocimiento de voz</h3>
+        <p class="role">ASR · voz → texto</p>
+        <dl class="kv">
+          <dt>Modelo</dt><dd><code>Whisper-tiny</code> (fine-tuning)</dd>
+          <dt>Datos</dt><dd>Common Voice quechua cusqueño (dominio salud)</dd>
+          <dt>Métrica</dt><dd><code>WER</code> (% error de palabra)</dd>
+        </dl>
+        <span class="status good"><span class="dot good"></span>Prototipo entregado y validado</span>
+      </article>
+
+      <article class="card mt">
+        <h3>Traducción automática</h3>
+        <p class="role">MT · texto ↔ texto</p>
+        <dl class="kv">
+          <dt>Modelo</dt><dd><code>NLLB</code> / <code>mBART</code> (a evaluar)</dd>
+          <dt>Datos</dt><dd>Corpus paralelo quechua–español</dd>
+          <dt>Métrica</dt><dd><code>BLEU</code> · <code>chrF</code></dd>
+        </dl>
+        <span class="status warn"><span class="dot warn"></span>En diseño</span>
+      </article>
+
+      <article class="card tts">
+        <h3>Síntesis de voz</h3>
+        <p class="role">TTS · texto → voz</p>
+        <dl class="kv">
+          <dt>Modelo</dt><dd><code>VITS</code> / <code>Coqui</code> (a evaluar)</dd>
+          <dt>Datos</dt><dd>Audio quechua con transcripción</dd>
+          <dt>Métrica</dt><dd><code>MOS</code> (evaluación humana)</dd>
+        </dl>
+        <span class="status plan"><span class="dot plan"></span>Planeado</span>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">03</span><h2>Plan de evaluación</h2></div>
+    <p class="sec-sub">
+      Cada módulo tiene una métrica objetiva; el sistema completo se evalúa de extremo
+      a extremo con usuarios reales. La comparación contra una <em>línea base</em> es el
+      núcleo de los resultados.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Qué se evalúa</th><th>Métrica</th><th>Línea base (comparación)</th><th>Instrumento</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ASR quechua</td><td class="metric">WER ↓</td><td>Whisper sin afinar</td><td><code>jiwer</code> / conjunto de prueba</td></tr>
+          <tr><td>Traducción qu↔es</td><td class="metric">BLEU ↑ / chrF ↑</td><td>Traductor genérico</td><td><code>sacrebleu</code></td></tr>
+          <tr><td>Síntesis de voz</td><td class="metric">MOS ↑</td><td>Voz concatenativa</td><td>Encuesta a hablantes</td></tr>
+          <tr><td>Sistema completo</td><td class="metric">Tasa de comprensión</td><td>Sin sistema (intérprete humano)</td><td>Prueba con médico + paciente</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">04</span><h2>¿Se puede ejecutar por partes?</h2></div>
+    <p class="sec-sub">Sí. El código es modular y cada etapa produce un resultado verificable, sin cajas negras de «todo o nada».</p>
+    <div class="cards">
+      <article class="card asr" style="--line:var(--line)">
+        <h3>1 · Preparar datos</h3>
+        <p class="role">python3 1_setup_data.py</p>
+        <p style="margin:.2rem 0 0;font-size:.9rem;color:var(--muted)">Descarga el dataset y crea <code>./data/</code>. El docente verifica que los audios existan.</p>
+      </article>
+      <article class="card mt">
+        <h3>2 · Entrenar</h3>
+        <p class="role">python3 2_train.py</p>
+        <p style="margin:.2rem 0 0;font-size:.9rem;color:var(--muted)">Afina el modelo y exporta <code>./outputs/</code> + <code>metricas.json</code> con el WER.</p>
+      </article>
+      <article class="card tts">
+        <h3>3 · Inferencia (demo)</h3>
+        <p class="role">para la sustentación</p>
+        <p style="margin:.2rem 0 0;font-size:.9rem;color:var(--muted)">Demo en <code>Gradio</code>: grabar audio y ver la transcripción en vivo. No va en la entrega del curso.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-head"><span class="num">05</span><h2>Para tu retroalimentación, profesor</h2></div>
+    <div class="feedback">
+      <p style="margin:0 0 1.1rem;color:var(--muted);font-size:.95rem">
+        Puntos abiertos sobre los que agradecería su criterio antes de avanzar a los módulos 2 y 3:
+      </p>
+      <ul class="q-list">
+        <li><span class="q-num">1</span><div>
+          <p><strong>Variedad del quechua.</strong> La tesis se centra en el quechua cusqueño (Cusco-Collao). Dado que el corpus etiquetado cusqueño es escaso, ¿es aceptable complementarlo con datos de otras variedades Collao (p. ej. Puno), mutuamente inteligibles?</p>
+          <p class="q-why">Afecta la recolección de datos y la generalización del sistema.</p>
+        </div></li>
+        <li><span class="q-num">2</span><div>
+          <p><strong>Alcance realista.</strong> ¿Los tres módulos (ASR + Traducción + Voz) son abarcables en una tesis, o conviene profundizar en uno y dejar los otros como prototipo?</p>
+          <p class="q-why">Define la profundidad vs. amplitud del trabajo.</p>
+        </div></li>
+        <li><span class="q-num">3</span><div>
+          <p><strong>Datos paralelos.</strong> El cuello de botella es el corpus paralelo quechua–español para traducción. ¿Qué fuentes o estrategias de aumento de datos recomienda?</p>
+          <p class="q-why">Es el mayor riesgo técnico del proyecto.</p>
+        </div></li>
+        <li><span class="q-num">4</span><div>
+          <p><strong>Validación clínica y ética.</strong> Una traducción médica errónea es riesgosa. ¿Cómo plantear la validación con usuarios y el resguardo ético de datos sensibles?</p>
+          <p class="q-why">Fortalece el capítulo de metodología y limitaciones.</p>
+        </div></li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>Pipeline de tesis — ASR · Traducción · Síntesis de voz</span>
+    <span>Documento para revisión · versión de trabajo</span>
+  </footer>
+</div>

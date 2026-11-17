@@ -100,6 +100,17 @@
 %  CORRECCIONES A OBSERVACIONES (revision del asesor)
 % ============================================================
 \definecolor{verdeOK}{RGB}{13,124,51}
+% ---- Interruptor de versi{\'o}n ----
+%  \docentetrue  = versi{\'o}n DOCENTE: nota inicial + cambios de la observaci{\'o}n 3
+%                  (precisi{\'o}n del m{\'e}todo en el t{\'i}tulo) resaltados en VERDE.
+%  \docentefalse = versi{\'o}n JURADO: todo en negro, sin nota ni resaltados.
+\newif\ifdocente
+\docentetrue
+\ifdocente
+  \newcommand{\obstitulo}[1]{\textcolor{verdeOK}{#1}}% observaci{\'o}n 3: t{\'i}tulo/m{\'e}todo
+\else
+  \newcommand{\obstitulo}[1]{#1}
+\fi
 % R1 consolidado: correcciones de la 1a ronda en NEGRO (texto normal).
 \newcommand{\nuevo}[1]{#1}
 \newenvironment{bloqueNuevo}{\par}{\par}

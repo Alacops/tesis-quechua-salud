@@ -76,6 +76,15 @@ a la presente tesis. Al final, la Tabla~\ref{tab:sintesis} sintetiza el conjunto
   \item \textbf{Resultados y conclusi{\'o}n:} Documenta c{\'o}mo la desconexi{\'o}n idiom{\'a}tica vulnera la relaci{\'o}n terap{\'e}utica y concluye que la barrera compromete la calidad y la seguridad de la atenci{\'o}n; en una regi{\'o}n andina vecina, \textcite{cuaila2022} hall{\'o} una relaci{\'o}n directa entre el dominio del quechua del personal y la calidad de atenci{\'o}n percibida.
   \item \textbf{Aporte a la tesis:} Aporta la evidencia local del problema que motiva la propuesta y respalda la pertinencia de una soluci{\'o}n por voz para el consultorio cusque{\~n}o.
 \end{itemize}
+
+\noindent\textbf{\obscuatro{Antecedente 7.}}
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Cita y t{\'i}tulo:} \obscuatro{\textcite{QuispePalomino2026}, \emph{Evaluaci{\'o}n de modelos de reconocimiento de voz para traducci{\'o}n quechua-espa{\~n}ol en el {\'a}mbito m{\'e}dico en Cusco} (tesis, UNSAAC); traducci{\'o}n de voz Quechua--Espa{\~n}ol en consultas m{\'e}dicas de Cusco.}
+  \item \textbf{Dise{\~n}o metodol{\'o}gico:} \obscuatro{Cuantitativo-experimental; compara el enfoque en cascada (Whisper$+$NLLB) frente a la traducci{\'o}n directa (SpeechT5) sobre un conjunto de prueba del dominio m{\'e}dico.}
+  \item \textbf{Instrumentos:} \obscuatro{Modelos preentrenados afinados por transferencia, evaluados con BLEU y chrF, con atribuci{\'o}n del error por componente (ASR \emph{vs.}\ MT) y una matriz de errores graduada por impacto cl{\'i}nico.}
+  \item \textbf{Resultados y conclusi{\'o}n:} \obscuatro{El mejor sistema (cascada) alcanz{\'o} \textbf{5.91 BLEU} y \textbf{24.66 chrF}; el estudio sit{\'u}a el principal cuello de botella en el \emph{m{\'o}dulo de traducci{\'o}n} ---con transcripci{\'o}n perfecta el techo es $\approx$8.70 BLEU--- y no en el reconocimiento de voz, y concluye que lo decisivo no es el volumen de datos general sino la \emph{cantidad y calidad} de datos del dominio cl{\'i}nico.}
+  \item \textbf{Aporte a la tesis:} \obscuatro{Es el antecedente local m{\'a}s cercano ---mismo dominio, variante \sig{quz} y regi{\'o}n---; su diagn{\'o}stico orienta tres decisiones de dise{\~n}o de esta tesis: (i)~priorizar el fortalecimiento y la calidad del corpus cl{\'i}nico y del m{\'o}dulo de traducci{\'o}n, (ii)~emplear referencias validadas por hablantes nativos en lugar de traducci{\'o}n autom{\'a}tica de prop{\'o}sito general, y (iii)~fijar criterios de {\'e}xito realistas para el par en el dominio cl{\'i}nico (Cap{\'i}tulo~III, Tabla~\ref{tab:metas}).}
+\end{itemize}
 \end{bloqueObsDos}
 
 \noindent En el plano tecnol{\'o}gico local, el primer sistema de traducci{\'o}n neural para el
@@ -95,9 +104,14 @@ sint{\'e}ticos \parencite{Gow-Smith2023192,Ahmed2023156,Dhawan2026119,Ebrahimi20
 como \emph{QuBERT} \parencite{Zevallos20221}, \emph{Huqariq} \parencite{zevallos2022huqariq} y la API
 \emph{Siminchikkunarayku} \parencite{9514251}, todos sintetizados en la Tabla~\ref{tab:sintesis}.}
 
-No se identific{\'o} ning{\'u}n antecedente
-local que integre reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz para la atenci{\'o}n en salud,
-lo que confirma la pertinencia de esta investigaci{\'o}n.
+\obscuatro{Un antecedente reciente ---\textcite{QuispePalomino2026}--- ya evalu{\'o} modelos de
+traducci{\'o}n de voz en el dominio m{\'e}dico de Cusco, pero lo hizo en una sola direcci{\'o}n
+(quechua$\to$espa{\~n}ol), sin integrar s{\'i}ntesis de voz, sin adaptar expl{\'i}citamente la
+variante \sig{quz} y empleando traducciones de entrenamiento de prop{\'o}sito general. As{\'i}, no se
+identific{\'o} ning{\'u}n antecedente que integre reconocimiento, traducci{\'o}n y s{\'i}ntesis de voz
+de forma \emph{bidireccional} ---con la adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz} y salida por
+voz para usuarios con baja alfabetizaci{\'o}n--- para la atenci{\'o}n en salud, lo que confirma la
+pertinencia de esta investigaci{\'o}n.}
 
 \subsection{Estado del arte y brecha de investigaci{\'o}n}
 A partir de una \textbf{revisi{\'o}n sistem{\'a}tica} (Scopus, IEEE Xplore y ACM Digital Library;
@@ -118,18 +132,32 @@ ASR (quechua)                  & WER 12.70\,\% (HMM/HTK) y 22.75\,\% con aumento
 MT (QU--ES)                    & Hasta $+$11\,\% chrF; BLEU 15.47 con modelos ajustados   & No \\
 TTS (quechua)                  & MOS de hasta 4.9 (XTTS\,v2)                              & No \\
 Traducci{\'o}n de voz (cascada) & 26.7 BLEU (QUESPA 2025, variante Collao)                & No \\
+\obscuatro{Traducci{\'o}n de voz (m{\'e}dico)} & \obscuatro{BLEU 5.91 / chrF 24.66 (cascada; {\'u}nico antecedente cl{\'i}nico, una direcci{\'o}n)} & \obscuatro{S{\'i}} \\
 Recursos / corpus              & QuBERT, \emph{Huqariq}, API \emph{Siminchikkunarayku}    & Habilitador \\
 \bottomrule
 \end{tabularx}
 \notaAPA{Elaboraci{\'o}n propia a partir de la revisi{\'o}n sistem{\'a}tica (Scopus, IEEE Xplore y ACM); s{\'i}ntesis por componente. La columna ``{\textquestiondown}Salud?'' indica si el trabajo abord{\'o} el dominio sanitario.}
 \end{table}
 
-La s{\'i}ntesis evidencia avances s{\'o}lidos por componente, pero ninguno en el \textbf{dominio
-cl{\'i}nico} ni con la variante de Cusco (\sig{quz}) integrada de extremo a extremo. La
-\textbf{brecha} es, por tanto, la intersecci{\'o}n ---hoy vac{\'i}a--- entre las tecnolog{\'i}as del
-habla para el quechua y la comunicaci{\'o}n m{\'e}dico-paciente: no existe un corpus cl{\'i}nico
-Quechua--Espa{\~n}ol ni una evaluaci{\'o}n emp{\'i}rica de estos modelos en salud, y NLLB a{\'u}n no
-cubre \sig{quz}. Cerrar esa intersecci{\'o}n es el aporte de este proyecto.
+La s{\'i}ntesis evidencia avances s{\'o}lidos por componente y \obscuatro{un primer acercamiento al
+\textbf{dominio cl{\'i}nico} \parencite{QuispePalomino2026}; sin embargo, este eval{\'u}a modelos en
+una sola direcci{\'o}n, sin s{\'i}ntesis de voz y sin adaptar la variante de Cusco (\sig{quz}) de
+extremo a extremo}. La \textbf{brecha} es, por tanto, la intersecci{\'o}n ---a{\'u}n no resuelta---
+entre las tecnolog{\'i}as del habla para el quechua y la comunicaci{\'o}n m{\'e}dico-paciente: no
+existe un \emph{sistema bidireccional por voz} ajustado al dominio cl{\'i}nico, \obscuatro{el corpus
+cl{\'i}nico disponible es incipiente}, y NLLB a{\'u}n no cubre \sig{quz}. Cerrar esa intersecci{\'o}n
+es el aporte de este proyecto.
+
+\obscuatro{\noindent\textbf{Posicionamiento frente al antecedente m{\'a}s cercano.} A diferencia de
+\textcite{QuispePalomino2026} ---que compara enfoques de traducci{\'o}n de voz en una sola
+direcci{\'o}n y sin s{\'i}ntesis---, esta tesis: (i)~construye un \emph{sistema bidireccional} con
+salida hablada en ambos sentidos; (ii)~ataca directamente el cuello de botella que aquel estudio
+identifica ---el m{\'o}dulo de traducci{\'o}n--- mediante la adaptaci{\'o}n dialectal
+\sig{quy}$\to$\sig{quz} sobre vocabulario cl{\'i}nico; (iii)~sustituye las referencias de
+traducci{\'o}n autom{\'a}tica de prop{\'o}sito general por un corpus validado por hablantes nativos; y
+(iv)~incorpora la \emph{preservaci{\'o}n del contenido cl{\'i}nico} como criterio de evaluaci{\'o}n.
+As{\'i}, el presente trabajo no repite la comparaci{\'o}n ya realizada, sino que resuelve las
+limitaciones que aquella dej{\'o} abiertas.}
 
 \subsection{Fundamentos te{\'o}ricos}
 
@@ -143,7 +171,8 @@ datos multiling{\"u}es.
 
 \begin{bloqueNuevo}
 \noindent La base com{\'u}n de estos modelos es la arquitectura \emph{Transformer}
-\parencite{vaswani2017attention}, cuyo n{\'u}cleo es el mecanismo de \emph{autoatenci{\'o}n}: cada
+\parencite{vaswani2017attention}, \obstitulo{hoy el est{\'a}ndar de vanguardia para el procesamiento
+de voz y texto}, cuyo n{\'u}cleo es el mecanismo de \emph{autoatenci{\'o}n}: cada
 token se proyecta en consultas $Q$, claves $K$ y valores $V$, y la atenci{\'o}n pondera la
 informaci{\'o}n relevante del contexto mediante
 \begin{equation}
@@ -155,11 +184,11 @@ donde $d_k$ es la dimensi{\'o}n de las claves y el factor $1/\sqrt{d_k}$ estabil
 Este mecanismo modela dependencias de largo alcance, decisivo en una lengua polisint{\'e}tica como el
 quechua, donde una sola palabra concentra mucha informaci{\'o}n gramatical.
 
-\noindent Si bien comparten esta base, los modelos de la cascada operan sobre \emph{modalidades}
+\obstitulo{\noindent Si bien comparten esta base, los modelos de la cascada operan sobre \emph{modalidades}
 distintas ---habla (audio) y texto---: el ASR y la TTS procesan la se{\~n}al de voz, mientras que la
 MT trabaja sobre texto. Por ello, su integraci{\'o}n constituye una \textbf{arquitectura de
 transformadores multimodales}, en la que un mismo principio de autoatenci{\'o}n se aplica a
-secuencias ac{\'u}sticas y textuales para lograr una traducci{\'o}n bidireccional por voz.
+secuencias ac{\'u}sticas y textuales para lograr una traducci{\'o}n bidireccional por voz.}
 \end{bloqueNuevo}
 
 \subsubsection{Modelos multiling{\"u}es preentrenados (MMS, NLLB, Whisper)}

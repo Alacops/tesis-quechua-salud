@@ -2,47 +2,59 @@
 % Sin ancla de p{\'a}gina en la car{\'a}tula para evitar el choque de destino
 % "page.1" con la primera p{\'a}gina ar{\'a}biga del cuerpo.
 \hypersetup{pageanchor=false}
+\newlength{\tesisx}
 \begin{titlepage}
 \centering
 \singlespacing
 
-{\large UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD\\ DEL CUSCO\par}
-\vspace{0.2cm}
-{FACULTAD DE INGENIER{\'I}A EL{\'E}CTRICA, ELECTR{\'O}NICA, INFORM{\'A}TICA Y
-M{\'E}CANICA\par}
-{ESCUELA PROFESIONAL DE INGENIER{\'I}A INFORM{\'A}TICA Y DE SISTEMAS\par}
-\vspace{0.6cm}
+% ---- Encabezado institucional (negro, negrita) ----
+{\normalsize\bfseries UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD DEL CUSCO\par}
+\vspace{0.35cm}
+{\normalsize\bfseries FACULTAD DE INGENIER{\'I}A EL{\'E}CTRICA, ELECTR{\'O}NICA,\\ INFORM{\'A}TICA Y MEC{\'A}NICA\par}
+\vspace{0.35cm}
+{\normalsize\bfseries ESCUELA PROFESIONAL DE INGENIER{\'I}A INFORM{\'A}TICA Y DE SISTEMAS\par}
+\vspace{0.7cm}
 
-\IfFileExists{imagenes/logo_unsaac.png}{\includegraphics[width=4.6cm]{imagenes/logo_unsaac.png}}{%
-  \IfFileExists{../logo_unsaac.png}{\includegraphics[width=4.6cm]{../logo_unsaac.png}}{}}
-\vspace{0.6cm}
+% ---- Escudo ----
+\IfFileExists{imagenes/logo_unsaac.png}{\includegraphics[width=3.6cm]{imagenes/logo_unsaac.png}}{%
+  \IfFileExists{../logo_unsaac.png}{\includegraphics[width=3.6cm]{../logo_unsaac.png}}{}}
+\vspace{0.8cm}
 
-{\scshape Tesis\par}
+% ---- Tipo de documento ----
+{\bfseries TESIS\par}
 \vspace{0.5cm}
-\rule{\linewidth}{0.4pt}\par\vspace{0.3cm}
-{\large\bfseries%
-``\textcolor{colProceso}{DESARROLLO DE UN SISTEMA BIDIRECCIONAL DE TRADUCCI{\'O}N DE VOZ
-QUECHUA--ESPA{\~N}OL}
-\textcolor{colMetodo}{MEDIANTE ARQUITECTURAS DE TRANSFORMADORES MULTIMODALES}
-\textcolor{colContexto}{PARA CONSULTAS M{\'E}DICAS EN CUSCO}''\par}
-\vspace{0.3cm}\rule{\linewidth}{0.4pt}\par
 
-\vspace{1.1cm}
+% ---- T{\'i}tulo dentro de un recuadro de esquinas redondeadas ----
+\begin{tikzpicture}
+  \node[draw=black, line width=0.6pt, rounded corners=12pt, inner sep=12pt,
+        text width=0.82\linewidth, align=center, font=\bfseries\small]{%
+    \textcolor{colProceso}{DESARROLLO DE UN SISTEMA BIDIRECCIONAL DE TRADUCCI{\'O}N DE VOZ
+    QUECHUA--ESPA{\~N}OL} \textcolor{colMetodo}{MEDIANTE ARQUITECTURAS DE
+    TRANSFORMADORES MULTIMODALES} \textcolor{colContexto}{PARA CONSULTAS
+    M{\'E}DICAS EN CUSCO}};
+\end{tikzpicture}\par
+
+\vspace{0.5cm}
+
+% ---- Datos: en negro, el bloque empieza donde empieza la palabra TESIS ----
+%  (TESIS esta centrada: su borde izquierdo = (textwidth - ancho de "TESIS")/2)
+\settowidth{\tesisx}{\normalsize\bfseries TESIS}%
 \begin{flushleft}
-\hspace*{0.28\textwidth}%
-\begin{minipage}{0.66\textwidth}
-\raggedright
-{\small Para optar al t{\'i}tulo profesional de:}\\[3pt]
-\hspace*{1.4em}INGENIERO INFORM{\'A}TICO Y DE SISTEMAS\\[13pt]
-{\small Presentado por:}\\[3pt]
-\hspace*{1.4em}Alain Armando Condori Contreras\\[13pt]
-{\small C{\'o}digo de alumno:}\\[3pt]
-\hspace*{1.4em}021501\\[13pt]
-{\small Asesor:}\\[3pt]
-\hspace*{1.4em}Mtro. Ing. Ra{\'u}l Huillca Huallparimachi
-\end{minipage}
+\hspace*{\dimexpr0.5\textwidth-0.5\tesisx\relax}%
+\begin{minipage}{\dimexpr0.5\textwidth+0.5\tesisx\relax}
+\raggedright\fontsize{9}{11}\selectfont
+{\bfseries PRESENTADO POR:}\\[4pt]
+Br. ALAIN ARMANDO CONDORI CONTRERAS\\[4pt]
+C{\'O}DIGO: 021501\\[16pt]
+{\bfseries PARA OPTAR AL T{\'I}TULO PROFESIONAL DE}\\
+{\bfseries INGENIERO INFORM{\'A}TICO Y DE SISTEMAS}\\[16pt]
+{\bfseries ASESOR:}\\[4pt]
+Mtro. Ing. RA{\'U}L HUILLCA HUALLPARIMACHI
+\end{minipage}%
 \end{flushleft}
 
-\vfill
-{\bfseries Per{\'u}, Noviembre de 2026\par}
+\vspace{1.6cm}
+{\bfseries CUSCO - PER{\'U}\par}
+\vspace{0.2cm}
+{\bfseries 2026\par}
 \end{titlepage}

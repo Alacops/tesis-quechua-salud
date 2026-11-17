@@ -88,7 +88,7 @@ adaptaci{\'o}n dialectal \sig{quy}$\to$\sig{quz}, aporte central de la tesis.
 \subsection{\obsdos{Hip{\'o}tesis}}
 \begin{bloqueObsDos}
 \noindent\textbf{Hip{\'o}tesis general:} Un sistema bidireccional de traducci{\'o}n de voz
-Quechua--Espa{\~n}ol, basado en arquitecturas de transformadores multimodales (modelos preentrenados
+Quechua--Espa{\~n}ol, basado en \obstitulo{arquitecturas de transformadores multimodales} (modelos preentrenados
 MMS y NLLB ajustados por \emph{fine-tuning}), mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente durante las consultas
 m{\'e}dicas en Cusco frente a la ausencia de apoyo tecnol{\'o}gico.
 \begin{itemize}
@@ -98,7 +98,7 @@ m{\'e}dicas en Cusco frente a la ausencia de apoyo tecnol{\'o}gico.
   cl{\'i}nico y escenarios de triaje, s{\'i}ntomas e indicaciones--- del corpus Quechua--Espa{\~n}ol.
   Al ser diagn{\'o}stica, H1 se verifica por caracterizaci{\'o}n (cobertura l{\'e}xica y concordancia
   entre expertos), no por un contraste estad{\'i}stico de medias.}
-  \item \textbf{H2 (Construcci{\'o}n):} El ajuste (\emph{fine-tuning}) de los modelos preentrenados integrados en el \emph{pipeline} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar.
+  \item \textbf{H2 (Construcci{\'o}n):} El ajuste (\emph{fine-tuning}) de los modelos preentrenados integrados en el \emph{pipeline} reduce el WER y mejora el BLEU/chrF frente a los modelos sin ajustar. \obscuatro{En particular, la adaptaci{\'o}n dialectal del m{\'o}dulo de traducci{\'o}n (NLLB-\sig{quz} cl{\'i}nico) mejora significativamente el chrF/BLEU frente al \emph{baseline} NLLB-\sig{quy} sin adaptar (n{\'u}cleo del aporte). Como sub-hip{\'o}tesis, \textbf{H2a}: la curaci{\'o}n experta del corpus aporta una mejora adicional sobre un corpus traducido autom{\'a}ticamente (experimento de ablaci{\'o}n, Tabla~\ref{tab:ablacion}).}
   \item \textbf{H3 (Validaci{\'o}n):} El uso del sistema mejora significativamente la precisi{\'o}n, la calidad de la voz y la comprensi{\'o}n mutua en la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo tecnol{\'o}gico, sobre todo con baja alfabetizaci{\'o}n.
 \end{itemize}
 \noindent \obscuatro{H2 y H3 son hip{\'o}tesis \emph{contrastables} ---se someten a prueba estad{\'i}stica
@@ -269,6 +269,19 @@ La calidad de la voz sintetizada se valora con el \emph{Mean Opinion Score} (MOS
 se mide con el porcentaje de aciertos en la recuperaci{\'o}n de la indicaci{\'o}n y con escalas Likert
 de utilidad y confianza.
 
+\begin{bloqueObsCuatro}
+\noindent\textbf{Preservaci{\'o}n del contenido cl{\'i}nico.} Dado que las m{\'e}tricas autom{\'a}ticas
+(BLEU, chrF) no distinguen un error inocuo de uno con consecuencias cl{\'i}nicas, se incorpora una
+evaluaci{\'o}n cualitativa complementaria sobre el conjunto de prueba: dos hablantes nativos
+\sig{quz}--espa{\~n}ol clasifican cada turno traducido seg{\'u}n si preserva el mensaje cl{\'i}nico,
+en tres niveles de impacto ---\emph{benigno} (no altera el mensaje), \emph{matiz} (cambia un matiz
+sin alterar el diagn{\'o}stico) y \emph{diagn{\'o}stico} (altera un s{\'i}ntoma o dato con potencial de
+modificar la interpretaci{\'o}n cl{\'i}nica)---. La \emph{tasa de preservaci{\'o}n cl{\'i}nica} es el
+porcentaje de turnos sin error de impacto diagn{\'o}stico y constituye un criterio de {\'e}xito
+primario (Tabla~\ref{tab:metas}); la concordancia entre evaluadores se reporta con el coeficiente
+$\kappa$ de Cohen.
+\end{bloqueObsCuatro}
+
 \subsubsection{M{\'e}tricas de eficiencia}
 La eficiencia se cuantifica con la \emph{latencia por turno} (tiempo entre el fin de la voz de
 entrada y el inicio de la voz de salida) y el consumo de recursos de c{\'o}mputo.
@@ -284,33 +297,100 @@ comprensi{\'o}n m{\'e}dico-paciente. La mejora de (ii) sobre (i) contrasta H2 y 
 contrasta H3.
 \end{bloqueObsCuatro}
 
-\subsubsection{\obscuatro{Criterios de {\'e}xito (metas cuantitativas)}}
+\subsubsection{\obscuatro{Experimento de ablaci{\'o}n: calidad del corpus}}
 \begin{bloqueObsCuatro}
-\noindent El {\'e}xito del prototipo se declara verificable mediante umbrales objetivo, fijados a
-partir de los resultados reportados en los antecedentes (Cap{\'i}tulo~II) y ajustados al dominio
-cl{\'i}nico y a la variante de Cusco (Tabla~\ref{tab:metas}).
+\noindent Dado que el aporte se concentra en el m{\'o}dulo de traducci{\'o}n, se dise{\~n}a un
+experimento controlado para aislar el efecto de la \emph{calidad} de las referencias de
+entrenamiento ---y no solo de su cantidad---, factor identificado como decisivo por el antecedente
+m{\'a}s cercano \parencite{QuispePalomino2026}. Sus elementos son:
+
+\begin{itemize}\setlength{\itemsep}{1pt}
+  \item \textbf{Factor manipulado:} la \emph{fuente} de las traducciones de entrenamiento del MT, con
+  dos niveles ---(A)~\emph{validadas por hablantes nativos} \sig{quz} y (B)~\emph{generadas por
+  traducci{\'o}n autom{\'a}tica de prop{\'o}sito general}, r{\'e}plica del procedimiento del
+  antecedente---.
+  \item \textbf{Factores controlados (constantes):} la misma arquitectura (NLLB adaptado
+  \sig{quy}$\to$\sig{quz}), el mismo n{\'u}mero de pares de entrenamiento, los mismos
+  hiperpar{\'a}metros de ajuste y el mismo conjunto de prueba (el \emph{benchmark} cl{\'i}nico), de
+  modo que toda diferencia observada se atribuya a la curaci{\'o}n del corpus.
+  \item \textbf{Variable de respuesta:} chrF (principal) y BLEU (complementaria) sobre el conjunto de
+  prueba, junto con la \emph{tasa de preservaci{\'o}n cl{\'i}nica}.
+  \item \textbf{Contraste:} diferencia por pares entre (A) y (B) mediante la prueba de Wilcoxon
+  ($\alpha=0{,}05$), con tama{\~n}o del efecto (\emph{d} de Cohen) e intervalos de confianza por
+  \emph{bootstrap}; la estimaci{\'o}n se robustece con validaci{\'o}n cruzada $k$-\emph{fold} ($k=5$).
+  \item \textbf{Hip{\'o}tesis asociada (H2a):} la curaci{\'o}n experta (A) mejora significativamente el
+  chrF y la preservaci{\'o}n cl{\'i}nica frente al corpus traducido autom{\'a}ticamente (B).
+\end{itemize}
+
+\noindent Un resultado (A)$>$(B) estad{\'i}sticamente significativo fundamenta la decisi{\'o}n de
+construir un corpus cl{\'i}nico validado en lugar de reutilizar traducciones autom{\'a}ticas ---el
+mismo atajo asociado al bajo desempe{\~n}o del antecedente--- y constituye, junto con la adaptaci{\'o}n
+dialectal, el segundo frente de diferenciaci{\'o}n de la tesis.
 \end{bloqueObsCuatro}
 
 \begin{table}[H]
 \centering
-\caption{\obscuatro{Metas de desempe{\~n}o del prototipo (criterios de {\'e}xito).}}
-\label{tab:metas}
+\caption{\obscuatro{Dise{\~n}o del experimento de ablaci{\'o}n de la calidad del corpus.}}
+\label{tab:ablacion}
 \small
-\begin{tabularx}{\linewidth}{@{}l X l@{}}
-\toprule\hdr{M{\'e}trica} & \hdr{Componente / sentido} & \hdr{Meta objetivo} \\
+\begin{tabularx}{\linewidth}{@{}l X X@{}}
+\toprule\hdr{Elemento} & \hdr{Condici{\'o}n A (propuesta)} & \hdr{Condici{\'o}n B (control)} \\
 \midrule
-WER            & Reconocimiento (ASR), menor es mejor      & $\le 25$\,\% \\
-BLEU           & Traducci{\'o}n (MT), mayor es mejor         & $\ge 20$ \\
-chrF           & Traducci{\'o}n (MT), morfolog{\'i}a rica    & $\ge 45$ \\
-MOS            & Calidad de voz (TTS), escala 1--5         & $\ge 3.5$ \\
-Comprensi{\'o}n & \% de aciertos en la indicaci{\'o}n        & $\ge 80$\,\% \\
-Latencia       & Tiempo por turno (cascada completa)       & $\le 4.0$\,s \\
+\obscuatro{Fuente de referencias} & \obscuatro{Validadas por hablantes nativos \sig{quz}} & \obscuatro{Traducci{\'o}n autom{\'a}tica gen{\'e}rica} \\
+\obscuatro{Arquitectura}          & \multicolumn{2}{c}{\obscuatro{NLLB adaptado \sig{quy}$\to$\sig{quz} (id{\'e}ntica)}} \\
+\obscuatro{N.\ de pares / hiperpar{\'a}metros} & \multicolumn{2}{c}{\obscuatro{Constantes en ambas condiciones}} \\
+\obscuatro{Conjunto de prueba}    & \multicolumn{2}{c}{\obscuatro{\emph{Benchmark} cl{\'i}nico (datos no vistos)}} \\
+\obscuatro{Respuesta}             & \multicolumn{2}{c}{\obscuatro{chrF, BLEU y tasa de preservaci{\'o}n cl{\'i}nica}} \\
+\obscuatro{Contraste}             & \multicolumn{2}{c}{\obscuatro{Wilcoxon pareado, \emph{d} de Cohen, IC \emph{bootstrap} ($k$-fold, $k=5$)}} \\
 \bottomrule
 \end{tabularx}
-\notaAPA{\obscuatro{Elaboraci{\'o}n propia. Umbrales de referencia para declarar viable el prototipo;
-se contrastan con las l{\'i}neas base y pueden reajustarse tras la fase de diagn{\'o}stico. Valores
-anclados en los antecedentes del Cap{\'i}tulo~II (p.\,ej.\ 26.7 BLEU en QUESPA\,2025; MOS hasta 4.9 en
-s{\'i}ntesis quechua).}}
+\notaAPA{\obscuatro{Elaboraci{\'o}n propia. Las dos condiciones son id{\'e}nticas salvo por el factor manipulado (fuente de las referencias), lo que permite atribuir la diferencia de desempe{\~n}o a la curaci{\'o}n experta del corpus. Contrasta la sub-hip{\'o}tesis H2a.}}
+\end{table}
+
+\subsubsection{\obscuatro{Criterios de {\'e}xito (metas cuantitativas)}}
+\begin{bloqueObsCuatro}
+\noindent El {\'e}xito del prototipo \emph{no} se define por alcanzar un valor absoluto alto de BLEU.
+La evidencia m{\'a}s cercana muestra que, en el par Quechua--Espa{\~n}ol y en dominio cl{\'i}nico de
+bajos recursos, incluso con una transcripci{\'o}n perfecta el techo del m{\'o}dulo de traducci{\'o}n
+ronda los $\approx$8.7 BLEU \parencite{QuispePalomino2026}, mientras que el mejor sistema de dominio
+\emph{general} documentado alcanza 26.7 BLEU con un volumen de datos muy superior
+\parencite{Ortega2025260}. Fijar una meta de BLEU anclada en ese valor general ser{\'i}a, por tanto,
+irreal para este dominio. En consecuencia, el {\'e}xito se declara mediante tres criterios primarios
+---(i)~\textbf{mejora relativa} estad{\'i}sticamente significativa del sistema ajustado sobre el
+\emph{baseline} sin ajustar (contraste de H2), (ii)~\textbf{preservaci{\'o}n del contenido
+cl{\'i}nico} ---que el s{\'i}ntoma o la indicaci{\'o}n sobrevivan a la traducci{\'o}n, evaluada por
+hablantes nativos seg{\'u}n una graduaci{\'o}n de impacto (benigno / matiz / diagn{\'o}stico)---, y
+(iii)~\textbf{mejora de la comprensi{\'o}n} frente a la ausencia de apoyo (contraste de H3)---, y se
+complementa con metas de referencia escalonadas (m{\'i}nima de viabilidad y deseable) ancladas en el
+dominio cl{\'i}nico (Tabla~\ref{tab:metas}). Se prioriza la \textbf{chrF} sobre la BLEU como
+m{\'e}trica de traducci{\'o}n, por su mayor robustez en una lengua aglutinante.
+\end{bloqueObsCuatro}
+
+\begin{table}[H]
+\centering
+\caption{\obscuatro{Metas de desempe{\~n}o del prototipo (criterios de {\'e}xito escalonados).}}
+\label{tab:metas}
+\small
+\begin{tabularx}{\linewidth}{@{}l X l l@{}}
+\toprule\hdr{M{\'e}trica} & \hdr{Componente / sentido} & \hdr{M{\'i}nima} & \hdr{Deseable} \\
+\midrule
+\obscuatro{Mejora sobre \emph{baseline}} & \obscuatro{Ajustado \emph{vs.}\ sin ajustar (H2)} & \obscuatro{$\Delta>0$ signif.} & \obscuatro{$\Delta$ amplia} \\
+\obscuatro{Preservaci{\'o}n cl{\'i}nica} & \obscuatro{\% de turnos sin error de impacto diagn{\'o}stico} & \obscuatro{$\ge 80$\,\%} & \obscuatro{$\ge 90$\,\%} \\
+chrF           & Traducci{\'o}n (MT), m{\'e}trica principal  & \obscuatro{$\ge 30$} & \obscuatro{$\ge 45$} \\
+BLEU           & Traducci{\'o}n (MT), complementaria         & \obscuatro{$\ge 10$} & \obscuatro{$\ge 20$} \\
+WER            & Reconocimiento (ASR), menor es mejor      & \obscuatro{$\le 35$\,\%} & \obscuatro{$\le 25$\,\%} \\
+MOS            & Calidad de voz (TTS), escala 1--5         & $\ge 3.5$ & \obscuatro{$\ge 4.0$} \\
+Comprensi{\'o}n & \% de aciertos en la indicaci{\'o}n        & $\ge 80$\,\% & \obscuatro{---} \\
+Latencia       & Tiempo por turno (cascada completa)       & $\le 4.0$\,s & \obscuatro{---} \\
+\bottomrule
+\end{tabularx}
+\notaAPA{\obscuatro{Elaboraci{\'o}n propia. El {\'e}xito primario se sustenta en la mejora relativa
+(H2), la preservaci{\'o}n cl{\'i}nica y la comprensi{\'o}n (H3), no en un umbral absoluto de BLEU. Las
+metas de traducci{\'o}n se anclan en el dominio cl{\'i}nico del par Quechua--Espa{\~n}ol
+---referencia m{\'a}s cercana: 5.91 BLEU / 24.66 chrF \parencite{QuispePalomino2026}--- y no en
+valores de dominio general (26.7 BLEU, \cite{Ortega2025260}); se contrastan con las l{\'i}neas base y
+pueden reajustarse tras la fase de diagn{\'o}stico. MOS anclado en s{\'i}ntesis quechua de alta
+naturalidad (hasta 4.9, Cap{\'i}tulo~II).}}
 \end{table}
 
 \subsection{M{\'e}todos de an{\'a}lisis de datos}
@@ -354,7 +434,7 @@ derecho de retiro sin perjuicio y la anonimizaci{\'o}n de las grabaciones consti
 % ----- barra de Tema (APA: sin relleno de color, solo borde) -----
 \setlength{\fboxsep}{6pt}%
 \noindent\fcolorbox{black}{white}{\parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{\centering
-  \footnotesize\textbf{Tema:} Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol mediante arquitecturas de transformadores multimodales para consultas m{\'e}dicas en Cusco}}
+  \footnotesize\textbf{Tema:} Desarrollo de un sistema bidireccional de traducci{\'o}n de voz Quechua--Espa{\~n}ol mediante \obstitulo{arquitecturas de transformadores multimodales} para consultas m{\'e}dicas en Cusco}}
 \vspace{2pt}
 
 \fontsize{7}{8.3}\selectfont
@@ -369,7 +449,7 @@ derecho de retiro sin perjuicio y la anonimizaci{\'o}n de las grabaciones consti
 \hdr{Nivel} & \hdr{Problema} & \hdr{Objetivo} & \hdr{Hip{\'o}tesis} & \hdr{Variables} & \hdr{Dimensiones / indicadores} & \hdr{Metodolog{\'i}a} \\
 \midrule
 \celnivel{General} &
-{\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n de voz QU--ES para la comunicaci{\'o}n m{\'e}dico-paciente, mediante arquitecturas de transformadores multimodales, en Cusco? &
+{\textquestiondown}C{\'o}mo desarrollar el sistema bidireccional de traducci{\'o}n de voz QU--ES para la comunicaci{\'o}n m{\'e}dico-paciente, mediante \obstitulo{arquitecturas de transformadores multimodales}, en Cusco? &
 Desarrollar el sistema mediante el ajuste de modelos preentrenados (MMS, NLLB) para la comunicaci{\'o}n m{\'e}dico-paciente en Cusco. &
 Mejora significativamente la comunicaci{\'o}n m{\'e}dico-paciente frente a la ausencia de apoyo. &
 \textbf{VI:} Uso y modalidad (texto / texto+voz). \textbf{VD:} Precisi{\'o}n, voz, comprensi{\'o}n. &

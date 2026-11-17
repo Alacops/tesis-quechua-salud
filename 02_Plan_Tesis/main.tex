@@ -19,19 +19,32 @@
 \documentclass[12pt,a4paper]{article}
 \input{partes/00preambulo.tex}
 
+% ============================================================
+%  COMPILACION POR CAPITULOS (ver instrucciones mas abajo)
+%  Descomenta \includeonly y deja SOLO el/los capitulo(s) que
+%  quieras compilar. Comentalo del todo para compilar la tesis
+%  completa. La numeracion y las referencias se mantienen
+%  gracias a los .aux de cada capitulo.
+%
+%    \includeonly{partes/04AspectosGenerales}   % solo Cap. I
+%    \includeonly{partes/05MarcoTeorico}        % solo Cap. II
+% ============================================================
+%\includeonly{partes/04AspectosGenerales}
+
 \begin{document}
 
-% ---- Preliminares ----
+% ---- Preliminares (siempre \input: no son capitulos) ----
 \input{partes/01caratula.tex}        % Caratula
+\input{partes/01bDedicatoria.tex}    % Dedicatoria
 \input{partes/02resumen.tex}         % Resumen y Abstract
 \input{partes/03indices.tex}         % Indices, glosario, abreviaturas
 
-% ---- Cuerpo ----
-\input{partes/04AspectosGenerales.tex}  % Cap. I  - Introduccion
-\input{partes/05MarcoTeorico.tex}       % Cap. II - Marco teorico
-\input{partes/06Metodologia.tex}        % Cap. III- Metodologia
-\input{partes/07Factibilidad.tex}       % Cap. IV - Factibilidad
-\input{partes/08Administrativos.tex}    % Cap. V  - Aspectos administrativos
+% ---- Cuerpo (\include -> compilables por separado) ----
+\include{partes/04AspectosGenerales}  % Cap. I  - Introduccion
+\include{partes/05MarcoTeorico}       % Cap. II - Marco teorico
+\include{partes/06Metodologia}        % Cap. III- Metodologia
+\include{partes/07Factibilidad}       % Cap. IV - Factibilidad
+\include{partes/08Administrativos}    % Cap. V  - Aspectos administrativos
 
 % ---- Cierre ----
 \input{partes/09Bibliografia.tex}    % Referencias (APA7)
