@@ -17,6 +17,8 @@
 \usepackage{enumitem}
 \usepackage{caption}
 \usepackage{amssymb}
+\usepackage{tikz}
+\usepackage{fancyhdr}
 \usepackage[hidelinks]{hyperref}
 
 % --- paleta azul -> turquesa -> verde (coherente con la tesis) ---
@@ -30,14 +32,72 @@
 \setlength{\parskip}{4pt}
 \setlength{\parindent}{0pt}
 
-\title{\vspace{-1.2cm}\textbf{Exploración y limpieza de un dataset}\\[2pt]
-\large Protocolo EDA del Detective aplicado al corpus Common Voice quechua (\texttt{qxp})}
-\author{Seminario de Investigación II \,\textbar\, Proyecto IA (ASR quechua)}
-\date{\today}
+% --- encabezado y pie institucionales ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\textsc{Seminario de Investigaci{\'o}n II}}
+\fancyhead[R]{\footnotesize EDA \textbar\ Corpus \texttt{qxp}}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
 
 \begin{document}
-\maketitle
-\vspace{-0.6cm}
+
+% ================= CAR{\'A}TULA =================
+\begin{titlepage}
+\centering
+\thispagestyle{empty}
+{\normalsize\bfseries UNIVERSIDAD NACIONAL DE SAN ANTONIO ABAD DEL CUSCO\par}
+\vspace{0.30cm}
+{\normalsize\bfseries FACULTAD DE INGENIER{\'I}A EL{\'E}CTRICA, ELECTR{\'O}NICA,\\ INFORM{\'A}TICA Y MEC{\'A}NICA\par}
+\vspace{0.30cm}
+{\normalsize\bfseries ESCUELA PROFESIONAL DE INGENIER{\'I}A INFORM{\'A}TICA Y DE SISTEMAS\par}
+\vspace{0.7cm}
+
+\IfFileExists{logo_unsaac.png}{\includegraphics[width=3.4cm]{logo_unsaac.png}}{}
+\vspace{0.7cm}
+
+{\bfseries INFORME DE TRABAJO ENCARGADO\par}
+\vspace{0.45cm}
+
+\begin{tikzpicture}
+  \node[draw=black, line width=0.6pt, rounded corners=12pt, inner sep=12pt,
+        text width=0.82\linewidth, align=center, font=\bfseries\small]{%
+    \textcolor{g0}{EXPLORACI{\'O}N Y LIMPIEZA DE UN DATASET DE VOZ QUECHUA}
+    \textcolor{g2}{MEDIANTE EL PROTOCOLO EDA}
+    \textcolor{g3}{(CORPUS COMMON VOICE \texttt{qxp})}};
+\end{tikzpicture}\par
+\vspace{0.6cm}
+
+\begin{flushleft}
+\hspace*{0.14\textwidth}%
+\begin{minipage}{0.72\textwidth}
+\raggedright\fontsize{10}{13}\selectfont
+{\bfseries ASIGNATURA:}\\[3pt]
+Seminario de Investigaci{\'o}n II\\[12pt]
+{\bfseries PRESENTADO POR:}\\[3pt]
+Br. ALAIN ARMANDO CONDORI CONTRERAS\\[3pt]
+C{\'O}DIGO: 021501\\[12pt]
+{\bfseries DOCENTE:}\\[3pt]
+Msc. RA{\'U}L HUILLCA HUALLPARIMACHI\\[12pt]
+{\bfseries SEMESTRE:} 2026-II
+\end{minipage}
+\end{flushleft}
+
+\vspace{1.3cm}
+{\bfseries CUSCO - PER{\'U}\par}
+\vspace{0.2cm}
+{\bfseries 2026\par}
+\end{titlepage}
+
+% ================= {\'I}NDICE =================
+\thispagestyle{empty}
+\tableofcontents
+\clearpage
+\setcounter{page}{1}
+
+% ================= RESUMEN =================
+\vspace{-0.2cm}
 
 \noindent\colorbox{g4!22}{\parbox{\linewidth}{\small
 \textbf{Resumen.} Se aplica el protocolo de 5 pasos y 8 herramientas del material del curso

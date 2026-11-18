@@ -41,6 +41,10 @@ ieee.bib
 acm.bib
 01_RSL/Captura_parcifal.png
 
+# ---- Python (bytecode y entornos) ----
+__pycache__/
+*.pyc
+
 # ---- Sistema ----
 .DS_Store
 Thumbs.db

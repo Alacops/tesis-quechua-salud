@@ -1,0 +1,179 @@
+% ==================================================================
+%  SECCIÓN 4.1 — Caracterización y preparación del corpus (EDA)
+%  Fragmento listo para \input{} dentro del Capítulo 4 de la TESIS.
+%
+%  REQUISITOS DEL PREÁMBULO DE LA TESIS (ya presentes en el plan):
+%    \usepackage{graphicx,booktabs,tabularx,xcolor,float,caption}
+%    \definecolor{g0}{HTML}{17365D} \definecolor{g2}{HTML}{2AA8A8}
+%    \definecolor{g3}{HTML}{38BF8F} \definecolor{g4}{HTML}{7FD16B}
+%    \graphicspath{{figuras/}{../ENTREGA_CLASSROOM/Limpieza_Dataset/figuras/}}
+%
+%  Las figuras fig1..fig7 son las generadas por eda_limpieza.py.
+%  Las cifras de normalización y partición provienen de particionar_dataset.py.
+% ==================================================================
+
+\section{Caracterización y preparación del corpus (EDA)}
+\label{sec:eda}
+
+La validez de cualquier métrica del sistema depende de la calidad y de la partición
+del corpus con que se entrena y evalúa. Por ello, antes de la experimentación, se aplicó
+un protocolo de análisis exploratorio de datos (EDA) de cinco pasos al subconjunto
+\texttt{validated} de Common Voice 27.0, variedad quechua sureño (\texttt{qxp}), que
+constituye el corpus base del módulo de reconocimiento de voz (ASR). El punto de partida
+fueron \textbf{22\,727} clips validados; cada clip aporta su audio, su transcripción y
+metadatos del hablante.
+
+\subsection{Diagnóstico de calidad}
+\label{sec:eda-calidad}
+
+El examen de valores faltantes, duplicados y errores reveló cuatro hechos con
+consecuencias directas para el entrenamiento:
+
+\begin{itemize}\itemsep2pt
+  \item \textbf{Columnas inservibles.} \texttt{variant} y \texttt{segment} están vacías
+        al 100\,\%, y \texttt{accents} al 63\,\%; se descartan o se marcan como
+        \emph{unknown} sin pérdida de clips útiles.
+  \item \textbf{Desbalance severo de género.} 16\,079 clips \emph{female} frente a solo
+        308 \emph{male} (Figura~\ref{fig:barras}). El modelo tenderá a reconocer mejor
+        voces femeninas; es una amenaza de validez para un uso médico con pacientes de
+        ambos sexos.
+  \item \textbf{Concentración de hablantes.} Un solo hablante aporta el 8,9\,\% de los
+        clips, lo que obliga a controlar la partición para que su voz no infle las
+        métricas.
+  \item \textbf{Reúso masivo de frases.} Las 22\,727 grabaciones corresponden a solo
+        \textbf{2\,058} frases distintas (cada una grabada $\sim$11 veces). Esto no es
+        un error, pero crea un riesgo de \emph{fuga de datos} que se trata en la
+        Sección~\ref{sec:eda-particion}.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.9\linewidth]{fig1_nulos.png}
+  \caption{Mapa de valores faltantes por columna. El bloque de columnas vacías y el
+  faltante demográfico orientan las decisiones de limpieza.}
+  \label{fig:nulos}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.92\linewidth]{fig4_barras_categoricas.png}
+  \caption{Distribución de variables categóricas. El desbalance de género y la
+  concentración de hablantes son estructurales del corpus.}
+  \label{fig:barras}
+\end{figure}
+
+\subsection{Anatomía numérica y correlaciones}
+\label{sec:eda-correlaciones}
+
+El análisis univariado (histogramas y diagramas de caja) sitúa la duración mediana en
+$\sim$4,6\,s y la velocidad de habla en $\sim$7,2\,car/s, con colas que la regla
+intercuartílica (IQR, criterio de Tukey) marca como atípicas. El análisis bivariado
+contrasta los coeficientes de Pearson (lineal) y Spearman (monótona, robusta): mientras
+\texttt{n\_chars}\,$\sim$\,\texttt{dur\_s} coinciden en 0,71, el par
+\texttt{down\_votes}\,$\sim$\,\texttt{net\_votes} diverge ($-0{,}37$ frente a $-0{,}50$),
+lo que justifica reportar ambas medidas y no fiarse de una sola
+(Figura~\ref{fig:heatmap}).
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.96\linewidth]{fig6_heatmaps.png}
+  \caption{Mapas de calor de correlación de Pearson y de Spearman. La discrepancia entre
+  ambos advierte contra interpretar relaciones no lineales con un único coeficiente.}
+  \label{fig:heatmap}
+\end{figure}
+
+\subsection{Variable objetivo: dominio de salud}
+\label{sec:eda-salud}
+
+Como la tesis se orienta a la consulta médica, se analizó el subconjunto de dominio
+\emph{healthcare}, que cubre el \textbf{77,8\,\%} del corpus limpio: una cobertura
+favorable. Las pruebas de Mann--Whitney detectan diferencias significativas, aunque
+pequeñas, entre los clips de salud y el resto en duración y longitud
+($p<10^{-30}$), coherentes con un vocabulario clínico algo más breve.
+
+\subsection{Limpieza aplicada}
+\label{sec:eda-limpieza}
+
+Sobre la evidencia anterior se aplicó una limpieza conservadora: se eliminaron columnas
+vacías, constantes y redundantes; se normalizó la etiqueta multi-valor
+\texttt{sentence\_domain} (corrigiendo 76 filas con tokens duplicados) hacia los
+indicadores \texttt{domains}/\texttt{is\_healthcare}; los faltantes demográficos se
+marcaron como \emph{unknown} en lugar de borrar la fila (hacerlo habría costado hasta el
+63\,\% del corpus); y se excluyeron los clips atípicos por IQR en \texttt{dur\_s} y
+\texttt{cps} junto con los de \texttt{net\_votes}\,$\le$\,0. El corpus pasó de
+\textbf{22\,727} a \textbf{21\,653} clips (Tabla~\ref{tab:limpieza}).
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Efecto de la limpieza sobre el tamaño del corpus.}
+  \label{tab:limpieza}
+  \begin{tabular}{l r r}
+    \toprule
+    Etapa & Clips & Variación \\
+    \midrule
+    Validado (crudo)            & 22\,727 & --- \\
+    Tras excluir atípicos (IQR) & 21\,653 & $-1\,074$ ($-4{,}7$\,\%) \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Normalización ortográfica del quechua}
+\label{sec:eda-normalizacion}
+
+El WER/CER de un ASR es sensible a diferencias ortográficas invisibles en la referencia.
+Se fijó una convención única y documentada: forma Unicode NFC; unificación de las
+variantes tipográficas del apóstrofo al apóstrofo recto \texttt{'} —preservando su valor
+\emph{fonémico} como marca de glotalización en las oclusivas quechuas (\emph{p'}, \emph{t'},
+\emph{ch'}, \emph{k'}, \emph{q'})—; conversión a minúsculas; retiro de la puntuación no
+pronunciada conservando apóstrofo y guion internos; y colapso de espacios. La
+normalización afectó al \textbf{99,9\,\%} de las transcripciones (casi todas por el paso a
+minúsculas o la puntuación) y redujo las frases únicas de 2\,062 a \textbf{2\,058} al
+fundir variantes equivalentes. No se hallaron dígitos en el texto, por lo que no fue
+necesario desambiguar números hablados.
+
+\subsection{Partición anti-fuga: el \emph{trade-off} hablante\,/\,frase}
+\label{sec:eda-particion}
+
+El reúso masivo de frases obliga a controlar la \emph{fuga de datos}. Se evaluaron los dos
+ejes de partición posibles, cada uno disjunto en un eje y midiendo la fuga residual en el
+otro (Tabla~\ref{tab:particion}). El hallazgo es que ambos ejes son
+\textbf{incompatibles} en este corpus: como casi todos los hablantes graban las mismas
+2\,058 frases, una partición disjunta por hablante deja el $\sim$100\,\% de las frases de
+prueba también en entrenamiento, y una disjunta por frase deja el $\sim$100\,\% de las
+voces compartidas.
+
+\begin{table}[H]
+  \centering
+  \small
+  \caption{Las dos particiones (80/10/10 por número de clips) y su fuga residual.}
+  \label{tab:particion}
+  \begin{tabularx}{\linewidth}{@{}l r r r X@{}}
+    \toprule
+    Partición & Train & Val & Test & Fuga residual (test) \\
+    \midrule
+    Disjunta por \textbf{hablante} & 17\,139 & 2\,260 & 2\,254 & 100\,\% de las \emph{frases} ya vistas \\
+    Disjunta por \textbf{frase}    & 17\,309 & 2\,168 & 2\,176 & 100\,\% de las \emph{voces} ya vistas \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Para un ASR médico, cuyo objetivo es transcribir \emph{frases nuevas} dichas en consulta,
+la amenaza más grave es que el modelo memorice el repertorio fijo de frases. Por ello se
+adopta la \textbf{partición disjunta por frase} como principal, y se conserva la disjunta
+por hablante como evaluación complementaria de robustez ante voces no vistas; el
+solapamiento de hablantes se declara como limitación. Ambas particiones quedan fijadas en
+columnas reproducibles del dataset (\texttt{split\_sentence}, \texttt{split\_speaker}),
+con semilla \texttt{SEED=42}.
+
+\subsection{Síntesis e implicaciones para la experimentación}
+\label{sec:eda-sintesis}
+
+El EDA entrega un corpus de 21\,653 clips depurados, con texto normalizado y dos
+particiones verificadas sin fuga en su eje respectivo. De él se derivan tres decisiones
+que gobiernan el resto del Capítulo~4: (i) evaluar con la partición disjunta por frase y
+reportar también la disjunta por hablante; (ii) informar el WER \emph{estratificado por
+género} para exponer el sesgo derivado del desbalance 16\,079\,/\,308; y (iii) usar este
+mismo corpus depurado —no el crudo— como base del factor «calidad del corpus» en el
+experimento de ablación (Sección~\ref{sec:ablacion} de la metodología). Todo el proceso es
+reproducible con \texttt{eda\_limpieza.py} y \texttt{particionar\_dataset.py}.

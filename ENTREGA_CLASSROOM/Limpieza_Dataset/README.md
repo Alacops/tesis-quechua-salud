@@ -19,10 +19,15 @@ el corpus base del Proyecto IA (ASR quechua) de la tesis.
 
 - **`eda_limpieza.py`** — script reproducible; genera las 7 figuras, el `dataset_limpio.csv` y `resumen_eda.txt`.
 - **`eda_limpieza.ipynb`** — notebook ejecutado (narrativa paso a paso con interpretación y salidas incrustadas).
-- **`informe_eda.tex` / `informe_eda.pdf`** — informe formal (6 págs.) con las figuras y las 4 dimensiones de rigurosidad.
+- **`normalizar_texto.py`** — normalización ortográfica del quechua (NFC, apóstrofo glotal unificado, minúsculas, puntuación, marca de dígitos).
+- **`particionar_dataset.py`** — partición anti-fuga: genera `split_sentence` (disjunta por frase) y `split_speaker` (disjunta por hablante), mide el solapamiento residual y añade `sentence_norm`.
+- **`informe_eda.tex` / `informe_eda.pdf`** — informe formal con carátula del curso, las figuras y las 4 dimensiones de rigurosidad.
+- **`seccion_4.1_tesis.tex`** — fragmento LaTeX listo para `\input` en el Capítulo 4 de la tesis («Caracterización y preparación del corpus»).
+- **`eda_presentacion.html`** — presentación para exponer (diapositivas navegables con ← →, figuras incrustadas, autocontenida y offline).
 - **`figuras/`** — `fig1`…`fig7` en PNG.
 - **`dataset_limpio.csv`** — 21 653 filas depuradas, aptas para entrenar.
-- **`resumen_eda.txt`** — bitácora de la ejecución.
+- **`dataset_particionado.csv`** — `dataset_limpio` + `sentence_norm`, `has_digit`, `split_sentence`, `split_speaker`.
+- **`resumen_eda.txt` / `reporte_particion.txt`** — bitácoras de ejecución del EDA y de la partición.
 
 ## Cómo reproducir
 
@@ -30,6 +35,7 @@ el corpus base del Proyecto IA (ASR quechua) de la tesis.
 # Requiere: python 3.11+, pandas, numpy, matplotlib, scipy
 #           y el corpus qxp descomprimido bajo ../../03_Proyecto_IA/
 python eda_limpieza.py            # regenera figuras + dataset limpio + resumen
+python particionar_dataset.py     # normaliza texto + particiones anti-fuga + reporte
 pdflatex informe_eda.tex          # (x2) genera el PDF
 ```
 
@@ -45,3 +51,7 @@ El script autodescubre el `validated.tsv` del corpus. Semilla fija `SEED=42`.
 - **Correlaciones**: `n_chars`~`dur_s` = 0,71 (lineal); Pearson vs Spearman divergen en
   `down_votes`~`net_votes` (−0,37 vs −0,50): justifica usar ambas.
 - **Limpieza**: 22 727 → **21 653** filas.
+- **Partición anti-fuga**: los ejes hablante y frase son **incompatibles** (todas las frases
+  se reparten entre casi todos los hablantes). Se prioriza `split_sentence` (disjunta por
+  frase) para evitar que el ASR memorice las 2 058 frases fijas; se conserva `split_speaker`
+  como evaluación de robustez ante voces no vistas.

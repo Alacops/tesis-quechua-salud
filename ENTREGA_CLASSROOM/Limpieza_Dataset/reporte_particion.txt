@@ -1,0 +1,36 @@
+Entrada: dataset_limpio.csv  ->  21653 filas x 16 columnas
+
+NORMALIZACIÓN DE TEXTO (normalizar_texto.py)
+  Filas cuyo texto cambió al normalizar : 21631 (99.9%)
+  Filas con dígitos (texto ambiguo)      : 0 (0.0%)
+  Frases únicas: crudas=2062 -> normalizadas=2058
+
+PARTICIÓN A — disjunta por HABLANTE (split_speaker)
+    train :  17139 clips (79.2%)  |  59 hablantes | 2058 frases
+    val   :   2260 clips (10.4%)  |   9 hablantes | 1730 frases
+    test  :   2254 clips (10.4%)  |   9 hablantes | 1568 frases
+    disyunción por hablante: OK — ningún hablante cruza de split
+    fuga de frases que queda (val/test que también están en train):
+        val  : 2260/2260 clips (100.0%)
+        test : 2254/2254 clips (100.0%)
+
+PARTICIÓN B — disjunta por FRASE (split_sentence)
+    train :  17309 clips (79.9%)  |  76 hablantes | 1644 frases
+    val   :   2168 clips (10.0%)  |  62 hablantes |  209 frases
+    test  :   2176 clips (10.0%)  |  65 hablantes |  205 frases
+    disyunción por frase: OK — ningún frase cruza de split
+    fuga de hablantes que queda (val/test que también están en train):
+        val  : 2168/2168 clips (100.0%)
+        test : 2175/2176 clips (100.0%)
+
+LECTURA DEL TRADE-OFF
+  - split_speaker evita que el modelo 'reconozca la voz', pero deja ~100% de
+    las frases de test también en train (memorización de frases posible).
+  - split_sentence evita la memorización de las 2 058 frases fijas, a costa de
+    que algunas voces aparezcan en train y test.
+  RECOMENDACIÓN (ASR médico): usar `split_sentence` como partición principal,
+  porque el sistema debe transcribir FRASES NUEVAS en consulta; reportar el
+  solapamiento de hablantes como limitación. Mantener `split_speaker` para una
+  evaluación complementaria de robustez ante voces no vistas.
+
+Escrito: dataset_particionado.csv  (21653 filas x 20 columnas)
