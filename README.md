@@ -20,19 +20,20 @@ SEMINARIO_2/
 │   ├── queries_busqueda.md     # Cadenas de búsqueda + conteos PRISMA
 │   ├── cribado.md              # Cribado de estudios (inclusión/exclusión)
 │   └── extraccion_datos.md     # Tabla de extracción de datos
-└── 02_Plan_Tesis/
-    ├── main.tex/.pdf        # Plan de tesis (documento maestro modular) ← PRINCIPAL
-    ├── partes/             # Capítulos del plan (preámbulo + 10 secciones)
-    ├── imagenes/           # Logo y figuras del plan
+└── 02_Tesis/
+    ├── main.tex/.pdf        # Tesis (documento maestro modular) ← PRINCIPAL
+    ├── partes/             # Capítulos (preámbulo + secciones, incl. Cap. IV EDA)
+    ├── imagenes/           # Logo y figuras (incl. figuras del EDA)
     └── antecedentes.bib     # Fuentes de la revisión usadas en antecedentes
 ```
 
 > Material de apoyo (exportaciones `.bib` de las bases, captura de Parsifal, PDFs de
 > referencia y `Estructuracion_Tesis/`) se mantiene **local**, fuera del control de versiones.
 
-El documento principal de entrega es **`02_Plan_Tesis/main.pdf`** (carátula UNSAAC,
-5 capítulos: I Introducción en 6 bloques · II Marco teórico y estado del arte · III Metodología ·
-IV Estudio de factibilidad · V Aspectos administrativos · anexos con matrices de consistencia).
+El documento principal de entrega es **`02_Tesis/main.pdf`** (carátula UNSAAC,
+6 capítulos: I Introducción en 6 bloques · II Marco teórico y estado del arte · III Metodología ·
+IV Experimentación y Resultados (EDA del corpus) · V Estudio de factibilidad · VI Aspectos
+administrativos · anexos con matrices de consistencia).
 Se compila desde `main.tex`, que integra los capítulos de `partes/` vía `\input`.
 
 ## Compilación
@@ -40,7 +41,7 @@ Se compila desde `main.tex`, que integra los capítulos de `partes/` vía `\inpu
 Toolchain: **MiKTeX** (Windows). Como el `.bib` usa biblatex-apa, hay que correr `biber`:
 
 ```bash
-cd 02_Plan_Tesis
+cd 02_Tesis
 pdflatex main
 biber   main
 pdflatex main
